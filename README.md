@@ -1,7 +1,8 @@
-# Purpose
-The purpose of this repository is to contain all the code for the eSports project. The initiators of the conversation have been Leigh, Tyler and Nacho. If you have any questions don't hesitate to contact any of them.
+# League of Legends Optimizer
 
-# Components
+[![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_leagueoflegends-optimizer)](https://sonarcloud.io/dashboard?id=oracle-devrel_leagueoflegends-optimizer)
+
+## Introduction
 The data extraction process has been evaluated using the official Riot Games API. There's a lot of information available. From this initial set of data I have devised two ways of approaching and helping Tyler's League of Legends team:
 1. Extract offline data from players, matches and accounts from the "Offline" API; and create a ML model to predict the outcome of games based on compositions and game versions. There's loads of information about champion stats from each version so it makes sense that data and models should be trained only on patches, or patches where champion statistics change. Another good idea would be to use external tier lists of champions to weigh the compositions depending on the importance of a champion in a patch.
 2. Extract live data using the [Live Client Data API](https://developer.riotgames.com/docs/lol#game-client-api_live-client-data-api) and see what we can do. Maybe there's additional information like the snowball effect from jungle monsters, baron nashor and drakes. 
@@ -22,8 +23,8 @@ Currently, the information which can be extracted from the Live Client Data API 
 - Basic data about the game (map, game time, type of queue in which the match is being played in, and map terrain information).
 
 
-
 ### Available endpoints
+There are many available endpoints for the Live Client Data API, but the one that encapsulates the information from all sources is the following:
 
 #### Get All Game Data
 
@@ -31,35 +32,35 @@ The Live Client Data API has a number of endpoints that return a subset of the d
 
 GET https://127.0.0.1:2999/liveclientdata/allgamedata
 
-#### Active Player
-GET ​https://127.0.0.1:2999/liveclientdata/activeplayer
-
-GET ​https://127.0.0.1:2999/liveclientdata/activeplayername
-
-GET ​https://127.0.0.1:2999/liveclientdata/activeplayerabilities
-
-GET ​https://127.0.0.1:2999/liveclientdata/activeplayerrunes
-
-#### All Players
-GET ​https://127.0.0.1:2999/liveclientdata/playerlist
-
-GET ​https://127.0.0.1:2999/liveclientdata/playerscores?summonerName=
-
-GET ​https://127.0.0.1:2999/liveclientdata/playersummonerspells?summonerName=
-
-GET ​https://127.0.0.1:2999/liveclientdata/playermainrunes?summonerName=
-
-GET ​https://127.0.0.1:2999/liveclientdata/playeritems?summonerName=
-
-#### Events
-GET ​https://127.0.0.1:2999/liveclientdata/eventdata
-
-#### Game
-GET ​https://127.0.0.1:2999/liveclientdata/gamestats
-
-
 ### Ideas
-
-Create a tool that allows to visualize:
+For the future, we would like to expand this functionality to create a tool that allows to visualize:
 1. Snowball effect after a large monster kill
 2. Jungle gold difference impact in the game (carry potential)
+
+
+## Getting Started
+
+### Prerequisites
+Requirements file can be found in /requirements.txt. You will also need to have installed Oracle Instant Client or other means of connectivity to the Oracle Autonomous JSON Database. 
+
+## Notes/Issues
+* Nothing at this moment
+
+## URLs
+[Riot Games API](https://developer.riotgames.com/)
+
+## Contributing
+This project is open source.  Please submit your contributions by forking this repository and submitting a pull request!  Oracle appreciates any contributions that are made by the open source community.
+
+## License
+Copyright (c) 2021 Oracle and/or its affiliates.
+
+Licensed under the Universal Permissive License (UPL), Version 1.0.
+
+See [LICENSE](LICENSE) for more details.
+
+
+
+
+
+
