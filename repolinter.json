@@ -1,0 +1,45 @@
+{
+  "$schema": "https://raw.githubusercontent.com/todogroup/repolinter/master/rulesets/schema.json",
+  "version": 2,
+  "axioms": {},
+  "rules": {
+    "readme-file-exists" : {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["README*"]
+        }
+      }
+    },
+    "license-file-exists" : {
+      "level": "error",
+      "rule": {
+        "type": "file-existence",
+        "options": {
+          "globsAny": ["LICENSE*"]
+        }
+      }
+    },
+    "copyright-notice-present" : {
+      "level": "warning",
+      "rule": {
+        "type": "file-starts-with",
+        "options": {
+          "globsAll": ["**/*"],
+          "skip-binary-files": false,
+          "skip-paths-matching": {
+            "extensions": ["yaml","yml","md","json"],
+            "patterns": [".github"],
+            "flags": ""
+          },
+          "lineCount": 1,
+          "patterns": [
+            "Copyright \\(c\\) [12][90]\\d\\d Oracle and/or its affiliates\\."
+          ],
+          "succeed-on-non-exist": true
+        }
+      }
+    }
+  }
+}
