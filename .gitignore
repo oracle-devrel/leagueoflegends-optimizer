@@ -170,3 +170,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# Ignore config file with sensitive data
+config.yaml
