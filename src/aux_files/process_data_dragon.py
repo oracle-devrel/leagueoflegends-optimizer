@@ -50,11 +50,12 @@ champion_df.index.name = 'index'
 
 print(champion_df)
 
-if os.path.exists('../../champion_ids.csv'):
-	champion_df.to_csv('../../champion_ids.csv')
-else:
-	f = open('../../champion_ids.csv', 'w+')
-	f.write()
-	champion_df.to_csv('../../champion_ids.csv')
+final_csv_path = '../../champion_ids.csv'
 
-# We make a dictionary with champion names and IDs.
+# If the file exists, we write data. Otherwise, we create the file, then write the data.
+if os.path.exists(final_csv_path):
+	champion_df.to_csv(final_csv_path)
+else:
+	f = open(final_csv_path)
+	f.write()
+	champion_df.to_csv(final_csv_path)
