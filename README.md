@@ -41,7 +41,12 @@ For the future, we would like to expand this functionality to create a tool that
 ## Getting Started
 
 ### Prerequisites
-Requirements file can be found in /requirements.txt. You will also need to have installed Oracle Instant Client or other means of connectivity to the Oracle Autonomous JSON Database. 
+Requirements file can be found in /requirements.txt. You will also need to have installed Oracle Instant Client or other means of connectivity to the Oracle Autonomous JSON Database. After installing both, you should be able to run the code inside `src/`.
+
+### Running the code
+Run:
+`python3 league.py` for the full process. You can modify your code to run all components or just the ones you need in the data_mine() function.
+
 
 ## Notes/Issues
 * Nothing at this moment
