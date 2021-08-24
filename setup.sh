@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# Copyright (c) 2021 Oracle and/or its affiliates.
 # Unset current variables and reset TNS_ADMIN and LD_LIBRARY_PATH.
 unset TNS_ADMIN
 unset LD_LIBRARY_PATH

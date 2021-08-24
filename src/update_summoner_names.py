@@ -1,3 +1,5 @@
+# Copyright (c) 2021 Oracle and/or its affiliates.
+
 # This code updates the summoner names given their encrypted summoner Ids.
 import requests
 import yaml
