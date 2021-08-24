@@ -6,7 +6,7 @@ import pandas as pd
 import requests
 
 current_version = '11.14.1' # change this depending on the current game version, or the game version you want to process.
-request_url = 'http://ddragon.leagueoflegends.com/cdn/{}/data/en_US/champion.json'.format(current_version)
+request_url = 'https://ddragon.leagueoflegends.com/cdn/{}/data/en_US/champion.json'.format(current_version)
 
 headers = {
 		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
