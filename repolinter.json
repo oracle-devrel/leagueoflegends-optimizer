@@ -29,8 +29,8 @@
           "globsAll": ["**/*"],
           "skip-binary-files": true,
           "skip-paths-matching": {
-            "extensions": ["yaml","yml","md","json","xml","tpl","ipynb","pickle","joblib"],
-            "patterns": ["\\.github","sonar\\-project\\.properties"],
+            "extensions": ["yaml","yml","md","json","xml","tpl","ipynb","pickle","joblib","properties"],
+            "patterns": ["\\.github"],
             "flags": ""
           },
           "lineCount": 2,
