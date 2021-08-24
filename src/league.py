@@ -15,19 +15,19 @@ def load_config_file():
 
 config_file = load_config_file()
 api_key = config_file.get('riot_api_key')
-
+headers = {
+	"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
+	"Accept-Language": "en-US,en;q=0.5",
+	"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
+	"Origin": "https://developer.riotgames.com",
+	"X-Riot-Token": api_key
+}
 
 # 1000 requests per minute using development key
 # AK89OMWJzaal2SSLDtQszoKUZ220Akz0JppfTK6pF97VYve_KQEHcA9RdEx88ghXl_SbW6Nfpj2xyg
 def get_puuid(request_ref, summoner_name, region, connection):
 	request_url = 'https://{}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{}/{}'.format(request_ref, summoner_name, region) # europe, JASPERAN, EUW
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
+
 	response = requests.get(request_url, headers=headers)
 	time.sleep(1)
 	if response.status_code == 200:
@@ -50,17 +50,9 @@ def get_summoner_information(summoner_name, request_region):
 	assert request_region in request_regions
 
 	request_url = 'https://{}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{}'.format(request_region, summoner_name)
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
+	
 	response = requests.get(request_url, headers=headers)
-	if response.status_code == 200:
-		pass
-	else:
+	if response.status_code != 200:
 		print('Request error (@get_summoner_information). HTTP code {}'.format(response.status_code))
 		return None
 	return response.json().get('puuid')
@@ -71,16 +63,10 @@ def get_champion_mastery(encrypted_summoner_id, request_region):
 	assert request_region in request_regions
 
 	request_url = 'https://{}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/{}'.format(request_region, encrypted_summoner_id)
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
+	
 	response = requests.get(request_url, headers=headers)
 	if response.status_code == 200:
-		print('Printing response: {}'.format(response.json()))
+		print('{}'.format(response.json()))
 	else:
 		print('Request error (@get_champion_mastery). HTTP code {}'.format(response.status_code))
 	
@@ -93,8 +79,6 @@ def get_champion_mastery(encrypted_summoner_id, request_region):
 	print('Total champions played: {}'.format(len(response.json())))
 	for i in response.json():
 		champion_name = champion_df.loc[champion_df['champion_id'] == i.get('championId')]['champion_name'].to_string().split('    ')[1] # get the champion name only
-		#print(example['champion_name'])
-		#print('Champion name: {}'.format(champion_name))
 		print('Champion ID {} | Champion Name {} | Mastery level {} | Total mastery points {} | Last time played {} | Points until next mastery level {} | Chest granted {} | Tokens earned {}'.format(
 				i.get('championId'),
 				champion_name,
@@ -104,23 +88,16 @@ def get_champion_mastery(encrypted_summoner_id, request_region):
 				i.get('championPointsUntilNextLevel'),
 				i.get('chestGranted'),
 				i.get('tokensEarned')))
-	return
 
 
 
 def get_total_champion_mastery_score(encrypted_summoner_id, request_region):
 	assert request_region in request_regions
 	request_url = 'https://{}.api.riotgames.com/lol/champion-mastery/v4/scores/by-summoner/{}'.format(request_region, encrypted_summoner_id)
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
+	
 	response = requests.get(request_url, headers=headers)
 	if response.status_code == 200:
-		print('Printing response: {}'.format(response.json()))
+		print('{}'.format(response.json()))
 	else:
 		print('Request error (@get_total_champion_mastery_score). HTTP code {}'.format(response.status_code))
 
@@ -129,16 +106,10 @@ def get_total_champion_mastery_score(encrypted_summoner_id, request_region):
 def get_user_leagues(encrypted_summoner_id, request_region):
 	assert request_region in request_regions
 	request_url = 'https://{}.api.riotgames.com/lol/league/v4/entries/by-summoner/{}'.format(request_region, encrypted_summoner_id)
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
+	
 	response = requests.get(request_url, headers=headers)
 	if response.status_code == 200:
-		print('Printing response: {}'.format(response.json()))
+		print('{}'.format(response.json()))
 	else:
 		print('Request error (@get_user_leagues). HTTP code {}'.format(response.status_code))
 
@@ -183,15 +154,8 @@ def get_n_match_ids(puuid, num_matches, queue_type, region):
 		iterator,
 		100
 	)
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
-	total_iterations = int(num_matches / 100)
-	for x in range(total_iterations):
+	
+	for x in range(int(num_matches / 100)):
 		response = requests.get(request_url, headers=headers)
 		time.sleep(1)
 		if response.status_code != 200:
@@ -224,16 +188,10 @@ def get_match_timeline(match_id, region):
 		region,
 		match_id
 	)
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
+	
 	response = requests.get(request_url, headers=headers)
 	if response.status_code == 200:
-		print('Printing response: {}'.format(response.json()))
+		print('{}'.format(response.json()))
 	else:
 		print('Request error (@get_match_timeline). HTTP code {}'.format(response.status_code))
 	# Return the list of matches.
@@ -249,16 +207,10 @@ def get_match_info(match_id, region):
 		region,
 		match_id
 	)
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
+	
 	response = requests.get(request_url, headers=headers)
 	if response.status_code == 200:
-		print('Printing response: {}'.format(response.json()))
+		print('{}'.format(response.json()))
 	else:
 		print('Request error (@get_match_info). HTTP code {}'.format(response.status_code))
 	# Return the list of matches.
@@ -287,6 +239,7 @@ def determine_overall_region(region):
 	return overall_region, tagline
 
 
+
 # auxiliary function
 def insert_json_db(connection, collection_name, json_object_to_insert):
 	soda = connection.getSodaDatabase()
@@ -297,6 +250,8 @@ def insert_json_db(connection, collection_name, json_object_to_insert):
 	except cx_Oracle.IntegrityError:
 		return 0
 	return 1
+
+
 
 # auxiliary function
 def delete_json_db(connection, collection_name, on_column, on_value):
@@ -330,21 +285,13 @@ def get_top_players(region, queue, connection):
 		)
 	]
 
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
-
 	for x in request_urls:
 		response = requests.get(x, headers=headers)
 		if response.status_code == 200:
 			try:
 				print('Region: {} | Tier: {} | Queue: {} | Total Players: {}'.format(region, response.json()['tier'],
 					response.json()['queue'], len(response.json()['entries'])))
-			except KeyError as e:
+			except KeyError:
 				pass
 			for y in response.json()['entries']:
 				try:
@@ -352,11 +299,10 @@ def get_top_players(region, queue, connection):
 					y['request_region'] = region
 					y['queue'] = queue
 					total_users_to_insert.append(y)
-				except KeyError as e:
+				except KeyError:
 					pass
 		else:
 			print('Request error (@get_top_players). HTTP code {}: {}'.format(response.status_code, response.json()))
-			continue
 
 	print('Total users obtained in region {} and queue {}: {}'.format(region, queue, len(total_users_to_insert)))
 	
@@ -393,19 +339,10 @@ def extract_matches(region, match_id, connection):
 		region,
 		match_id
 	)
-	headers = {
-		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
-		"Accept-Language": "en-US,en;q=0.5",
-		"Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-		"Origin": "https://developer.riotgames.com",
-		"X-Riot-Token": api_key
-	}
+	
 	response = requests.get(request_url, headers=headers)
 	time.sleep(1.5) # rate limiting purposes
-	if response.status_code == 200:
-		#print('Printing response: {}'.format(response.json()))
-		pass
-	else:
+	if response.status_code != 200:
 		print('Request error (@extract_matches). HTTP code {}'.format(response.status_code))
 		return
 	# Get participants and teams.objectives objects
@@ -422,7 +359,6 @@ def extract_matches(region, match_id, connection):
 	}
 	# Extract individual matchups
 	for x in o_participants:
-		#print('{}'.format(x.get('individualPosition').lower()))
 		try:
 			matchups['{}'.format(x.get('individualPosition').lower())].append(
 				{
@@ -471,14 +407,14 @@ def extract_matches(region, match_id, connection):
 
 
 def data_mine(connection):
-	'''
+	
 	# Get top players from API and add them to our DB.
 	for x in request_regions:
 		for y in ['RANKED_SOLO_5x5', 'RANKED_FLEX_SR']: # RANKED_FLEX_TT disabled since the map was removed
 			get_top_players(x, y, connection)
 	
 	# ------
-	'''
+	
 	# From all users in the collection, extract matches
 	all_match_ids = list()
 	soda = connection.getSodaDatabase()
@@ -511,12 +447,7 @@ def data_mine(connection):
 		# Get the overall region to make the proper request
 		overall_region, tagline = determine_overall_region(x.getContent().get('match_id').split('_')[0].lower())
 		print('Overall Region {} detected'.format(overall_region))
-		extract_matches(overall_region, x.getContent().get('match_id'), connection)
-
-
-	
-	# Keep calling and printing in real time
-	
+		extract_matches(overall_region, x.getContent().get('match_id'), connection)	
 
 
 
