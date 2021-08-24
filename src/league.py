@@ -7,8 +7,6 @@ import pandas as pd
 import time
 import cx_Oracle
 
-# data dragon 11.14.1 http://ddragon.leagueoflegends.com/cdn/11.14.1/data/en_US/champion.json
-
 request_regions = ['br1', 'eun1', 'euw1', 'jp1', 'kr', 'la1', 'la2', 'na1', 'oc1', 'ru', 'tr1']
 
 def load_config_file():
@@ -21,7 +19,7 @@ api_key = config_file.get('riot_api_key')
 
 # 1000 requests per minute using development key
 # AK89OMWJzaal2SSLDtQszoKUZ220Akz0JppfTK6pF97VYve_KQEHcA9RdEx88ghXl_SbW6Nfpj2xyg
-def get_puuid(request_ref, summoner_name, region):
+def get_puuid(request_ref, summoner_name, region, connection):
 	request_url = 'https://{}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{}/{}'.format(request_ref, summoner_name, region) # europe, JASPERAN, EUW
 	headers = {
 		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
@@ -31,14 +29,20 @@ def get_puuid(request_ref, summoner_name, region):
 		"X-Riot-Token": api_key
 	}
 	response = requests.get(request_url, headers=headers)
+	time.sleep(1)
 	if response.status_code == 200:
 		#print('Printing response for user {} - region {}: -----\n{}'.format(summoner_name, region, response.json()))
 		pass
+	elif response.status_code == 404:
+		print('PUUID not found for summoner {}'.format(summoner_name))
+		delete_json_db(connection, 'summoner', 'summonerName', summoner_name)
 	else:
 		print('Request error (@get_puuid). HTTP code {}'.format(response.status_code))
 		return
 	puuid = response.json().get('puuid')
 	return puuid
+
+
 
 # encrypted summoner ID: y8zda_vuZ5AkVYk8yXJrHa_ppKjIblOGKPCwzYcX9ywo4G0
 # will return the PUUID but can be changed to return anything.
@@ -189,6 +193,7 @@ def get_n_match_ids(puuid, num_matches, queue_type, region):
 	total_iterations = int(num_matches / 100)
 	for x in range(total_iterations):
 		response = requests.get(request_url, headers=headers)
+		time.sleep(1)
 		if response.status_code != 200:
 			print('Request error (@get_n_match_ids). HTTP code {}: {}'.format(response.status_code, response.json()))
 		# Return the list of matches.
@@ -207,7 +212,6 @@ def get_n_match_ids(puuid, num_matches, queue_type, region):
 			iterator,
 			100
 		)
-		time.sleep(1)
 	print('@get_n_match_ids: obtained {} matches from region {}'.format(len(returning_object), region))
 	return returning_object
 
@@ -283,13 +287,34 @@ def determine_overall_region(region):
 	return overall_region, tagline
 
 
+# auxiliary function
+def insert_json_db(connection, collection_name, json_object_to_insert):
+	soda = connection.getSodaDatabase()
+	x_collection = soda.createCollection(collection_name)
+
+	try:
+		x_collection.insertOne(json_object_to_insert)
+	except cx_Oracle.IntegrityError:
+		return 0
+	return 1
+
+# auxiliary function
+def delete_json_db(connection, collection_name, on_column, on_value):
+	soda = connection.getSodaDatabase()
+	x_collection = soda.createCollection(collection_name)
+
+	qbe = {on_column: on_value}
+	x_collection.find().filter(qbe).remove()
+
+
+
 def get_top_players(region, queue, connection):
 	assert region in request_regions
 	assert queue in ['RANKED_SOLO_5x5', 'RANKED_FLEX_SR', 'RANKED_FLEX_TT']
 
 	total_users_to_insert = list()
 	# master, grandmaster and challenger endpoints
-	'''
+	
 	request_urls = [
 		'https://{}.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/{}'.format(
 			region,
@@ -304,12 +329,7 @@ def get_top_players(region, queue, connection):
 			queue
 		)
 	]
-	'''
-	request_urls = [
-		'https://{}.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/{}'.format(
-			region,
-			queue)
-	]
+
 	headers = {
 		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
 		"Accept-Language": "en-US,en;q=0.5",
@@ -317,6 +337,7 @@ def get_top_players(region, queue, connection):
 		"Origin": "https://developer.riotgames.com",
 		"X-Riot-Token": api_key
 	}
+
 	for x in request_urls:
 		response = requests.get(x, headers=headers)
 		if response.status_code == 200:
@@ -330,7 +351,6 @@ def get_top_players(region, queue, connection):
 					y['tier'] = response.json()['tier']
 					y['request_region'] = region
 					y['queue'] = queue
-					y['puuid'] = get_summoner_information(y['summonerName'], region) # insert their puuid as well.
 					total_users_to_insert.append(y)
 				except KeyError as e:
 					pass
@@ -339,32 +359,30 @@ def get_top_players(region, queue, connection):
 			continue
 
 	print('Total users obtained in region {} and queue {}: {}'.format(region, queue, len(total_users_to_insert)))
-	# Load config file for DB connection
-
+	
 	# Insert into the database.
 	soda = connection.getSodaDatabase()
-
-	# this will open an existing collection, if the name is already in use
 	collection_summoner = soda.createCollection('summoner')
 
 	# Insert the users.
 	for x in total_users_to_insert:
-		qbe = {'summonerId':x['summonerId']}
 		x['request_region'] = region
 		x['queue'] = queue
-		# We get the PUUID for the user in case they change their name.
-		# ['br1', 'eun1', 'euw1', 'jp1', 'kr', 'la1', 'la2', 'na1', 'oc1', 'ru', 'tr1']
-		overall_region, tagline = determine_overall_region(region)
-		x['puuid'] = get_puuid(overall_region, x['summonerName'], tagline)
 		try:
-			collection_summoner.insertOneAndGet(x)
-			time.sleep(1) # rate limiting purposes
+			qbe = {'summonerId':x['summonerId']}
+			if len(collection_summoner.find().filter(qbe).getDocuments()) == 0:
+				# In case they don't exist in the DB, we get their PUUIDs, in case they change their name.
+				overall_region, tagline = determine_overall_region(region)
+				x['puuid'] = get_puuid(overall_region, x['summonerName'], tagline, connection)
+				collection_summoner.insertOne(x)
+				print('Inserted new summoner: {} in region {}, queue {}'.format(x['summonerName'], region, queue))
+			else:
+				print('Summoner {} already inserted'.format(x['summonerName']))
+				continue
 		except cx_Oracle.IntegrityError:
 			print('Summoner {} already inserted'.format(x['summonerName']))
 			continue
-		print('Inserted new summoner: {} in region {}, queue {}'.format(x['summonerName'], region, queue))
 	
-	connection.commit()
 
 
 
@@ -383,6 +401,7 @@ def extract_matches(region, match_id, connection):
 		"X-Riot-Token": api_key
 	}
 	response = requests.get(request_url, headers=headers)
+	time.sleep(1.5) # rate limiting purposes
 	if response.status_code == 200:
 		#print('Printing response: {}'.format(response.json()))
 		pass
@@ -441,13 +460,12 @@ def extract_matches(region, match_id, connection):
 				'gameVersion': o_version
 			}
 			try:
-				collection_matchups.insertOneAndGet(to_insert_obj)
-				time.sleep(1.5) # rate limiting purposes
+				collection_matchups.insertOne(to_insert_obj)
 			except cx_Oracle.IntegrityError:
 				print('Match details {} already inserted'.format(to_insert_obj.get('p_match_id')))
 				continue
 			print('Inserted new matchup with ID {} in region {}'.format('{}_{}'.format(match_id, x), region))
-	connection.commit()
+
 	return response.json()
 
 
@@ -480,13 +498,12 @@ def data_mine(connection):
 				# Insert them into our match collection	
 				for i in z_match_ids:
 					try:
-						collection_match.insertOneAndGet(i)
+						collection_match.insertOne(i)
 					except cx_Oracle.IntegrityError:
 						print('Match ID {} already inserted'.format(i))
 						continue
 					print('Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(i['match_id'],
 						current_summoner['summonerName'], y, z))
-				connection.commit()
 	
 	# We have the match IDs, let's get some info about the games.
 	all_match_ids = collection_match.find().getDocuments()
@@ -512,24 +529,12 @@ def main():
 		connection = cx_Oracle.connect(user=data['db']['username'], password=data['db']['password'], dsn=dsn_var)
 	except Exception as e:
 		print('Error in connection.')
-		time.sleep(5)
 		connection = cx_Oracle.connect(user=data['db']['username'], password=data['db']['password'], dsn=dsn_var)
 
 	connection.autocommit = True
-	#get_puuid('europe', 'JASPERAN', 'EUW')
-	#get_summoner_information('PANGEA V1', 'euw1')
-	#get_champion_mastery('ClonCWRNOJVpMwWVD1PZfF7aNRTr6ey9Sc9w31MI4T8kaLg', 'euw1')
-	#get_total_champion_mastery_score('ClonCWRNOJVpMwWVD1PZfF7aNRTr6ey9Sc9w31MI4T8kaLg', 'euw1')
-	#get_user_leagues('ClonCWRNOJVpMwWVD1PZfF7aNRTr6ey9Sc9w31MI4T8kaLg', 'euw1')
-	#get_n_match_ids('AK89OMWJzaal2SSLDtQszoKUZ220Akz0JppfTK6pF97VYve_KQEHcA9RdEx88ghXl_SbW6Nfpj2xyg', 990, 'ranked', 'europe')
-	#get_match_timeline('EUW1_5363341662', 'europe')
-	#get_match_info('EUW1_5363341662', 'europe')
-	#get_top_players('euw1', 'RANKED_SOLO_5x5')
+
 	data_mine(connection)
-	#extract_matches('americas', 'BR1_2334082199', connection)
 	connection.close()
 
 if __name__ == '__main__':
 	main()
-
-	# pangea v1 ClonCWRNOJVpMwWVD1PZfF7aNRTr6ey9Sc9w31MI4T8kaLg
