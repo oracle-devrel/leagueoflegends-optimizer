@@ -23,11 +23,11 @@ Firstly, we should talk about the architecture for this project:
 
 To understand the problem, we must remember the concept of a _team composition_. If five players are extremely good at a champion, or a champion is severely overpowered in a specific patch, then there is a way to prevent these players from picking them. In the draft phase of a game, players can ban a specific champion if they anticipate that champion would be a major threat. Banning the champion prevents the enemy team from playing it. 
 Here's a detailed explanation of how this process (usually) works:
-1. *Pick Intent (15s)*: Players select their intended picks to show their team.
-2. *Banning Phase (27s)*: All players simultaneously ban a champion from selection, opponents' bans are not revealed. 
-3. *Ban Reveal (5s)*: Bans are revealed to all teams. It is possible for both teams to ban the same champion. 
-4. *Champion Selection (27s in 6 turns)*: One team is allowed to make the first pick, then teams alternate and pick two at a time until each player has selected. No champion can be selected more than once in a game. 
-5. *Finalization (30s)*: There is an opportunity to trade champions between teammates, both members must own both champions involved. One player can initiate the trade, and the other accepts to trade. 
+1. **Pick Intent (15s)**: Players select their intended picks to show their team.
+2. **Banning Phase (27s)**: All players simultaneously ban a champion from selection, opponents' bans are not revealed. 
+3. **Ban Reveal (5s)**: Bans are revealed to all teams. It is possible for both teams to ban the same champion. 
+4. **Champion Selection (27s in 6 turns)**: One team is allowed to make the first pick, then teams alternate and pick two at a time until each player has selected. No champion can be selected more than once in a game. 
+5. **Finalization (30s)**: There is an opportunity to trade champions between teammates, both members must own both champions involved. One player can initiate the trade, and the other accepts to trade. 
 
 Let’s start with the assumption that each team gets 5 bans each. So 10 bans total.
 So, we will create an ML model to predict the best team compositions based on inputs. Therefore, if a player picks (for example) Lee Sin, our model will be able to respond to this input and suggest counter-picks (meaning, champions whose win percentage / win rate is very high against LeeSin), also considering possible synergies with teammates.
@@ -46,7 +46,6 @@ def get_top_players(region, queue, connection):
 
 	total_users_to_insert = list()
 	# master, grandmaster and challenger endpoints
-	'''
 	request_urls = [
 		'https://{}.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/{}'.format(
 			region,
@@ -61,12 +60,7 @@ def get_top_players(region, queue, connection):
 			queue
 		)
 	]
-	'''
-	request_urls = [
-		'https://{}.api.riotgames.com/lol/league/v4/challengerleagues/by-queue/{}'.format(
-			region,
-			queue)
-	]
+	
 	headers = {
 		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
 		"Accept-Language": "en-US,en;q=0.5",
@@ -84,25 +78,25 @@ Note that if you want to reproduce this code, you will need your own API key and
 
 ```python
 for x in request_urls:
-		response = requests.get(x, headers=headers)
-		if response.status_code == 200:
+	response = requests.get(x, headers=headers)
+	if response.status_code == 200:
+		try:
+			print('Region: {} | Tier: {} | Queue: {} | Total Players: {}'.format(region, response.json()['tier'],
+				response.json()['queue'], len(response.json()['entries'])))
+		except KeyError as e:
+			pass
+		for y in response.json()['entries']:
 			try:
-				print('Region: {} | Tier: {} | Queue: {} | Total Players: {}'.format(region, response.json()['tier'],
-					response.json()['queue'], len(response.json()['entries'])))
+				y['tier'] = response.json()['tier']
+				y['request_region'] = region
+				y['queue'] = queue
+				y['puuid'] = get_summoner_information(y['summonerName'], region) # insert their puuid as well.
+				total_users_to_insert.append(y)
 			except KeyError as e:
 				pass
-			for y in response.json()['entries']:
-				try:
-					y['tier'] = response.json()['tier']
-					y['request_region'] = region
-					y['queue'] = queue
-					y['puuid'] = get_summoner_information(y['summonerName'], region) # insert their puuid as well.
-					total_users_to_insert.append(y)
-				except KeyError as e:
-					pass
-		else:
-			print('Request error (@get_top_players). HTTP code {}: {}'.format(response.status_code, response.json()))
-			continue
+	else:
+		print('Request error (@get_top_players). HTTP code {}: {}'.format(response.status_code, response.json()))
+		continue
 
 	print('Total users obtained in region {} and queue {}: {}'.format(region, queue, len(total_users_to_insert)))
 ```
@@ -110,10 +104,10 @@ In this code, I make the requests using the requests Python library, and process
 
 ```python
 # Insert into the database.
-	soda = connection.getSodaDatabase()
+soda = connection.getSodaDatabase()
 
-	# this will open an existing collection, if the name is already in use
-	collection_summoner = soda.createCollection('summoner')
+# this will open an existing collection, if the name is already in use
+collection_summoner = soda.createCollection('summoner')
  ```
 Finally, the last step is to insert this information in the database. I used an Autonomous JSON Database for this, since I didn’t want to bother with processing JSON objects too much. If you have experience with both relational and non-relational databases, you probably know it’s very complex to work with JSON objects and store them in a relational database schema. It’s much better to use a non-relational approach for this. I also didn’t want to bother with database performance, so that’s why I chose Oracle’s Autonomous JSON DB. (It’s very convenient in this case because it was really easy to setup and you can configure some visualizations in the future for your data which are publicly available through a URL. I definitely recommend checking out the advantages of the Autonomous JSON Database in more detail [here](https://blogs.oracle.com/jsondb/autonomous-json-database).
 
@@ -131,21 +125,21 @@ The connection parameters for the database have been established in a config.yam
 In order to use this database’s username and password in the code, information for the Data Source Name needs to be passed. Connecting to the Autonomous JSON database requires three things: the username, password, and DSN, which contains the URL and port of the database to connect to. To find out more about how to get your Python code to run and be able to connect into your own Autonomous JSON database, please refer to the [official documentation for the cx_Oracle library](https://cx-oracle.readthedocs.io/en/latest/user_guide/connection_handling.html).
 
 ```python
-	# Insert the users.
-	for x in total_users_to_insert:
-		qbe = {'summonerId':x['summonerId']}
-		x['request_region'] = region
-		x['queue'] = queue
-		# We get the PUUID for the user in case they change their name.
-		overall_region, tagline = determine_overall_region(region)
-		x['puuid'] = get_puuid(overall_region, x['summonerName'], tagline)
-		try:
-			collection_summoner.insertOneAndGet(x)
-			time.sleep(1) # rate limiting purposes
-		except cx_Oracle.IntegrityError:
-			print('Summoner {} already inserted'.format(x['summonerName']))
-			continue
-		print('Inserted new summoner: {} in region {}, queue {}'.format(x['summonerName'], region, queue))
+# Insert the users.
+for x in total_users_to_insert:
+	qbe = {'summonerId':x['summonerId']}
+	x['request_region'] = region
+	x['queue'] = queue
+	# We get the PUUID for the user in case they change their name.
+	overall_region, tagline = determine_overall_region(region)
+	x['puuid'] = get_puuid(overall_region, x['summonerName'], tagline)
+	try:
+		collection_summoner.insertOneAndGet(x)
+		time.sleep(1) # rate limiting purposes
+	except cx_Oracle.IntegrityError:
+		print('Summoner {} already inserted'.format(x['summonerName']))
+		continue
+	print('Inserted new summoner: {} in region {}, queue {}'.format(x['summonerName'], region, queue))
 ```
 Here I inserted the player’s data into a collection called summoner. 
 
@@ -169,7 +163,9 @@ This collection will store all the players’ identifying information. Note that
 }
 ```
 This is an example of data obtained for a European challenger player and their associated data. We can store this information efficiently in the _summoner_ collection with a schema like this:
+
 ![Summoner Schema](../articles/summoner_schema.png)
+
 We will primarily care about the summoner’s PUUID and their request region in order to know the geographical location of the player and make requests to the Riot Games API accordingly.
 
 And, what is the kind of information that we want from our extracted players? Well, in reality we wouldn’t want to get summoners’ information above a Masters’ ELO if we wouldn’t use this data somewhere else, or to produce something useful for our model. So, if we want to predict optimal team compositions, we need some League games to analyze. 
