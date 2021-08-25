@@ -164,7 +164,7 @@ This collection will store all the players’ identifying information. Note that
 ```
 This is an example of data obtained for a European challenger player and their associated data. We can store this information efficiently in the _summoner_ collection with a schema like this:
 
-![Summoner Schema](../articles/summoner_schema.png?raw=true)
+![Summoner Schema](../images/summoner_schema.png?raw=true)
 
 We will primarily care about the summoner’s PUUID and their request region in order to know the geographical location of the player and make requests to the Riot Games API accordingly.
 
