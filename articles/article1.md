@@ -164,7 +164,7 @@ This collection will store all the players’ identifying information. Note that
 ```
 This is an example of data obtained for a European challenger player and their associated data. We can store this information efficiently in the _summoner_ collection with a schema like this:
 
-![Summoner Schema](../images/summoner_schema.png?raw=true)
+![Summoner Schema](../images/summoner_schema.png)
 
 We will primarily care about the summoner’s PUUID and their request region in order to know the geographical location of the player and make requests to the Riot Games API accordingly.
 
@@ -195,3 +195,14 @@ I hope to see you in the next article of this series, where together we will:
 - Establish a stable architecture for our code
 - Optimize our code, which is good, but once the dataset grows, the code starts being inefficient
 - Process our data further and get it ready for our ML pipeline
+
+
+
+## License
+Copyright (c) 2021 Oracle and/or its affiliates.
+
+Licensed under the Universal Permissive License (UPL), Version 1.0.
+
+See [LICENSE](../LICENSE) for more details.
+
+Written by [jasperan](https://github.com/jasperan), edited by [GreatGhostsss](https://github.com/GreatGhostsss)
