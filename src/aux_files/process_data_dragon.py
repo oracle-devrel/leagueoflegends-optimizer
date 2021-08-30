@@ -6,7 +6,7 @@ import pandas as pd
 import requests
 
 current_version = '11.14.1' # change this depending on the current game version, or the game version you want to process.
-request_url = 'http://ddragon.leagueoflegends.com/cdn/{}/data/en_US/champion.json'.format(current_version)
+request_url = 'https://ddragon.leagueoflegends.com/cdn/{}/data/en_US/champion.json'.format(current_version)
 
 headers = {
 		"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
@@ -50,11 +50,12 @@ champion_df.index.name = 'index'
 
 print(champion_df)
 
-if os.path.exists('../../champion_ids.csv'):
-	champion_df.to_csv('../../champion_ids.csv')
-else:
-	f = open('../../champion_ids.csv', 'w+')
-	f.write()
-	champion_df.to_csv('../../champion_ids.csv')
+final_csv_path = '../../champion_ids.csv'
 
-# We make a dictionary with champion names and IDs.
+# If the file exists, we write data. Otherwise, we create the file, then write the data.
+if os.path.exists(final_csv_path):
+	champion_df.to_csv(final_csv_path)
+else:
+	f = open(final_csv_path)
+	f.write()
+	champion_df.to_csv(final_csv_path)
