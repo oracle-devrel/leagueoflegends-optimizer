@@ -407,20 +407,20 @@ def extract_matches(region, match_id, connection):
 
 
 def data_mine(connection):
-	
+	'''
 	# Get top players from API and add them to our DB.
 	for x in request_regions:
 		for y in ['RANKED_SOLO_5x5', 'RANKED_FLEX_SR']: # RANKED_FLEX_TT disabled since the map was removed
 			get_top_players(x, y, connection)
 	
 	# ------
-	
+	'''
 	# From all users in the collection, extract matches
 	all_match_ids = list()
 	soda = connection.getSodaDatabase()
 	collection_summoner = soda.createCollection('summoner')
 	collection_match = soda.createCollection('match')
-	
+	'''
 	all_summoners = collection_summoner.find().getDocuments()
 	
 	for x in all_summoners:
@@ -440,7 +440,7 @@ def data_mine(connection):
 						continue
 					print('Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(i['match_id'],
 						current_summoner['summonerName'], y, z))
-	
+	'''
 	# We have the match IDs, let's get some info about the games.
 	all_match_ids = collection_match.find().getDocuments()
 	for x in all_match_ids:

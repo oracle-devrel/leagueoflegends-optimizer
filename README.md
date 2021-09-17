@@ -41,7 +41,7 @@ For the future, we would like to expand this functionality to create a tool that
 ## Getting Started
 
 ### Prerequisites
-Requirements file can be found in /requirements.txt. You will also need to have installed Oracle Instant Client or other means of connectivity to the Oracle Autonomous JSON Database.
+Requirements file can be found in /requirements.txt. You will also need to have installed Oracle Instant Client or other means of connectivity to the Oracle Autonomous JSON Database. [This is the official download site](https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html) for Instant Client, there you also have configuration instructions on how to set this up on your local machine.
 After this, you must create a `config.yaml` file in the root directory, where you'll have to place your database connectivity parameters (user and password) and your riot games API key. 
 
 After installing both, you should be able to run the code inside `src/`.
