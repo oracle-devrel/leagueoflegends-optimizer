@@ -402,6 +402,14 @@ def extract_matches(region, match_id, connection):
 				continue
 			print('Inserted new matchup with ID {} in region {}'.format('{}_{}'.format(match_id, x), region))
 
+	# Now, set a processed_1v1 bit in the match
+	collection_match = soda.createCollection('match')
+	match_document = collection_match.find().filter({'match_id': match_id})
+	match_key = match_document.key
+	match_obj = match_document.getContent()
+	match_obj['processed_1v1'] = 1
+	collection_match.find().key(match_key).replaceOne(match_obj)
+
 	return response.json()
 
 
