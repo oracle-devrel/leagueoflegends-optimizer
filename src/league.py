@@ -420,7 +420,7 @@ def data_mine(connection):
 	soda = connection.getSodaDatabase()
 	collection_summoner = soda.createCollection('summoner')
 	collection_match = soda.createCollection('match')
-	'''
+	
 	all_summoners = collection_summoner.find().getDocuments()
 	
 	for x in all_summoners:
@@ -440,7 +440,7 @@ def data_mine(connection):
 						continue
 					print('Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(i['match_id'],
 						current_summoner['summonerName'], y, z))
-	'''
+	
 	# We have the match IDs, let's get some info about the games.
 	all_match_ids = collection_match.find().getDocuments()
 	for x in all_match_ids:
