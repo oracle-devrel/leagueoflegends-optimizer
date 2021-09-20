@@ -29,6 +29,11 @@ def find_counts(collection_name, connection):
 	collection = soda.createCollection(collection_name)
 	print('Collection {} has {} documents'.format(collection_name, collection.find().count()))
 
+def find_remaining_matches_to_process(connection):
+	soda = connection.getSodaDatabase()
+	collection = soda.createCollection('match')
+	print('Collection {} has {} documents left to process'.format('match', collection.find().filter({'processed_1v1': {'$ne': 1}}).count()))
+
 
 
 def main():
@@ -36,6 +41,7 @@ def main():
 	conn = create_connection(data)
 	for x in ['match', 'matchups', 'summoner']:
 		find_counts(x, conn)
+	find_remaining_matches_to_process(conn)
 
 if __name__ == '__main__':
 	main()

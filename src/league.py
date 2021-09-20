@@ -403,8 +403,8 @@ def extract_matches(region, match_id, connection):
 			print('Inserted new matchup with ID {} in region {}'.format('{}_{}'.format(match_id, x), region))
 
 	# Now, set a processed_1v1 bit in the match
-	collection_match = soda.createCollection('match')
-	match_document = collection_match.find().filter({'match_id': match_id})
+	collection_match = connection.getSodaDatabase().createCollection('match')
+	match_document = collection_match.find().filter({'match_id': match_id}).getOne()
 	match_key = match_document.key
 	match_obj = match_document.getContent()
 	match_obj['processed_1v1'] = 1
@@ -450,7 +450,8 @@ def data_mine(connection):
 						current_summoner['summonerName'], y, z))
 	
 	# We have the match IDs, let's get some info about the games.
-	all_match_ids = collection_match.find().getDocuments()
+	
+	all_match_ids = collection_match.find().filter({'processed_1v1': {"$ne":1}}).getDocuments()
 	for x in all_match_ids:
 		# Get the overall region to make the proper request
 		overall_region, tagline = determine_overall_region(x.getContent().get('match_id').split('_')[0].lower())
