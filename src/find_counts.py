@@ -39,7 +39,7 @@ def find_remaining_matches_to_process(connection):
 def main():
 	data = process_yaml()
 	conn = create_connection(data)
-	for x in ['match', 'matchups', 'summoner']:
+	for x in ['match', 'matchups', 'summoner', '1v1_model']:
 		find_counts(x, conn)
 	find_remaining_matches_to_process(conn)
 
