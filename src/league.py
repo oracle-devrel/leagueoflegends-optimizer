@@ -428,7 +428,7 @@ def data_mine(connection):
 	soda = connection.getSodaDatabase()
 	collection_summoner = soda.createCollection('summoner')
 	collection_match = soda.createCollection('match')
-	'''
+	
 	all_summoners = collection_summoner.find().getDocuments()
 	
 	for x in all_summoners:
@@ -450,7 +450,7 @@ def data_mine(connection):
 						current_summoner['summonerName'], y, z))
 	
 	# We have the match IDs, let's get some info about the games.
-	'''
+	
 	all_match_ids = collection_match.find().filter({'processed_1v1': {"$ne":1}}).getDocuments()
 	for x in all_match_ids:
 		# Get the overall region to make the proper request
@@ -464,7 +464,7 @@ def data_mine(connection):
 def main():
 	data = load_config_file()
 	connection = str()
-	dsn_var = """(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=g2f4dc3e5463897_esportsdb_high.adb.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com, OU=Oracle BMCS FRANKFURT, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))"""
+	dsn_var = """(description= (retry_count=5)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=g2f4dc3e5463897_esportsdb_high.adb.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com, OU=Oracle BMCS FRANKFURT, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))"""
 	try:
 		connection = cx_Oracle.connect(user=data['db']['username'], password=data['db']['password'], dsn=dsn_var)
 	except Exception as e:
