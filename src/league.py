@@ -402,19 +402,27 @@ def extract_matches(region, match_id, connection):
 				continue
 			print('Inserted new matchup with ID {} in region {}'.format('{}_{}'.format(match_id, x), region))
 
+	# Now, set a processed_1v1 bit in the match
+	collection_match = connection.getSodaDatabase().createCollection('match')
+	match_document = collection_match.find().filter({'match_id': match_id}).getOne()
+	match_key = match_document.key
+	match_obj = match_document.getContent()
+	match_obj['processed_1v1'] = 1
+	collection_match.find().key(match_key).replaceOne(match_obj)
+
 	return response.json()
 
 
 
 def data_mine(connection):
-	
+	'''
 	# Get top players from API and add them to our DB.
 	for x in request_regions:
 		for y in ['RANKED_SOLO_5x5', 'RANKED_FLEX_SR']: # RANKED_FLEX_TT disabled since the map was removed
 			get_top_players(x, y, connection)
 	
 	# ------
-	
+	'''
 	# From all users in the collection, extract matches
 	all_match_ids = list()
 	soda = connection.getSodaDatabase()
@@ -442,7 +450,8 @@ def data_mine(connection):
 						current_summoner['summonerName'], y, z))
 	
 	# We have the match IDs, let's get some info about the games.
-	all_match_ids = collection_match.find().getDocuments()
+	
+	all_match_ids = collection_match.find().filter({'processed_1v1': {"$ne":1}}).getDocuments()
 	for x in all_match_ids:
 		# Get the overall region to make the proper request
 		overall_region, tagline = determine_overall_region(x.getContent().get('match_id').split('_')[0].lower())
@@ -455,7 +464,7 @@ def data_mine(connection):
 def main():
 	data = load_config_file()
 	connection = str()
-	dsn_var = """(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=g2f4dc3e5463897_esportsdb_high.adb.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com, OU=Oracle BMCS FRANKFURT, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))"""
+	dsn_var = """(description= (retry_count=5)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=g2f4dc3e5463897_esportsdb_high.adb.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com, OU=Oracle BMCS FRANKFURT, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))"""
 	try:
 		connection = cx_Oracle.connect(user=data['db']['username'], password=data['db']['password'], dsn=dsn_var)
 	except Exception as e:
