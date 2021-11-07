@@ -2,6 +2,7 @@ import os
 import yaml
 import cx_Oracle
 os.environ['TNS_ADMIN'] = '~/wallets/Wallet_eSportsDB'
+print(os.environ['TNS_ADMIN'])
 
 
 
