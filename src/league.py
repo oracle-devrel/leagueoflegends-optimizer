@@ -6,15 +6,31 @@ import datetime
 import pandas as pd
 import time
 import cx_Oracle
+import os
+from pathlib import Path
+home = str(Path.home())
+
+def process_yaml():
+	with open("../config.yaml") as file:
+		return yaml.safe_load(file)
 
 request_regions = ['br1', 'eun1', 'euw1', 'jp1', 'kr', 'la1', 'la2', 'na1', 'oc1', 'ru', 'tr1']
 
-def load_config_file():
-	with open('../config.yaml') as file:
-		return yaml.safe_load(file)
+# wallet location (default is HOME/wallets/wallet_X)
+os.environ['TNS_ADMIN'] = '{}/{}'.format(home, process_yaml()['WALLET_DIR'])
+print(os.environ['TNS_ADMIN'])
 
-config_file = load_config_file()
-api_key = config_file.get('riot_api_key')
+
+
+def init_db_connection(data):
+    connection = cx_Oracle.connect(data['db']['username'], data['db']['password'], data['db']['dsn'])
+    print('Connection successful.')
+    connection.autocommit = True
+    return connection
+
+
+
+api_key = process_yaml()['riot_api_key']
 headers = {
 	"User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
 	"Accept-Language": "en-US,en;q=0.5",
@@ -462,17 +478,9 @@ def data_mine(connection):
 
 
 def main():
-	data = load_config_file()
-	connection = str()
-	dsn_var = """(description= (retry_count=5)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=g2f4dc3e5463897_esportsdb_high.adb.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com, OU=Oracle BMCS FRANKFURT, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))"""
-	try:
-		connection = cx_Oracle.connect(user=data['db']['username'], password=data['db']['password'], dsn=dsn_var)
-	except Exception as e:
-		print('Error in connection.')
-		connection = cx_Oracle.connect(user=data['db']['username'], password=data['db']['password'], dsn=dsn_var)
-
-	connection.autocommit = True
-
+	data = process_yaml()
+	connection = init_db_connection(data)
+	
 	data_mine(connection)
 	connection.close()
 

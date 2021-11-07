@@ -1,7 +1,6 @@
 import os
 import yaml
 import cx_Oracle
-from sys import exit
 from pathlib import Path
 home = str(Path.home())
 
@@ -20,15 +19,10 @@ print(os.environ['TNS_ADMIN'])
 
 
 def init_db_connection(data):
-	connection = str()
-	try:
-		connection = cx_Oracle.connect(data['db']['username'], data['db']['password'], 'esportsdb_tpurgent')
-		print('Connection successful.')
-	except Exception:
-		print('Error in connection.')
-		exit(-1)
-	connection.autocommit = True
-	return connection
+    connection = cx_Oracle.connect(data['db']['username'], data['db']['password'], data['db']['dsn'])
+    print('Connection successful.')
+    connection.autocommit = True
+    return connection
 
 
 

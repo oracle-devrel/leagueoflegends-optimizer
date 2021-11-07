@@ -1,6 +1,5 @@
 # Copyright (c) 2021 Oracle and/or its affiliates.
 
-import json
 import os
 import pandas as pd
 import requests
@@ -19,13 +18,9 @@ response = requests.get(request_url, headers=headers)
 data = response.json()
 
 print(len(data))
-
 print('Version: {}'.format(data.get('version')))
-
 champions = data.get('data')
-
 print('Total champions: {}'.format(len(champions)))
-
 #print(champions.get('Aatrox'))
 
 

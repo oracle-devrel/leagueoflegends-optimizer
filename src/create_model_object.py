@@ -1,16 +1,28 @@
 # Copyright (c) 2021 Oracle and/or its affiliates.
 
-import requests
 import yaml
-import datetime
-import pandas as pd
-import time
 import cx_Oracle
-import random
+import os
+from pathlib import Path
+home = str(Path.home())
 
 def load_config_file():
 	with open('../config.yaml') as file:
 		return yaml.safe_load(file)
+
+
+# wallet location (default is HOME/wallets/wallet_X)
+os.environ['TNS_ADMIN'] = '{}/{}'.format(home, load_config_file()['WALLET_DIR'])
+print(os.environ['TNS_ADMIN'])
+
+
+def init_db_connection(data):
+    connection = cx_Oracle.connect(data['db']['username'], data['db']['password'], data['db']['dsn'])
+    print('Connection successful.')
+    connection.autocommit = True
+    return connection
+
+
 
 def process_1v1_model(connection):
 	
@@ -49,15 +61,7 @@ def process_1v1_model(connection):
 
 def main():
 	data = load_config_file()
-	connection = str()
-	dsn_var = """(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=g2f4dc3e5463897_esportsdb_high.adb.oraclecloud.com))(security=(ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com, OU=Oracle BMCS FRANKFURT, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))"""
-	try:
-		connection = cx_Oracle.connect(user=data['db']['username'], password=data['db']['password'], dsn=dsn_var)
-	except Exception as e:
-		print('Error in connection.')
-		connection = cx_Oracle.connect(user=data['db']['username'], password=data['db']['password'], dsn=dsn_var)
-
-	connection.autocommit = True
+	connection = init_db_connection(data)
 
 	process_1v1_model(connection)
 	connection.close()

@@ -1,20 +1,31 @@
 # Copyright (c) 2021 Oracle and/or its affiliates.
 
 # This code updates the summoner names given their encrypted summoner Ids.
-import requests
 import yaml
-import datetime
-import pandas as pd
-import time
 import cx_Oracle
+import os
+from pathlib import Path
+home = str(Path.home())
 
-def load_config_file():
-	with open('../config.yaml') as file:
+def process_yaml():
+	with open("../config.yaml") as file:
 		return yaml.safe_load(file)
 
-config_file = load_config_file()
-api_key = config_file.get('riot_api_key')
 
+# wallet location (default is HOME/wallets/wallet_X)
+os.environ['TNS_ADMIN'] = '{}/{}'.format(home, process_yaml()['WALLET_DIR'])
+print(os.environ['TNS_ADMIN'])
+
+
+def init_db_connection(data):
+    connection = cx_Oracle.connect(data['db']['username'], data['db']['password'], data['db']['dsn'])
+    print('Connection successful.')
+    connection.autocommit = True
+    return connection
+
+
+
+api_key = process_yaml()['riot_api_key']
 request_regions = ['br1', 'eun1', 'euw1', 'jp1', 'kr', 'la1', 'la2', 'na1', 'oc1', 'ru', 'tr1']
 # TAGLINES:
 # BR1, EUNE, EUW, JP1, KR, LA1, LA2, NA, OCE, RU, TR
@@ -25,3 +36,5 @@ request_regions = ['br1', 'eun1', 'euw1', 'jp1', 'kr', 'la1', 'la2', 'na1', 'oc1
 # americas: BR1
 # europe: EUW, EUNE
 # asia: JP1
+
+# TODO
