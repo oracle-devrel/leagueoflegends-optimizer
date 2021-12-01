@@ -490,11 +490,11 @@ def build_final_object(json_object):
 	print(last_event.get('winningTeam'))
 
 	for x in json_object.get('info').get('frames'):
-		frame = {
-			"timestamp": x.get('timestamp')
-		}		
 
 		for y in range(1, 11):
+			frame = {
+				"timestamp": x.get('timestamp')
+			}
 			frame['abilityPower'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('abilityPower')
 			frame['armor'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armor')
 			frame['armorPen'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPen')
@@ -534,12 +534,12 @@ def build_final_object(json_object):
 			frame['jungleMinionsKilled'] = x.get('participantFrames').get('{}'.format(y)).get('jungleMinionsKilled')
 			frame['level'] = x.get('participantFrames').get('{}'.format(y)).get('level')
 			frame['minionsKilled'] = x.get('participantFrames').get('{}'.format(y)).get('minionsKilled')
-			#frame['participantId'] = x.get('participantFrames').get('{}'.format(y)).get('participantId')
+			frame['participantId'] = x.get('participantFrames').get('{}'.format(y)).get('participantId')
 			frame['timeEnemySpentControlled'] = x.get('participantFrames').get('{}'.format(y)).get('timeEnemySpentControlled')
 			frame['totalGold'] = x.get('participantFrames').get('{}'.format(y)).get('totalGold')
 			frame['xp'] = x.get('participantFrames').get('{}'.format(y)).get('xp')
 
-			frame['identifier'] = '{}_{}'.format(match_id, x.get('participantFrames').get('{}'.format(y)).get('participantId'))
+			frame['identifier'] = '{}_{}'.format(match_id, frame['participantId'])
 
 			print('Winner: {}'.format(winner))
 			if winner == 100:
@@ -554,6 +554,7 @@ def build_final_object(json_object):
 					frame['winner'] = 1
 			print('Frame: {}'.format(json.dumps(frame)))
 			all_frames.append(frame)
+			del frame
 		
 	return all_frames
 
@@ -565,10 +566,12 @@ def process_predictor(db):
 	print('Total match_detail documents: {}'.format(matches.find().count()))
 	# Sample train with just 1000. Objects are too big, and during development it's not worth it.
 	
-	for doc in matches.find().getDocuments().limit(1):
+	#for doc in matches.find().getDocuments().limit(1):
+	for doc in matches.find().getCursor():
 		content = doc.getContent()
 		built_object = build_final_object(content)
-		db.insert('predictor', built_object) # insert in new collection.
+		for x in built_object:
+			db.insert('predictor', x) # insert in new collection.
 	'''
 	doc = matches.find().getOne()
 	content = doc.getContent()
