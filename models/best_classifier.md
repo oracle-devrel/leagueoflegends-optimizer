@@ -1,1 +1,1 @@
-This model is Weighted Ensemble L2 trained by (this file.)[../notebooks/classifier.ipynb]
+This model is Weighted Ensemble L2 trained by [this file.](../notebooks/classifier.ipynb)
