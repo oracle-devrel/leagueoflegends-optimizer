@@ -481,7 +481,13 @@ def build_final_object(json_object):
 
 	all_frames = list()   
 
-	match_id = json_object.get('metadata').get('matchId')
+	try:
+		match_id = json_object.get('metadata').get('matchId')
+	except AttributeError:
+		print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.formt(json_object))
+		sys.exit(-1)
+
+
 
 	winner = int()
 	# Determine winner
@@ -563,8 +569,12 @@ def build_final_object(json_object):
 # builds liveclient-affine data object.
 def build_final_object_liveclient(json_object):
 	all_frames = list()   
-
-	match_id = json_object.get('metadata').get('matchId')
+	match_id = str()
+	try:
+		match_id = json_object.get('metadata').get('matchId')
+	except AttributeError:
+		print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.formt(json_object))
+		sys.exit(-1)
 
 	winner = int()
 	# Determine winner
