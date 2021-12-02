@@ -34,17 +34,20 @@ def find_counts(collection_name, connection):
 def find_remaining_matches_to_process(connection):
 	soda = connection.getSodaDatabase()
 	collection = soda.createCollection('match')
+	collection_detail = soda.createCollection('match_detail')
 	print('Collection {} has {} documents left to process'.format('match', collection.find().filter({'processed_1v1': {'$ne': 1}}).count()))
-
-
+	print('Collection {} [CLASSIFIER_PROCESSED]: {}/{} ({}%)'.format('match_detail', collection_detail.find().filter({'classifier_processed': {'$eq': 1}}).count(),
+	collection_detail.find().count(), (collection_detail.find().filter({'classifier_processed': {'$eq': 1}}).count()/collection_detail.find().count())*100))
+	print('Collection {} [CLASSIFIER_PROCESSED_LIVECLIENT]: {}/{} ({}%)'.format('match_detail', collection_detail.find().filter({'classifier_processed_liveclient': {'$eq': 1}}).count(),
+	collection_detail.find().count(), (collection_detail.find().filter({'classifier_processed_liveclient': {'$eq': 1}}).count()/collection_detail.find().count())*100))
 
 def main():
 	data = process_yaml()
 	conn = init_db_connection(data)
-	for x in ['match', 'matchups', 'summoner', '1v1_model']:
-		find_counts(x, conn)
+	
+	for x in conn.getSodaDatabase().getCollectionNames(startName=None, limit=0):
+		find_counts(x, conn) # find all documents in every collection.
 	find_remaining_matches_to_process(conn)
-
 
 
 if __name__ == '__main__':

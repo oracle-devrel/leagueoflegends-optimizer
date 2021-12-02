@@ -37,8 +37,8 @@ class OracleJSONDatabaseConnection:
         try:
             x_collection.insertOne(json_object_to_insert)
             print('[DBG] INSERT {} OK'.format(json_object_to_insert))
-        except cx_Oracle.IntegrityError:
-            print('[DBG] INSERT {} ERR'.format(json_object_to_insert))
+        except cx_Oracle.IntegrityError as e:
+            print('[DBG] INSERT {} ERR: {} '.format(json_object_to_insert, e))
             return 0
         self.pool.release(connection)
         return 1
@@ -47,6 +47,7 @@ class OracleJSONDatabaseConnection:
 
     def delete(self, collection_name, on_column, on_value):
         connection = self.pool.acquire()
+        connection.autocommit = True
         soda = connection.getSodaDatabase()
         x_collection = soda.createCollection(collection_name)
         qbe = {on_column: on_value}
@@ -56,7 +57,9 @@ class OracleJSONDatabaseConnection:
 
 
     def get_connection(self):
-        return self.pool.acquire() 
+        connection = self.pool.acquire()
+        connection.autocommit = True
+        return connection
 
 
 
@@ -67,15 +70,8 @@ class OracleJSONDatabaseConnection:
 
     def get_collection_names(self):
         connection = self.pool.acquire()
+        connection.autocommit = True
         returning_object = connection.getSodaDatabase().getCollectionNames(startName=None, limit=0)
-        self.pool.release(connection)
-        return returning_object
-
-
-
-    def open_collection(self, collection_name):
-        connection = self.pool.acquire()
-        returning_object = self.pool.acquire().getSodaDatabase().createCollection(collection_name)
         self.pool.release(connection)
         return returning_object
 

@@ -19,7 +19,7 @@ from utils.oracledb import OracleJSONDatabaseConnection
 # parse arguments for different execution modes.
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--mode', help='Mode to execute',
-	choices=['player_list', 'match_list', 'match_download_standard', 'match_download_detail', 'process_predictor'],
+	choices=['player_list', 'match_list', 'match_download_standard', 'match_download_detail', 'process_predictor', 'process_predictor_liveclient'],
 	required=False)
 args = parser.parse_args() 
 
@@ -326,13 +326,16 @@ def get_top_players(region, queue, db):
 	
 
 
-def change_column_value(db, collection_name, column_name, column_value, filter_column, filter_value):
-	collection_match = db.get_connection().getSodaDatabase().createCollection(collection_name)
-	match_document = collection_match.find().filter({'{}'.format(filter_column): filter_value}).getOne()
-	match_key = match_document.key
-	match_obj = match_document.getContent()
-	match_obj[column_name] = column_value
-	collection_match.find().key(match_key).replaceOne(match_obj)
+# this function helps modify a column value
+def change_column_value_by_key(db, collection_name, column_name, column_value, key):
+	connection = db.get_connection()
+	collection = connection.getSodaDatabase().createCollection(collection_name) # get collection
+	found_doc = collection.find().key(key).getOne() # find document by key
+	content = found_doc.getContent()
+	content[column_name] = column_value # change value of column_name to column_value
+	collection.find().key(key).replaceOne(content) # replace document
+	print('[DBG] UPDATE BIT {}: {}'.format(column_name, collection.find().key(key).getOne().getContent()[column_name]))
+	db.close_connection(connection)
 
 
 
@@ -475,11 +478,11 @@ def match_download_detail(db):
 
 
 def build_final_object(json_object):
+
 	all_frames = list()   
 
 	match_id = json_object.get('metadata').get('matchId')
 
-	iterator = 0
 	winner = int()
 	# Determine winner
 	frames = json_object.get('info').get('frames')
@@ -487,7 +490,6 @@ def build_final_object(json_object):
 	last_event = last_frame.get('events')[-1]
 	assert last_event.get('type') == 'GAME_END'
 	winner = last_event.get('winningTeam')
-	print(last_event.get('winningTeam'))
 
 	for x in json_object.get('info').get('frames'):
 
@@ -541,7 +543,6 @@ def build_final_object(json_object):
 
 			frame['identifier'] = '{}_{}'.format(match_id, frame['participantId'])
 
-			print('Winner: {}'.format(winner))
 			if winner == 100:
 				if y in (1,2,3,4,5):
 					frame['winner'] = 1
@@ -552,7 +553,6 @@ def build_final_object(json_object):
 					frame['winner'] = 0
 				else:
 					frame['winner'] = 1
-			print('Frame: {}'.format(json.dumps(frame)))
 			all_frames.append(frame)
 			del frame
 		
@@ -560,29 +560,108 @@ def build_final_object(json_object):
 
 
 
+# builds liveclient-affine data object.
+def build_final_object_liveclient(json_object):
+	all_frames = list()   
+
+	match_id = json_object.get('metadata').get('matchId')
+
+	winner = int()
+	# Determine winner
+	frames = json_object.get('info').get('frames')
+	last_frame = frames[-1]
+	last_event = last_frame.get('events')[-1]
+	assert last_event.get('type') == 'GAME_END'
+	winner = last_event.get('winningTeam')
+
+	for x in json_object.get('info').get('frames'):
+
+		for y in range(1, 11):
+			frame = {
+				"timestamp": x.get('timestamp')
+			}
+			frame['abilityPower'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('abilityPower')
+			frame['armor'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armor')
+			frame['armorPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPen')
+			frame['armorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPenPercent')
+			frame['attackDamage'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackDamage')
+			frame['attackSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackSpeed')
+			frame['bonusArmorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusArmorPenPercent')
+			frame['bonusMagicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusMagicPenPercent')
+			frame['cooldownReduction'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('cooldownReduction')
+			frame['currentHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('health')
+			frame['maxHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthMax')
+			frame['healthRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthRegen')
+			frame['lifesteal'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('lifesteal')
+			frame['magicPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPen')
+			frame['magicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPenPercent')
+			frame['magicResist'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicResist')
+			frame['moveSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('movementSpeed')
+			frame['resourceValue'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('power')
+			frame['resourceMax'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerMax')
+			frame['resourceRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerRegen')
+			frame['spellVamp'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('spellVamp')
+
+			frame['identifier'] = '{}_{}'.format(match_id, x.get('participantFrames').get('{}'.format(y)).get('participantId'))
+
+			if winner == 100:
+				if y in (1,2,3,4,5):
+					frame['winner'] = 1
+				else:
+					frame['winner'] = 0
+			elif winner == 200:
+				if y in (1,2,3,4,5):
+					frame['winner'] = 0
+				else:
+					frame['winner'] = 1
+			all_frames.append(frame)
+			del frame
+		
+	return all_frames
+
+
+# ------------------
+# CLASSIFIER MODEL (NO LIVE CLIENT API STRUCTURE)
 def process_predictor(db):
-	matches = db.open_collection('match_detail')
-	# Total documents:
-	print('Total match_detail documents: {}'.format(matches.find().count()))
-	# Sample train with just 1000. Objects are too big, and during development it's not worth it.
+	connection = db.get_connection()
+	matches = connection.getSodaDatabase().createCollection('match_detail')
+	# Total documents left to process:
+	print('Total match_detail documents (to process): {}'.format(matches.find().filter({'classifier_processed': {"$ne":1}}).count()))
 	
-	#for doc in matches.find().getDocuments().limit(1):
-	for doc in matches.find().getCursor():
+	for doc in matches.find().filter({'classifier_processed': {"$ne":1}}).getCursor():
 		content = doc.getContent()
 		built_object = build_final_object(content)
 		for x in built_object:
-			db.insert('predictor', x) # insert in new collection.
-	'''
-	doc = matches.find().getOne()
-	content = doc.getContent()
-	print(content)
-	built_object = build_final_object(content)
-	db.insert('predictor', built_object) # insert in new collection.
-	'''
+			res = db.insert('predictor', x) # insert in new collection.
+			if res == 0:
+				# Change column value to processed.
+				print(doc.getContent().get('metadata').get('matchId'))
+				change_column_value_by_key(db, 'match_detail', 'classifier_processed', 1, doc.key) # after processing, update processed bit.
+				break
+	db.close_connection(connection)
 
+
+
+
+
+
+# CLASSIFIER MODEL (LIVE CLIENT API AFFINITY DATA)
+def process_predictor_liveclient(db):
+	connection = db.get_connection()
+	matches = connection.getSodaDatabase().createCollection('match_detail')
+	print('Total match_detail documents (to process): {}'.format(matches.find().filter({'classifier_processed_liveclient': {"$ne":1}}).count()))
 	
-	#print('Participant frames recovered from example: {}'.format(len(built_object)))
-
+	for doc in matches.find().filter({'classifier_processed_liveclient': {"$ne":1}}).getCursor():
+		content = doc.getContent()
+		built_object = build_final_object_liveclient(content) # build data similar to the one given by the Live Client API from Riot.
+		for x in built_object:
+			res = db.insert('predictor_liveclient', x) # insert in new collection.
+			if res == 0:
+				# Change column value to processed.
+				print(doc.getContent().get('metadata').get('matchId'))
+				change_column_value_by_key(db, 'match_detail', 'classifier_processed_liveclient', 1, doc.key) # after processing, update processed bit.
+				break
+	db.close_connection(connection)
 
 
 
@@ -597,6 +676,8 @@ def data_mine(db):
 		match_download_detail(db)
 	elif args.mode == 'process_predictor':
 		process_predictor(db)
+	elif args.mode == 'process_predictor_liveclient':
+		process_predictor_liveclient(db)
 	else: # we execute everything.
 		player_list(db)
 		match_list(db)
