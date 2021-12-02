@@ -339,7 +339,7 @@ def change_column_value_by_key(db, collection_name, column_name, column_value, k
 
 
 
-def extract_matches(region, match_id, db):
+def extract_matches(region, match_id, db, key):
 	available_regions = ['europe', 'americas', 'asia']
 	assert region in available_regions
 	request_url = 'https://{}.api.riotgames.com/lol/match/v5/matches/{}'.format(
@@ -407,7 +407,7 @@ def extract_matches(region, match_id, db):
 			print('Inserted new matchup with ID {} in region {}'.format('{}_{}'.format(match_id, x), region))
 
 	# Now, set a processed_1v1 bit in the match
-	change_column_value(db, 'match', 'processed_1v1', 1, 'match_id', match_id)
+	change_column_value_by_key(db, 'match', 'processed_1v1', 1, key)
 
 	return response.json()
 
@@ -458,7 +458,7 @@ def match_download_standard(db):
 		# Get the overall region to make the proper request
 		overall_region, tagline = determine_overall_region(x.getContent().get('match_id').split('_')[0].lower())
 		print('Overall Region {} detected'.format(overall_region))
-		extract_matches(overall_region, x.getContent().get('match_id'), db)	
+		extract_matches(overall_region, x.getContent().get('match_id'), db, x.key)	
 
 
 
@@ -473,7 +473,7 @@ def match_download_detail(db):
 		if match_detail:
 			db.insert('match_detail', match_detail)
 			# Now, set a processed_1v1 bit in the match
-			change_column_value(db, 'match', 'processed_5v5', 1, 'match_id', x.getContent().get('match_id'))
+			change_column_value_by_key(db, 'match', 'processed_5v5', 1, x.key)
 
 
 
