@@ -484,9 +484,8 @@ def build_final_object(json_object):
 	try:
 		match_id = json_object.get('metadata').get('matchId')
 	except AttributeError:
-		print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.formt(json_object))
-		sys.exit(-1)
-
+		print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.format(json_object))
+		return
 
 
 	winner = int()
@@ -573,8 +572,8 @@ def build_final_object_liveclient(json_object):
 	try:
 		match_id = json_object.get('metadata').get('matchId')
 	except AttributeError:
-		print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.formt(json_object))
-		sys.exit(-1)
+		print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.format(json_object))
+		return
 
 	winner = int()
 	# Determine winner
@@ -641,13 +640,14 @@ def process_predictor(db):
 	for doc in matches.find().filter({'classifier_processed': {"$ne":1}}).getCursor():
 		content = doc.getContent()
 		built_object = build_final_object(content)
-		for x in built_object:
-			res = db.insert('predictor', x) # insert in new collection.
-			if res == 0:
-				# Change column value to processed.
-				print(doc.getContent().get('metadata').get('matchId'))
-				change_column_value_by_key(db, 'match_detail', 'classifier_processed', 1, doc.key) # after processing, update processed bit.
-				break
+		if built_object:
+			for x in built_object:
+				res = db.insert('predictor', x) # insert in new collection.
+				if res == 0:
+					# Change column value to processed.
+					print(doc.getContent().get('metadata').get('matchId'))
+					change_column_value_by_key(db, 'match_detail', 'classifier_processed', 1, doc.key) # after processing, update processed bit.
+					break
 	db.close_connection(connection)
 
 
@@ -664,13 +664,14 @@ def process_predictor_liveclient(db):
 	for doc in matches.find().filter({'classifier_processed_liveclient': {"$ne":1}}).getCursor():
 		content = doc.getContent()
 		built_object = build_final_object_liveclient(content) # build data similar to the one given by the Live Client API from Riot.
-		for x in built_object:
-			res = db.insert('predictor_liveclient', x) # insert in new collection.
-			if res == 0:
-				# Change column value to processed.
-				print(doc.getContent().get('metadata').get('matchId'))
-				change_column_value_by_key(db, 'match_detail', 'classifier_processed_liveclient', 1, doc.key) # after processing, update processed bit.
-				break
+		if built_object:
+			for x in built_object:
+				res = db.insert('predictor_liveclient', x) # insert in new collection.
+				if res == 0:
+					# Change column value to processed.
+					print(doc.getContent().get('metadata').get('matchId'))
+					change_column_value_by_key(db, 'match_detail', 'classifier_processed_liveclient', 1, doc.key) # after processing, update processed bit.
+					break
 	db.close_connection(connection)
 
 
