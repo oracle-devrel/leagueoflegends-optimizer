@@ -675,6 +675,16 @@ def process_predictor_liveclient(db):
 	db.close_connection(connection)
 
 
+# TODO
+def process_regressor(db):
+	pass
+
+
+# TODO
+def process_regressor_liveclient(db):
+	pass
+
+
 
 def data_mine(db):
 	if args.mode == 'player_list':
@@ -689,6 +699,10 @@ def data_mine(db):
 		process_predictor(db)
 	elif args.mode == 'process_predictor_liveclient':
 		process_predictor_liveclient(db)
+	elif args.mode == 'process_regressor':
+		process_regressor(db)
+	elif args.mode == 'process_regressor_liveclient':
+		process_regressor_liveclient(db)
 	else: # we execute everything.
 		player_list(db)
 		match_list(db)
