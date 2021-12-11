@@ -274,6 +274,9 @@ After having this data structure, we prepare for the next article, where we will
 
 Hoping to see you in the next article where we will start training our 1v1 prediction model.
 
+## How can I get started on OCI?
+
+Remember you can always sign up for free to Oracle Cloud Infrastructure: we allow you to sign up for an Oracle Cloud account which provides a number of Always Free services and a Free Trial with US$300 of free credit to use on all eligible Oracle Cloud Infrastructure services for up to 30 days. The Always Free services are available for an **unlimited** period of time. The Free Trial services may be used until your US$300 of free credits are consumed or the 30 days has expired, whichever comes first.
 
 ## License
 Copyright (c) 2021 Oracle and/or its affiliates.
