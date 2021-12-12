@@ -91,7 +91,6 @@ df = pd.read_json('data_location.json') # we've stored the data file locally in 
 df.head(5)
 ```
 
-
 | match_id	| champ1 | champ2 |	win |
 | :----------:	| :------:	| :------:	| :----:	|
 | 0 |	EUN1_2910807891_utility |	Velkoz |	Yuumi	1 |
@@ -164,13 +163,15 @@ We transform our data:
 new_df = new_df.apply(lambda x: le.transform(x))
 
 new_df.tail(5)
->	champ1	champ2
-> 0	143	126
-> 1	52	69
-> 2	144	119
-> 3	36	104
-> 4	19	35
 ```
+|	champ1	| champ2  |
+| :------:	| :------:	|
+| 0	| 143	| 126 |
+| 1	| 52	| 69 |
+| 2	| 144	| 119 |
+| 3	| 36	| 104 |
+| 4	| 19	| 35 |
+
 As we can see, our champion input variables have been properly one-hot encoded. As these are the two only variables we have for our model, applying a standard scaler will not make a difference, since all variables have a standard deviation of 1 between each other (all champions are translated into distinct integer numbers).
 
 If we make the prediction:
@@ -182,8 +183,9 @@ def find_winner(lst):
     return max(set(lst), key=lst.count)
 
 winner_prediction = find_winner(result.tolist())
-> [0 0 0 0 0]
 ```
+> [0 0 0 0 0]
+
 
 The results for our prediction indicate the predicted winning team in each case. In this case, it's predicting champ2 to win in all five cases. This can be a coincidence or not, but it happens to be the correct prediction. In case of having discrepancies, we'd use the find_winner() function to find the mode of the prediction. Adding this to the ML model actually improves the implicit accuracy of our code, but not of the model itself: we're simply combining a 51% accuracy ML model with additional statistics to make a better prediction. We may ask ourselves, how can we measure the accuracy of our combined ML-statistics model? The problem is **we can't**, since we have no programming framework able to assist us with this. We'd have to code our own object-oriented programming framework that extends the functionalities of the current pandas framework, for example. And the time required to do so greatly exceeds the expected results. It's better we focus our resources, as Data Scientists, in using the frameworks available to us with our structured data, and not reinventing the wheel; and finding a better model by improving the quality of our input data.
 
