@@ -92,12 +92,12 @@ df.head(5)
 ```
 
 | match_id	| champ1 | champ2 |	win |
-| :----------:	| :------:	| :------:	| :----:	|
-| EUN1_2910807891_utility |	Velkoz |	Yuumi	1 |
-| EUN1_2910807891_jungle |	Shaco |	Nidalee	1 |
-| EUN1_2909987530_top	Riven |	Sett |	0 |
-| EUN1_2909987530_middle |	Lissandra |	Kassadin	0 |
-| EUN1_2909987530_bottom |	Ashe |	Ezreal |	0 |
+| :----------:	| :------:	| :------:	| :----: |
+| EUN1_2910807891_utility |	Velkoz | Yuumi | 1 |
+| EUN1_2910807891_jungle | Shaco |	Nidalee	| 1 |
+| EUN1_2909987530_top | Riven |	Sett |	0 |
+| EUN1_2909987530_middle | Lissandra |	Kassadin |	0 |
+| EUN1_2909987530_bottom | Ashe | Ezreal | 0 |
 
 
 In this simple model, there is almost no need for data exploration since we fully understand what each variable means, as it is a by-product of our initial data structure.
@@ -225,7 +225,7 @@ report
 
 This simple code generates a dynamic report that shows the data types, missing values, and other information about the data. We explore the Pearson's r correlation coefficient between the variables:
 
-![a3_pearson](images/a3_pearson.PNG?raw=true)
+![a3_pearson](../images/a3_pearson.PNG?raw=true)
 
 We proceed to train our model with all variables, taking into consideration that most of the variables in our model are highly correlated, especially the amount of gold earned with respect to the number of kills and minions killed (which makes sense, as these are two of the actions that give out the most gold in-game). We also see that the vision score highly correlates with the amount of assists a player makes in a game.
 
@@ -240,6 +240,7 @@ test = df.drop(train.index)
 # a simple look into our data
 df.head(2)
 ```
+
 | P_MATCH_ID | 	GOLDEARNED | 	TOTALMINIONSKILLED | 	WIN | 	KILLS | 	ASSISTS | 	DEATHS | 	CHAMPION | 	VISIONSCORE | 	PUUID | 	TOTALDAMAGEDEALTTOCHAMPIONS | 	SUMMONERNAME | 	GAMEVERSION |
 | :--------: | :----------: | :---------------------: | :----: | :-----: | :------: | :------: | :--------: | :---------: | :--------: | :--------: | :--------: | :--------: | :--------: |
 | BR1_2309470512_jungle | 7670 | 37 | False | 4 | 2 | 7 | Graves | 23 | b1ZVlTG630NWh8Hgc7H-_-SErq3E3OkV50XSBuz_uzkIuA... |11215 | tired blessed | 	11.14.385.9967 |
@@ -284,22 +285,22 @@ predictor.leaderboard(test, silent=True)
 ```
 
 
-| model | 	score_test | 	score_val | 	pred_time_test | 	pred_time_val | 	fit_time | 	pred_time_test_marginal | 	pred_time_val_marginal | 	fit_time_marginal | 	stack_level | 	can_infer | 	fit_order |
+| model | score_test | score_val | pred_time_test | pred_time_val | fit_time | pred_time_test_marginal | pred_time_val_marginal | fit_time_marginal | stack_level | can_infer | fit_order |
 | :----: | :---------: | :---------: | :-------------: | :-------------: | :--------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :----------: | :----------: |
-| NeuralNetMXNet | 	0.836975 | 	0.836461 | 	33.964055 | 	2.709942 | 	6597.902246 | 	33.964055 | 	2.709942 | 	6597.902246 |	1 |	True | 	12 |
-| NeuralNetFastAI | 	0.835870 | 	0.839318 | 	5.002273 | 	0.199540 | 	823.687658 | 	5.002273 | 	0.199540 | 	823.687658 | 	1 |	True | 	10 |
-| LightGBMXT | 	0.835717 | 	0.833317 | 	12.957499 | 	0.471436 | 	82.666493 | 	12.957499 | 	0.471436 | 	82.666493 | 	1 	| True | 	3 |
-| LightGBMLarge |	0.835348 | 	0.831603 |	22.367250 |	1.271694 |	136.043589 |	22.367250 |	1.271694 |	136.043589 |	1 |	True |	13 |
-| WeightedEnsemble_L2 | 	0.833629 |	0.966949 |	53.280581 |	4.445315 |	7548.607457 |	0.009523 |	0.044953 |	8.442531 |	2 |	True |	14 |
-| LightGBM |	0.832460 |	0.829127 |	5.237847 |	0.278245 |	57.027379 |	5.237847 |	0.278245 |	57.027379 |	1 |	True |	4 |
-| RandomForestEntr |	0.824462 |	0.822840 |	21.206490 |	0.434653 |	396.571945 |	21.206490 |	0.434653 |	396.571945 |	1 |	True |	6 |
-| RandomForestGini |	0.823243 |	0.821697 |	29.693281 |	0.436249 |	256.947097 |	29.693281 |	0.436249 |	256.947097 |	1 |	True |	5 |
-| XGBoost |	0.823159 |	0.823602 |	2.646490 |	0.696468 |	27.096065 |	2.646490 |	0.696468 |	27.096065 |	1 |	True |	11 |
-| ExtraTreesGini |	0.817348 |	0.817602 |	22.973135 |	0.235120 |	40.649245 |	22.973135 |	0.235120 |	40.649245 |	1 |	True |	8 |
-| ExtraTreesEntr |	0.817314 |	0.817316 |	10.118013 |	0.233918 |	47.698864 |	10.118013 |	0.233918 |	47.698864 |	1 |	True |	9 |
-| CatBoost |	0.789888 |	0.956377 |	1.347230 |	1.019444 |	35.908529 |	1.347230 |	1.019444 |	35.908529 |	1 |	True |	7 |
-| KNeighborsUnif |	0.637996 |	0.641109 |	3.568800 |	0.234611 |	5.264223 |	3.568800 |	0.234611 |	5.264223 |	1 |	True |	1 |
-| KNeighborsDist |	0.637668 |	0.640442 |	3.253163 |	0.237193 |	5.326229 |	3.253163 |	0.237193 |	5.326229 |	1 |	True |	2 |
+| NeuralNetMXNet | 0.836975 |	0.836461 |	33.964055 | 2.709942 |	6597.902246 |	33.964055 |	2.709942 | 6597.902246 | 1 | True | 12 |
+| NeuralNetFastAI | 0.835870 |	0.839318 |	5.002273 | 0.199540 |	823.687658 |	5.002273 | 0.199540 | 823.687658 | 	1 |	True |	10 |
+| LightGBMXT |	0.835717 |	0.833317 | 	12.957499 | 0.471436 |	82.666493 | 	12.957499 |	0.471436 | 82.666493 | 	1	| True |	3 |
+| LightGBMLarge | 0.835348 | 	0.831603 | 22.367250 | 1.271694 | 136.043589 | 22.367250 | 1.271694 | 136.043589 |	1 |	True |	13 |
+| WeightedEnsemble_L2 | 0.833629 | 0.966949 | 53.280581 | 4.445315 | 7548.607457 | 0.009523 | 0.044953 | 8.442531 |	2 |	True |	14 |
+| LightGBM | 0.832460 |	0.829127 | 5.237847 | 0.278245 | 57.027379 | 5.237847 | 0.278245 |	57.027379 |	1 |	True |	4 |
+| RandomForestEntr | 0.824462 | 0.822840 | 21.206490 | 0.434653 | 396.571945 | 21.206490 |	0.434653 |	396.571945 |	1 |	True |	6 |
+| RandomForestGini | 0.823243 | 0.821697 | 29.693281 | 0.436249 | 256.947097 | 29.693281 |	0.436249 |	256.947097 |	1 |	True |	5 |
+| XGBoost |	0.823159 | 0.823602 | 2.646490 | 0.696468 |	27.096065 | 2.646490 | 0.696468 |	27.096065 |	1 |	True |	11 |
+| ExtraTreesGini | 0.817348 | 0.817602 | 22.973135 | 0.235120 | 40.649245 | 22.973135 |	0.235120 |	40.649245 |	1 |	True |	8 |
+| ExtraTreesEntr | 0.817314 | 0.817316 | 10.118013 | 0.233918 | 47.698864 | 10.118013 |	0.233918 |	47.698864 |	1 |	True |	9 |
+| CatBoost | 0.789888 |	0.956377 | 1.347230 | 1.019444 | 35.908529 | 1.347230 |	1.019444 |	35.908529 |	1 |	True |	7 |
+| KNeighborsUnif | 0.637996 | 0.641109 | 3.568800 | 0.234611 | 5.264223 | 3.568800 |	0.234611 |	5.264223 |	1 |	True |	1 |
+| KNeighborsDist | 0.637668 | 0.640442 | 3.253163 | 0.237193 | 5.326229 | 3.253163 |	0.237193 |	5.326229 |	1 |	True |	2 |
 
 
 As we can see, including more variables in the model greatly improved the accuracy and reduced MAE and MSE of our model. We can also see that the model is able to predict the outcome of the game in the test data given the features in our data structure. This proves that a simple model is not always the best solution. We can achieve better results by using more advanced models, in this case about 83% accuracy, which is pretty good for a real-world problem.
