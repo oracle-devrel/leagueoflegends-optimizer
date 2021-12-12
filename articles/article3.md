@@ -4,10 +4,10 @@
 Welcome to the third article of the League of Legends Optimizer series. In this article, we're going to deep dive into building a classifier model to predict the winner of two champion matchups in Oracle Cloud Infrastructure.
 
 In the previous articles, remember that we've already done the following:
-- We defined and modelled our problem, understanding the different steps in the drafting phase of the game
-- We explored the various endpoints offered by Riot Games in their official API
-- We pulled data from the most skilled players around the world and built a data set of these players, which left us with a structure like this in our non-relational autonomous database
-- We created data structures, such as the **matchup** structure, to represent the data we pulled from the API in an adversarial way: in this data structure (see [this dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results)) we faced each lane in a game against the enemy's, and determined whether this player won or lost the game.
+- [x] We defined and modelled our problem, understanding the different steps in the drafting phase of the game
+- [x] We explored the various endpoints offered by Riot Games in their official API
+- [x] We pulled data from the most skilled players around the world and built a data set of these players, which left us with a structure like this in our non-relational autonomous database
+- [x] We created data structures, such as the **matchup** structure, to represent the data we pulled from the API in an adversarial way: in this data structure (see [this dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results)) we faced each lane in a game against the enemy's, and determined whether this player won or lost the game.
 
 Following this data structure, we're going to attempt to make a reliable model that can predict the best champion to pick against each other using Machine Learning.
 
@@ -164,13 +164,13 @@ new_df = new_df.apply(lambda x: le.transform(x))
 
 new_df.tail(5)
 ```
-|	champ1	| champ2  |
-| :------:	| :------:	|
-| 143	| 126 |
-| 52	| 69 |
-| 144	| 119 |
-| 36	| 104 |
-| 19	| 35 |
+| champ1 | champ2  |
+| :---:	| :---:	|
+| 143 | 126 |
+| 52 | 69 |
+| 144 | 119 |
+| 36 | 104 |
+| 19 | 35 |
 
 As we can see, our champion input variables have been properly one-hot encoded. As these are the two only variables we have for our model, applying a standard scaler will not make a difference, since all variables have a standard deviation of 1 between each other (all champions are translated into distinct integer numbers).
 
