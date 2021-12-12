@@ -52,8 +52,7 @@ From the Kaggle dataset, we see an example of the data structure we're going to 
 
 The intricacies of how we built the data structure and derived the result from it are explained in the [previous article](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/main/articles/article2.md). It is important to remember that structuring and manipulating data in the Data Science process takes an average of 80 to 90% of the time, according to expert sources (image courtesy of [“2020 State of Data Science: Moving From Hype Toward Maturity.”](https://www.anaconda.com/state-of-data-science-2020)), and we should not be discouraged when spending most of our time processing and manipulating data structures. The ML algorithm is the easy part if you've correctly identified the correct data structure and adapted it to the structure ML algorithms expect.
 
-https://2s7gjr373w3x22jf92z99mgm5w-wpengine.netdna-ssl.com/wp-content/uploads/2020/07/Anaconda_1.png
-
+![stats](https://2s7gjr373w3x22jf92z99mgm5w-wpengine.netdna-ssl.com/wp-content/uploads/2020/07/Anaconda_1.png?raw=true)
 
 For our first model, we're going to simplify the present data structure even more and get something like this:
 
@@ -75,7 +74,7 @@ If we analyze the above mentioned data structure, we see that it's very simplist
 We begin with simple data exploration of our initial dataset.
 
 ```python
-import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import pandas as pd
 pd.set_option('float_format', '{:f}'.format)
 import os
 import seaborn as sns
@@ -88,18 +87,19 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 
-df = pd.read_json('data_location.json') # we've stored the data file locally only, since we're expecting results not to be great.
-
+df = pd.read_json('data_location.json') # we've stored the data file locally in this case
 df.head(5)
 ```
-```
-> match_id	champ1	champ2	win
-> 0	EUN1_2910807891_utility	Velkoz	Yuumi	1
-> 1	EUN1_2910807891_jungle	Shaco	Nidalee	1
-> 2	EUN1_2909987530_top	Riven	Sett	0
-> 3	EUN1_2909987530_middle	Lissandra	Kassadin	0
-> 4	EUN1_2909987530_bottom	Ashe	Ezreal	0
-```
+
+
+| match_id	| champ1 | champ2 |	win |
+| :----------:	| :------:	| :------:	| :----:	|
+| 0 |	EUN1_2910807891_utility |	Velkoz |	Yuumi	1 |
+| 1	 | EUN1_2910807891_jungle |	Shaco |	Nidalee	1 |
+| 2	| EUN1_2909987530_top	Riven |	Sett |	0 |
+| 3	| EUN1_2909987530_middle |	Lissandra |	Kassadin	0 |
+| 4	| EUN1_2909987530_bottom |	Ashe |	Ezreal |	0 |
+
 
 In this simple model, there is almost no need for data exploration since we fully understand what each variable means, as it is a by-product of our initial data structure.
 
