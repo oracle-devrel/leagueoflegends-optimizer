@@ -330,5 +330,7 @@ Written by [Ignacio Guillermo Martínez](https://www.linkedin.com/in/ignacio-g-m
 
 Copyright (c) 2021 Oracle and/or its affiliates.
 
+Licensed under the Universal Permissive License (UPL), Version 1.0.
 
 See [LICENSE](../LICENSE) for more details.
+
