@@ -207,6 +207,10 @@ I have published my datasets into Kaggle for everyone to use, in case you don't 
 
 Stay tuned for the next articles!
 
+## How can I get started on OCI?
+
+Remember that you can always sign up for free with OCI! Your Oracle Cloud account provides a number of Always Free services and a Free Trial with US$300 of free credit to use on all eligible OCI services for up to 30 days. These Always Free services are available for an **unlimited** period of time. The Free Trial services may be used until your US$300 of free credits are consumed or the 30 days has expired, whichever comes first. You can [sign up here for free](https://signup.cloud.oracle.com/?source=:ex:tb:::::WWMK211125P00027&SC=:ex:tb:::::WWMK211125P00027&pcode=WWMK211125P00027).
+
 ## License
 Copyright (c) 2021 Oracle and/or its affiliates.
 
