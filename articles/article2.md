@@ -288,4 +288,4 @@ Licensed under the Universal Permissive License (UPL), Version 1.0.
 
 See [LICENSE](../LICENSE) for more details.
 
-Written by [jasperan](https://github.com/jasperan), edited by Victor Agreda Jr.
+Written by [Ignacio Guillermo Martínez](https://www.linkedin.com/in/ignacio-g-martinez/) [@jasperan](https://github.com/jasperan), edited by Victor Agreda Jr.
