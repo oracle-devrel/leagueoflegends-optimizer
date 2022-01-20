@@ -2,9 +2,13 @@ import os
 import yaml
 import cx_Oracle
 from pathlib import Path
-home = str(Path.home())
+import argparse
 
-
+# parse arguments for different execution modes.
+parser = argparse.ArgumentParser()
+parser.add_argument('-w', '--wallet-location', help='Wallet location',
+	required=True)
+args = parser.parse_args() 
 
 def process_yaml():
 	with open("../config.yaml") as file:
@@ -13,7 +17,7 @@ def process_yaml():
 
 
 # wallet location (default is HOME/wallets/wallet_X)
-os.environ['TNS_ADMIN'] = '{}/{}'.format(home, 'wallets/Wallet_eSportsDB')
+os.environ['TNS_ADMIN'] = args.wallet_location
 print(os.environ['TNS_ADMIN'])
 
 

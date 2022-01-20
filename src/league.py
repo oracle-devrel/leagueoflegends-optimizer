@@ -643,7 +643,7 @@ def process_predictor(db):
 		if built_object:
 			for x in built_object:
 				res = db.insert('predictor', x) # insert in new collection.
-				if res == 0:
+				if res == -1:
 					# Change column value to processed.
 					print(doc.getContent().get('metadata').get('matchId'))
 					change_column_value_by_key(db, 'match_detail', 'classifier_processed', 1, doc.key) # after processing, update processed bit.
@@ -667,7 +667,7 @@ def process_predictor_liveclient(db):
 		if built_object:
 			for x in built_object:
 				res = db.insert('predictor_liveclient', x) # insert in new collection.
-				if res == 0:
+				if res == -1:
 					# Change column value to processed.
 					print(doc.getContent().get('metadata').get('matchId'))
 					change_column_value_by_key(db, 'match_detail', 'classifier_processed_liveclient', 1, doc.key) # after processing, update processed bit.

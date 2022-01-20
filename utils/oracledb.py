@@ -39,7 +39,7 @@ class OracleJSONDatabaseConnection:
             print('[DBG] INSERT {} OK'.format(json_object_to_insert))
         except cx_Oracle.IntegrityError as e:
             print('[DBG] INSERT {} ERR: {} '.format(json_object_to_insert, e))
-            return 0
+            return -1
         self.pool.release(connection)
         return 1
 
