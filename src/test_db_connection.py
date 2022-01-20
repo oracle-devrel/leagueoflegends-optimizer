@@ -1,18 +1,25 @@
-# Copyright (c) 2021 Oracle and/or its affiliates.
-
-import yaml
 import os
+import yaml
+import cx_Oracle
 from pathlib import Path
-home = str(Path.home())
+import argparse
+
+# parse arguments for different execution modes.
+parser = argparse.ArgumentParser()
+parser.add_argument('-w', '--wallet-location', help='Wallet location',
+	required=True)
+args = parser.parse_args() 
 
 def process_yaml():
 	with open("../config.yaml") as file:
 		return yaml.safe_load(file)
 
 
+
 # wallet location (default is HOME/wallets/wallet_X)
-os.environ['TNS_ADMIN'] = '{}/{}'.format(home, process_yaml()['WALLET_DIR'])
+os.environ['TNS_ADMIN'] = args.wallet_location
 print(os.environ['TNS_ADMIN'])
+
 
 
 def init_db_connection(data):
@@ -23,7 +30,12 @@ def init_db_connection(data):
 
 
 
-config_file = process_yaml()
-api_key = config_file.get('riot_api_key')
+def main():
+    data = process_yaml()
+    connection = init_db_connection(data)
+    print(connection)
 
-# TODO
+
+
+if __name__ == '__main__':
+    main()
