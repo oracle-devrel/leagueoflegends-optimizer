@@ -3,3 +3,15 @@ license_policies:
   label: Approved License
   color_code: '#00800'
   icon: icon-ok-circle
+- license_key: bsd-simplified
+  label: Approved License
+  color_code: '#00800'
+  icon: icon-ok-circle
+- license_key: bsd-new
+  label: Approved License
+  color_code: '#00800'
+  icon: icon-ok-circle
+- license_key: mit
+  label: Approved License
+  color_code: '#00800'
+  icon: icon-ok-circle
