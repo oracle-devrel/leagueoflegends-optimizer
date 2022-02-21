@@ -30,7 +30,7 @@ def init_db_connection(data):
 
 
 # We load the AutoGluon model.
-save_path = '$HOME/autogluon_models'  # specifies folder to store trained models
+save_path = '/home/$USER/autogluon_models'  # specifies folder to store trained models
 predictor = TabularPredictor.load(save_path)
 
 for x in range(60):
