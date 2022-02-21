@@ -48,8 +48,10 @@ def build_object(content):
     }
     content = json.dumps(content)
     content = content.replace("'", "\"")
-
     print(content)
+    return content
+
+
 
 while True:
     try:
