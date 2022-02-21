@@ -36,6 +36,21 @@ def send_message(queue_name, message):
     print('{} | MQ {} OK'.format(datetime.datetime.now(), message))
 
 
+
+def build_object(content):
+    # We convert to JSON format
+    content = response.json()
+    for x in content['allPlayers']:
+        del x['items'] # delete items to avoid quotation marks
+    built_obj = {
+        'activePlayer': content['activePlayer'],
+        'allPlayers': content['allPlayers']
+    }
+    content = json.dumps(content)
+    content = content.replace("'", "\"")
+
+    print(content)
+
 while True:
     try:
         response = requests.get('https://127.0.0.1:2999/liveclientdata/allgamedata', verify=False)
@@ -47,8 +62,6 @@ while True:
 
     # Send to RabbitMQ queue.
     if response.status_code != 404:
-        content = json.dumps(response.json())
-        content = content.replace("'", "\"")
-        print(content)
-        send_message('live_client', content)
+        to_send = build_object(response.content)
+        send_message('live_client', to_send)
     time.sleep(30) # wait 30 seconds before making another request
