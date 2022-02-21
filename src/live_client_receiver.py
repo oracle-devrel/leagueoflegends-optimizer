@@ -38,9 +38,9 @@ def main():
 
 
 
-def process_and_predict(data):
-    
-    json_obj = json.loads(data)
+def process_and_predict(input):
+
+    json_obj = json.loads(input)
 
     print('{} | Level {} | Current stats: {}'.format(json_obj['activePlayer']['summonerName'], 
         json_obj['activePlayer']['level'],
@@ -83,8 +83,10 @@ def process_and_predict(data):
     sample_df = pd.DataFrame([data], columns=['magicResist', 'healthRegenRate', 'spellVamp', 'timestamp', 'maxHealth',
         'moveSpeed', 'attackDamage', 'armorPenetrationPercent', 'lifesteal', 'abilityPower', 'resourceValue', 'magicPenetrationFlat',
         'attackSpeed', 'currentHealth', 'armor', 'magicPenetrationPercent', 'resourceMax', 'resourceRegenRate'])
-
+    print('Built sample dataframe')
+    print('Predicting...')
     prediction = _PREDICTOR.predict(sample_df)
+    print('Calculating prediction accuracy...')
     pred_probs = _PREDICTOR.predict_proba(sample_df)
     print('User expected result: {} | Probability: {}'.format(prediction, pred_probs))
     
