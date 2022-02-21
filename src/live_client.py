@@ -8,6 +8,12 @@ import pandas as pd
 import time
 import cx_Oracle
 from autogluon.tabular import TabularPredictor, TabularDataset
+import argparse
+
+cli_parser = argparse.ArgumentParser()
+cli_parser.add_argument('-p', '--path', type=str, help='Path to predictor.pkl', required=True)
+args = cli_parser.parse_args()
+
 
 home = str(Path.home())
 
@@ -30,7 +36,7 @@ def init_db_connection(data):
 
 
 # We load the AutoGluon model.
-save_path = '/home/$USER/autogluon_models'  # specifies folder to store trained models
+save_path = args.path  # specifies folder to store trained models
 predictor = TabularPredictor.load(save_path)
 
 for x in range(60):
