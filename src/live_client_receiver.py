@@ -27,7 +27,7 @@ def main():
     channel.queue_declare(queue='live_client')
 
     def callback(ch, method, properties, body):
-        process_and_predict(json.loads(body.decode()))
+        process_and_predict(json.dumps(body.decode()))
         print('{} | MQ Received {}'.format(datetime.datetime.now(), body.decode()))
 
     # consume queue
