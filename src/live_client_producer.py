@@ -24,7 +24,7 @@ def send_message(queue_name, message):
     print('{} | MQ {} OK'.format(datetime.datetime.now(), message))
 
 
-for x in range(60):
+while True:
     try:
         response = requests.get('https://127.0.0.1:2999/liveclientdata/allgamedata', verify=False)
     except requests.exceptions.ConnectionError:
