@@ -27,7 +27,7 @@ def main():
     channel.queue_declare(queue='live_client')
 
     def callback(ch, method, properties, body):
-        process_and_predict(json.dumps(body.decode()))
+        process_and_predict(body.decode())
         print('{} | MQ Received {}'.format(datetime.datetime.now(), body.decode()))
 
     # consume queue
@@ -39,6 +39,8 @@ def main():
 
 
 def process_and_predict(json_obj):
+
+    json_obj = json.loads(json_obj)
 
     print('{} | Level {} | Current stats: {}'.format(json_obj['activePlayer']['summonerName'], 
         json_obj['activePlayer']['level'],
