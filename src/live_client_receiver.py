@@ -1,49 +1,42 @@
-# Copyright (c) 2021 Oracle and/or its affiliates.
-
-import yaml
-import os
-from pathlib import Path
-import requests
-import pandas as pd
-import time
-import cx_Oracle
+#!/usr/bin/env python
+import re
+import pika, sys, os
+import datetime
 from autogluon.tabular import TabularPredictor, TabularDataset
 import argparse
-import datetime
+import pandas as pd
 
 cli_parser = argparse.ArgumentParser()
 cli_parser.add_argument('-p', '--path', type=str, help='Path to predictor.pkl', required=True)
 cli_parser.add_argument('-i', '--ip', type=str, help='IP address to make requests to', required=True)
-
 args = cli_parser.parse_args()
-
-
-home = str(Path.home())
-
-def process_yaml():
-	with open("../config.yaml") as file:
-		return yaml.safe_load(file)
-
-
-# wallet location (default is HOME/wallets/wallet_X)
-os.environ['TNS_ADMIN'] = '{}/{}'.format(home, process_yaml()['WALLET_DIR'])
-print(os.environ['TNS_ADMIN'])
-
 
 # We load the AutoGluon model.
 save_path = args.path  # specifies folder to store trained models
-predictor = TabularPredictor.load(save_path)
+_PREDICTOR = TabularPredictor.load(save_path)
 
-for x in range(60):
-    try:
-        response = requests.get('https://{}:2999/liveclientdata/allgamedata'.format(args.ip), verify=False)
-    except requests.exceptions.ConnectionError:
-        # Try again every 5 seconds
-        print('{} | Currently not in game'.format(datetime.datetime.now()))
-        time.sleep(5)
-        continue
 
-    json_obj = response.json()
+def main():
+
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
+
+    # declare all queues, in case the receiver is initialized before the producer.
+    channel.queue_declare(queue='live_client')
+
+    def callback(ch, method, properties, body):
+        process_and_predict(body.decode())
+        print('{} | MQ Received {}'.format(datetime.datetime.now(), body.decode()))
+
+    # consume all queues
+    channel.basic_consume(queue='live_client', on_message_callback=callback, auto_ack=True)
+    
+
+    print(' [*] Waiting for messages. To exit press CTRL+C')
+    channel.start_consuming()
+
+
+def process_and_predict(json_obj):
 
     print('{} | Level {} | Current stats: {}'.format(json_obj['activePlayer']['summonerName'], 
         json_obj['activePlayer']['level'],
@@ -87,7 +80,18 @@ for x in range(60):
         'moveSpeed', 'attackDamage', 'armorPenetrationPercent', 'lifesteal', 'abilityPower', 'resourceValue', 'magicPenetrationFlat',
         'attackSpeed', 'currentHealth', 'armor', 'magicPenetrationPercent', 'resourceMax', 'resourceRegenRate'])
 
-    prediction = predictor.predict(sample_df)
-    pred_probs = predictor.predict_proba(sample_df)
+    prediction = _PREDICTOR.predict(sample_df)
+    pred_probs = _PREDICTOR.predict_proba(sample_df)
     print('User expected result: {} | Probability: {}'.format(prediction, pred_probs))
-    time.sleep(60)
+    
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt:
+        print('Interrupted')
+        try:
+            sys.exit(0)
+        except SystemExit:
+            os._exit(0)
