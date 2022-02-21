@@ -40,7 +40,12 @@ save_path = args.path  # specifies folder to store trained models
 predictor = TabularPredictor.load(save_path)
 
 for x in range(60):
-    response = requests.get('https://127.0.0.1:2999/liveclientdata/allgamedata', verify=False)
+    try:
+        response = requests.get('https://127.0.0.1:2999/liveclientdata/allgamedata', verify=False)
+    except requests.exceptions.ConnectionError:
+        # Try again every 5 seconds
+        time.sleep(5)
+        continue
 
     json_obj = response.json()
 
