@@ -32,7 +32,6 @@ channel.queue_declare(queue=_MQ_NAME)
 
 
 def send_message(queue_name, message):
-
     channel.basic_publish(exchange='', routing_key=queue_name, body='{}'.format(json.loads(message)))
     print('{} | MQ {} OK'.format(datetime.datetime.now(), message))
 

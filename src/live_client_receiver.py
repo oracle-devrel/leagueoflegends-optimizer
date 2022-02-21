@@ -38,7 +38,9 @@ def main():
 
 
 
-def process_and_predict(json_obj):
+def process_and_predict(data):
+    
+    json_obj = json.loads(data)
 
     print('{} | Level {} | Current stats: {}'.format(json_obj['activePlayer']['summonerName'], 
         json_obj['activePlayer']['level'],
