@@ -13,6 +13,8 @@ import datetime
 
 cli_parser = argparse.ArgumentParser()
 cli_parser.add_argument('-p', '--path', type=str, help='Path to predictor.pkl', required=True)
+cli_parser.add_argument('-i', '--ip', type=str, help='IP address to make requests to', required=True)
+
 args = cli_parser.parse_args()
 
 
@@ -34,7 +36,7 @@ predictor = TabularPredictor.load(save_path)
 
 for x in range(60):
     try:
-        response = requests.get('https://127.0.0.1:2999/liveclientdata/allgamedata', verify=False)
+        response = requests.get('https://{}:2999/liveclientdata/allgamedata'.format(args.ip), verify=False)
     except requests.exceptions.ConnectionError:
         # Try again every 5 seconds
         print('{} | Currently not in game'.format(datetime.datetime.now()))
