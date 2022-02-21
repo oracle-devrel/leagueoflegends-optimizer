@@ -19,7 +19,7 @@ _PREDICTOR = TabularPredictor.load(save_path)
 
 def main():
 
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', credentials=PlainCredentials('league', 'league')))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
 
     # declare all queues, in case the receiver is initialized before the producer.
