@@ -17,9 +17,13 @@ args = cli_parser.parse_args()
 
 _MQ_NAME = 'live_client'
 
+credentials = PlainCredentials('league', 'league')
 connection = pika.BlockingConnection(
-pika.ConnectionParameters(host='{}'.format(args.ip), 
-    credentials=PlainCredentials('league', 'league')))
+pika.ConnectionParameters(
+    '{}'.format(args.ip),
+    5672,
+    '/',
+    credentials))
 channel = connection.channel()
 
 channel.queue_declare(queue=_MQ_NAME)

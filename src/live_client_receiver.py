@@ -6,6 +6,7 @@ from autogluon.tabular import TabularPredictor, TabularDataset
 import argparse
 import pandas as pd
 from pika.credentials import PlainCredentials
+import json
 
 cli_parser = argparse.ArgumentParser()
 cli_parser.add_argument('-p', '--path', type=str, help='Path to predictor.pkl', required=True)
@@ -22,19 +23,19 @@ def main():
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
 
-    # declare all queues, in case the receiver is initialized before the producer.
+    # declare queue, in case the receiver is initialized before the producer.
     channel.queue_declare(queue='live_client')
 
     def callback(ch, method, properties, body):
-        process_and_predict(body.decode())
+        process_and_predict(json.loads(body.decode()))
         print('{} | MQ Received {}'.format(datetime.datetime.now(), body.decode()))
 
-    # consume all queues
+    # consume queue
     channel.basic_consume(queue='live_client', on_message_callback=callback, auto_ack=True)
     
-
     print(' [*] Waiting for messages. To exit press CTRL+C')
     channel.start_consuming()
+
 
 
 def process_and_predict(json_obj):
