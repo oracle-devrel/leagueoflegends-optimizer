@@ -9,6 +9,7 @@ import time
 import cx_Oracle
 from autogluon.tabular import TabularPredictor, TabularDataset
 import argparse
+import datetime
 
 cli_parser = argparse.ArgumentParser()
 cli_parser.add_argument('-p', '--path', type=str, help='Path to predictor.pkl', required=True)
@@ -27,14 +28,6 @@ os.environ['TNS_ADMIN'] = '{}/{}'.format(home, process_yaml()['WALLET_DIR'])
 print(os.environ['TNS_ADMIN'])
 
 
-def init_db_connection(data):
-    connection = cx_Oracle.connect(data['db']['username'], data['db']['password'], data['db']['dsn'])
-    print('Connection successful.')
-    connection.autocommit = True
-    return connection
-
-
-
 # We load the AutoGluon model.
 save_path = args.path  # specifies folder to store trained models
 predictor = TabularPredictor.load(save_path)
@@ -44,6 +37,7 @@ for x in range(60):
         response = requests.get('https://127.0.0.1:2999/liveclientdata/allgamedata', verify=False)
     except requests.exceptions.ConnectionError:
         # Try again every 5 seconds
+        print('{} | Currently not in game'.format(datetime.datetime.now()))
         time.sleep(5)
         continue
 
