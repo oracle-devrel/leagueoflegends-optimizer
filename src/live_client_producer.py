@@ -48,5 +48,8 @@ while True:
 
     # Send to RabbitMQ queue.
     if response.status_code != 404:
-        send_message('live_client', ast.literal_eval(response.content))
+        content = json.dumps(response.json())
+        content = content.replace("'", "\"")
+        print(content)
+        send_message('live_client', content)
     time.sleep(30) # wait 30 seconds before making another request
