@@ -5,6 +5,7 @@ import datetime
 from autogluon.tabular import TabularPredictor, TabularDataset
 import argparse
 import pandas as pd
+from pika.credentials import PlainCredentials
 
 cli_parser = argparse.ArgumentParser()
 cli_parser.add_argument('-p', '--path', type=str, help='Path to predictor.pkl', required=True)
@@ -18,7 +19,7 @@ _PREDICTOR = TabularPredictor.load(save_path)
 
 def main():
 
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', credentials=PlainCredentials('league', 'league')))
     channel = connection.channel()
 
     # declare all queues, in case the receiver is initialized before the producer.

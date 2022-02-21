@@ -8,12 +8,18 @@ import pandas as pd
 import time
 import datetime
 import pika
+import argparse
+from pika.credentials import PlainCredentials
 
+cli_parser = argparse.ArgumentParser()
+cli_parser.add_argument('-i', '--ip', type=str, help='IP address to make requests to', required=True)
+args = cli_parser.parse_args()
 
 _MQ_NAME = 'live_client'
 
 connection = pika.BlockingConnection(
-pika.ConnectionParameters(host='localhost'))
+pika.ConnectionParameters(host='{}'.format(args.ip), 
+    credentials=PlainCredentials('league', 'league')))
 channel = connection.channel()
 
 channel.queue_declare(queue=_MQ_NAME)
@@ -34,5 +40,6 @@ while True:
         continue
 
     # Send to RabbitMQ queue.
-    send_message('live_client', response.json())
+    if response.status_code != 404:
+        send_message('live_client', response.json())
     time.sleep(30) # wait 30 seconds before making another request
