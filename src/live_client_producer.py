@@ -30,6 +30,7 @@ channel.queue_declare(queue=_MQ_NAME)
 
 
 def send_message(queue_name, message):
+    message = message.replace("\'", "\"") # replace single quotes with double quotes
     channel.basic_publish(exchange='', routing_key=queue_name, body='{}'.format(message))
     print('{} | MQ {} OK'.format(datetime.datetime.now(), message))
 
