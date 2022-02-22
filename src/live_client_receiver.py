@@ -95,8 +95,11 @@ def process_and_predict(input):
     pred_probs = _PREDICTOR.predict_proba(sample_df)
     print(type(prediction))
     print(type(pred_probs))
-    print('User expected result: {} | Probability: {}'.format(prediction, pred_probs))
-    
+    print('User expected result: {} | Probability: {}'.format(prediction, pred_probs.iloc[0]))
+    print('Win probability: {} | Loss probability: {}'.format(
+        pred_probs.iloc[0][1],
+        pred_probs.iloc[0][0]
+    ))
 
 
 if __name__ == '__main__':
