@@ -50,9 +50,10 @@ def process_and_predict(input):
     print('{} | Level {} | Current stats: {}'.format(json_obj['activePlayer']['summonerName'], 
         json_obj['activePlayer']['level'],
         json_obj['activePlayer']['championStats']))
-    '''
+    
     print('{} | Level {}'.format(json_obj['activePlayer']['summonerName'], 
         json_obj['activePlayer']['level']))
+    '''
 
     team_color = str()
     for x in json_obj['allPlayers']:
@@ -93,10 +94,16 @@ def process_and_predict(input):
         'attackSpeed', 'currentHealth', 'armor', 'magicPenetrationPercent', 'resourceMax', 'resourceRegenRate'])
     prediction = _PREDICTOR.predict(sample_df)
     pred_probs = _PREDICTOR.predict_proba(sample_df)
-    print(type(prediction))
-    print(type(pred_probs))
+    #print(type(prediction))
+    #print(type(pred_probs))
+    expected_result = prediction.get(0)
+    if expected_result == 0:
+        print('Expected LOSS, {}% probable'.format(pred_probs.iloc[0][0]))
+    else:
+        print('Expected WIN, {}% probable'.format(pred_probs.iloc[0][1]))
+    
     print('User expected result: {} | Probability: {}'.format(prediction.get(0), pred_probs.iloc[0]))
-    print('Win probability: {} | Loss probability: {}'.format(
+    print('Win/loss probability: {}%/{}%'.format(
         pred_probs.iloc[0][1],
         pred_probs.iloc[0][0]
     ))
