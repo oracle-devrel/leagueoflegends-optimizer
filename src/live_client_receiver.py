@@ -93,6 +93,8 @@ def process_and_predict(input):
         'attackSpeed', 'currentHealth', 'armor', 'magicPenetrationPercent', 'resourceMax', 'resourceRegenRate'])
     prediction = _PREDICTOR.predict(sample_df)
     pred_probs = _PREDICTOR.predict_proba(sample_df)
+    print(type(prediction))
+    print(type(pred_probs))
     print('User expected result: {} | Probability: {}'.format(prediction, pred_probs))
     
 
