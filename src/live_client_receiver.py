@@ -98,14 +98,13 @@ def process_and_predict(input):
     #print(type(pred_probs))
     expected_result = prediction.get(0)
     if expected_result == 0:
-        print('Expected LOSS, {}% probable'.format(pred_probs.iloc[0][0]))
+        print('Expected LOSS, {}% probable'.format(pred_probs.iloc[0][0] * 100))
     else:
-        print('Expected WIN, {}% probable'.format(pred_probs.iloc[0][1]))
+        print('Expected WIN, {}% probable'.format(pred_probs.iloc[0][1] * 100))
     
-    print('User expected result: {} | Probability: {}'.format(prediction.get(0), pred_probs.iloc[0]))
     print('Win/loss probability: {}%/{}%'.format(
-        pred_probs.iloc[0][1],
-        pred_probs.iloc[0][0]
+        pred_probs.iloc[0][1] * 100,
+        pred_probs.iloc[0][0] * 100
     ))
 
 
