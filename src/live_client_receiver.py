@@ -29,7 +29,7 @@ def main():
         channel.queue_declare(queue='live_client')
 
         def callback(ch, method, properties, body):
-            print('{} | MQ Received {}'.format(datetime.datetime.now(), body.decode()))
+            print('{} | MQ Received packet'.format(datetime.datetime.now()))
             process_and_predict(body.decode())
 
         # consume queue
