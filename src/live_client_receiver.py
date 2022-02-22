@@ -20,21 +20,25 @@ _PREDICTOR = TabularPredictor.load(save_path)
 
 def main():
 
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-    channel = connection.channel()
+    try:
 
-    # declare queue, in case the receiver is initialized before the producer.
-    channel.queue_declare(queue='live_client')
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        channel = connection.channel()
 
-    def callback(ch, method, properties, body):
-        print('{} | MQ Received {}'.format(datetime.datetime.now(), body.decode()))
-        process_and_predict(body.decode())
+        # declare queue, in case the receiver is initialized before the producer.
+        channel.queue_declare(queue='live_client')
 
-    # consume queue
-    channel.basic_consume(queue='live_client', on_message_callback=callback, auto_ack=True)
-    
-    print(' [*] Waiting for messages. To exit press CTRL+C')
-    channel.start_consuming()
+        def callback(ch, method, properties, body):
+            print('{} | MQ Received {}'.format(datetime.datetime.now(), body.decode()))
+            process_and_predict(body.decode())
+
+        # consume queue
+        channel.basic_consume(queue='live_client', on_message_callback=callback, auto_ack=True)
+        
+        print(' [*] Waiting for messages. To exit press CTRL+C')
+        channel.start_consuming()
+    except pika.exceptions.StreamLostError:
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
 
 
 
@@ -42,9 +46,13 @@ def process_and_predict(input):
 
     json_obj = json.loads(input)
 
+    '''
     print('{} | Level {} | Current stats: {}'.format(json_obj['activePlayer']['summonerName'], 
         json_obj['activePlayer']['level'],
         json_obj['activePlayer']['championStats']))
+    '''
+    print('{} | Level {}'.format(json_obj['activePlayer']['summonerName'], 
+        json_obj['activePlayer']['level']))
 
     team_color = str()
     for x in json_obj['allPlayers']:
@@ -83,10 +91,7 @@ def process_and_predict(input):
     sample_df = pd.DataFrame([data], columns=['magicResist', 'healthRegenRate', 'spellVamp', 'timestamp', 'maxHealth',
         'moveSpeed', 'attackDamage', 'armorPenetrationPercent', 'lifesteal', 'abilityPower', 'resourceValue', 'magicPenetrationFlat',
         'attackSpeed', 'currentHealth', 'armor', 'magicPenetrationPercent', 'resourceMax', 'resourceRegenRate'])
-    print('Built sample dataframe')
-    print('Predicting...')
     prediction = _PREDICTOR.predict(sample_df)
-    print('Calculating prediction accuracy...')
     pred_probs = _PREDICTOR.predict_proba(sample_df)
     print('User expected result: {} | Probability: {}'.format(prediction, pred_probs))
     
