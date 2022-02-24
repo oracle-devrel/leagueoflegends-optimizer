@@ -420,9 +420,6 @@ predictor.feature_importance(test)
 
 
 
-
-
-
 Note that, even if the timestamp is a number and can't be used to predict, it has a good feature importance. This is because the rest of the data depends a lot on how long the League game has been in progress. So, in reality, this is a really useful variable that complements the rest of the variables to determine whether a player's statistics are good or bad with respect to the game progress.
 
 Now that we have our model trained, we have the same data that the Live Client Data API. In the following article, we'll connect to the Live Client Data API, extract data from it with Python and make real-time predictions. I hope to see you soon with the next article.
@@ -441,11 +438,3 @@ Copyright (c) 2021 Oracle and/or its affiliates.
 Licensed under the Universal Permissive License (UPL), Version 1.0.
 
 See [LICENSE](../LICENSE) for more details.
-
-
-
-| P_MATCH_ID | 	GOLDEARNED | 	TOTALMINIONSKILLED | 	WIN | 	KILLS | 	ASSISTS | 	DEATHS | 	CHAMPION | 	VISIONSCORE | 	PUUID | 	TOTALDAMAGEDEALTTOCHAMPIONS | 	SUMMONERNAME | 	GAMEVERSION |
-| :--------: | :----------: | :---------------------: | :----: | :-----: | :------: | :------: | :--------: | :---------: | :--------: | :--------: | :--------: | :--------: |
-| BR1_2309470512_jungle | 7670 | 37 | False | 4 | 2 | 7 | Graves | 23 | b1ZVlTG630NWh8Hgc7H-_-SErq3E3OkV50XSBuz_uzkIuA... |11215 | tired blessed | 	11.14.385.9967 |
-| EUN1_2809958230_top | 11108 | 202 | False | 1 | 9 | 8 | Gwen | 28 | 19ii6j4OOWmkUaw_yAXhMOhcgUvZaK8M1yVT0I3HwBYQka... | 17617 | ozzyDD 	| 11.8.370.4668 |
-
