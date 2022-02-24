@@ -419,8 +419,9 @@ predictor.feature_importance(test)
 | spellVamp |	-0.000667 |	0.000577 |	0.908248 |	3 |	0.002642 |	-0.003975 |
 
 
-
 Note that, even if the timestamp is a number and can't be used to predict, it has a good feature importance. This is because the rest of the data depends a lot on how long the League game has been in progress. So, in reality, this is a really useful variable that complements the rest of the variables to determine whether a player's statistics are good or bad with respect to the game progress.
+
+## Next Steps
 
 Now that we have our model trained, we have the same data that the Live Client Data API. In the following article, we'll connect to the Live Client Data API, extract data from it with Python and make real-time predictions. I hope to see you soon with the next article.
 
