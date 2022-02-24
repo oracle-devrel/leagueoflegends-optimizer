@@ -1,324 +1,432 @@
 # League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions
 
 ## Recap and Introduction
-Welcome to the third article of the League of Legends Optimizer series!
+Welcome to the fourth article of the League of Legends Optimizer series!
 
-In this article, we're diving deep into building a classifier model to predict the winner of two champion matchups withs Oracle Cloud Infrastructure (OCI).
+In this article, we'll look at how all work developed during the first articles comes to fruition. In article 3, we developed several ML models with AutoML tools like AutoGluon. The first developed model didn't include too many variables, which caused a very poor accuracy. After expanding the model further, we realized that including more variables increased the accuracy to a manageable ~83% accuracy with Neural Networks.
 
-In previous articles, we've done the following:
+Also, it's worth mentioning that we didn't expand further on how to tap into live data from League of Legends. We're going to consider this as the main topic of this fourth article, by exploring Riot Game's **Live Client API**. It will allow us to access, through HTTP requests, to real-time data while we are playing, in the hopes of being able to use the model developed in article 3 to make real-time predictions.
 
-- [x] Defined and modelled our problem, understanding the different steps in the drafting phase of the game
-- [x] Explored the various endpoints offered by Riot Games in their official API
-- [x] Pulled data from the most skilled players around the world and built a data set of these players, which left us with a structure like this in our non-relational autonomous database
-- [x] Created data structures, such as the *matchup* structure, to represent the data we pulled from the API in an adversarial way: in this data structure (see [this dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results)), we faced each lane in a game against the enemy's, and determined whether this player won or lost the game.
+So, without further ado, let's back into it. Exciting times are coming if you keep reading.
 
-Following this data structure, we're going to make a reliable model that can predict the best champion to pick against another player using by using machine learning.
+## Riot Game's Live Client Data API
 
-## The Data Structure
+The Live Client Data API is an API that allows us to gather data during an active game. Many players don't know this, but whenever you play a League of Legends in your computer, port 2999 is reserved for League and receives real-time data which we can easily access through HTTP requests.
 
-From the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results), we see an example of the data structure we're going to use to build our model:
+There are several endpoints available, from which we're especially interested in the following:
 
-```json 
+```python
+# GET https://127.0.0.1:2999/liveclientdata/allgamedata
+# Sample output can be found in the following URL, if interested. https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json
+# This endpoint encapsulates all other endpoints into one.
+```
+
+```python
+# Get all data about the active player. (the one in localhost)
+# GET ​https://127.0.0.1:2999/liveclientdata/activeplayer
 {
-    "p_match_id": "BR1_2133948485_bottom",
-    "data": [
-        {
-            "goldEarned": 10767,
-            "totalMinionsKilled": 161,
-            "win": false,
-            "kills": 6,
-            "assists": 8,
-            "deaths": 6,
-            "champion": "Kayle",
-            "visionScore": 14,
-            "puuid": "s1j7_icmqQCl1vROjASKJLSGZmktnvcrt8Qm7g39T16YdxE-xTlX2nnrG400bMae7O3JWyf2Y4XX4Q",
-            "totalDamageDealtToChampions": 13008,
-            "summonerName": "EveBy"
-        },
-        {
-            "goldEarned": 14787,
-            "totalMinionsKilled": 172,
-            "win": true,
-            "kills": 14,
-            "assists": 2,
-            "deaths": 6,
-            "champion": "Kaisa",
-            "visionScore": 12,
-            "puuid": "zjBoj6G9dWbPgkKSvZpDIcDA2NG65M1FUOxlYCXUyff9I1GR_xIuOFLWXlzMjWV67gOnGFC7g6wCuw",
-            "totalDamageDealtToChampions": 23071,
-            "summonerName": "Goiasinho"
-        }
-    ],
-    "gameVersion": "10.25.348.1797"
+    "abilities": {...},
+    "championStats": {
+      "abilityHaste": 0.00000000000000,
+      "abilityPower": 0.00000000000000,
+      "armor": 0.00000000000000,
+      "armorPenetrationFlat": 0.0,
+      "armorPenetrationPercent": 0.0,
+      "attackDamage": 0.00000000000000,
+      "attackRange": 0.0,
+      "attackSpeed": 0.00000000000000,
+      "bonusArmorPenetrationPercent": 0.0,
+      "bonusMagicPenetrationPercent": 0.0,
+      "cooldownReduction": 0.00,
+      "critChance": 0.0,
+      "critDamage": 0.0,
+      "currentHealth": 0.0,
+      "healthRegenRate": 0.00000000000000,
+      "lifeSteal": 0.0,
+      "magicLethality": 0.0,
+      "magicPenetrationFlat": 0.0,
+      "magicPenetrationPercent": 0.0,
+      "magicResist": 0.00000000000000,
+      "maxHealth": 0.00000000000000,
+      "moveSpeed": 0.00000000000000,
+      "physicalLethality": 0.0,
+      "resourceMax": 0.00000000000000,
+      "resourceRegenRate": 0.00000000000000,
+      "resourceType": "MANA",
+      "resourceValue": 0.00000000000000,
+      "spellVamp": 0.0,
+      "tenacity": 0.0
+    }
+    "currentGold": 0.0,
+    "fullRunes": {...},
+    "level": 1,
+    "summonerName": "Riot Tuxedo"
 }
 ```
 
-The intricacies of how we built the data structure and derived the result from it are explained in the [previous article](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/main/articles/article2.md). It is important to remember that structuring and manipulating data in the data science process takes an average of 80 to 90% of the time, according to expert sources (image courtesy of [“2020 State of Data Science: Moving From Hype Toward Maturity.”](https://www.anaconda.com/state-of-data-science-2020)), and we shouldn't be discouraged when spending most of our time processing and manipulating data structures. The ML algorithm is the easy part if you've correctly identified the correct data structure and adapted it to the structure ML algorithms expect.
+```python
+# Retrieve the list of heroes in the game and their stats.
+# GET ​https://127.0.0.1:2999/liveclientdata/playerlist
+[
+    {
+        "championName": "Annie",
+        "isBot": false,
+        "isDead": false,
+        "items": [...],
+        "level": 1,
+        "position": "MIDDLE",
+        "rawChampionName": "game_character_displayname_Annie",
+        "respawnTimer": 0.0,
+        "runes": {...},
+        "scores": {...},
+        "skinID": 0,
+        "summonerName": "Riot Tuxedo",
+        "summonerSpells": {...},
+        "team": "ORDER"
+    },
+    ...
+]
+```
 
-{% imgx assets/lol-3-anaconda_1.png "Breakdown of effort to train model" %}
+```python
+# Retrieve the list of the current scores for the player.
+# GET ​https://127.0.0.1:2999/liveclientdata/playerscores?summonerName=X
+{
+    "assists": 0,
+    "creepScore": 0,
+    "deaths": 0,
+    "kills": 0,
+    "wardScore": 0.0
+}
+```
 
-For our first model, we're going to simplify the present data structure even more and get something like this:
+
+We can access these endpoints through a web browser, or programatically. The only impediment is that the data is only accessed through localhost (127.0.0.1) and requests coming in from a different IP address will be rejected automatically. So, we'll need to consider this in our code.
+From these endpoints, we are interested in extracting as much information as possible, cross-referencing the information we have in our already-trained model in article 3. Ideally, we want to extract all variables present in the model. For that, we'll explore the names of the variables we have and cross-reference them to see if there are equivalences in the data we were using until now.
+
+Taking a look at the data available from the /allgamedata endpoint, we can approach the problem in many ways: make a model based on KDA (kills / deaths / assists) or based on champion statistics. We will go with the second one, as I think it's less straightforward to predict for a human than simply looking at the scoreboard (much easier for humans since that's what we're used to). So, we'll be operating with these variables:
+
 
 ```json
 {
-    "match_id": "EUN1_2910807891_utility",
-    "champ1": "Velkoz",
-    "champ2": "Yuumi",
-    "win": 1
+    "championStats": {
+      "abilityHaste": 0.00000000000000,
+      "abilityPower": 0.00000000000000,
+      "armor": 0.00000000000000,
+      "armorPenetrationFlat": 0.0,
+      "armorPenetrationPercent": 0.0,
+      "attackDamage": 0.00000000000000,
+      "attackRange": 0.0,
+      "attackSpeed": 0.00000000000000,
+      "bonusArmorPenetrationPercent": 0.0,
+      "bonusMagicPenetrationPercent": 0.0,
+      "cooldownReduction": 0.00,
+      "critChance": 0.0,
+      "critDamage": 0.0,
+      "currentHealth": 0.0,
+      "healthRegenRate": 0.00000000000000,
+      "lifeSteal": 0.0,
+      "magicLethality": 0.0,
+      "magicPenetrationFlat": 0.0,
+      "magicPenetrationPercent": 0.0,
+      "magicResist": 0.00000000000000,
+      "maxHealth": 0.00000000000000,
+      "moveSpeed": 0.00000000000000,
+      "physicalLethality": 0.0,
+      "resourceMax": 0.00000000000000,
+      "resourceRegenRate": 0.00000000000000,
+      "resourceType": "MANA",
+      "resourceValue": 0.00000000000000,
+      "spellVamp": 0.0,
+      "tenacity": 0.0
 }
 ```
 
-Where `win` is a boolean variable that represents whether `champ1` won or not. So, in this example, Velkoz won the game.
+From this example, any human would probably say that these variables aren't enough to build a reliable model. But they're more than enough, as you'll discover through the rest of the article.
 
-If we analyze this data structure, we see that it's very simplistic and only contains three useful variables (having excluded the identifier variable, which is only there to ensure we don't have duplicate values in our JSON database). One of these variables is actually the result of the game and the feature that we'd like to predict. This can have two different implications:
-- The model is simple and works because the problem is simple. I suggest always trying this out regardless of the prediction problem and checking if the model is actually able to make accurate predictions.
-- The model doesn't work because we oversimplified the problem and there are many more variables to consider to make improvements on model accuracy. This is most likely the case in many real-world problems, in which I also include our League of Legends Optimizer. So, probably, this initial ML model will not have great predictions. Nonetheless, we'll try anyway with what we currently have.
-
-## The Code
-
-We begin with simple data exploration of our initial dataset.
+From the DB standpoint, we create a new JSON collection to create our training data. 
 
 ```python
-import pandas as pd
-pd.set_option('float_format', '{:f}'.format)
-import os
-import seaborn as sns
-import matplotlib.pyplot as plt
-%matplotlib inline
+# CLASSIFIER MODEL (LIVE CLIENT API AFFINITY DATA)
+def process_predictor_liveclient(db):
+	connection = db.get_connection()
+	matches = connection.getSodaDatabase().createCollection('match_detail')
+	print('Total match_detail documents (to process): {}'.format(matches.find().filter({'classifier_processed_liveclient': {"$ne":1}}).count()))
+	
+	for doc in matches.find().filter({'classifier_processed_liveclient': {"$ne":1}}).getCursor():
+		content = doc.getContent()
+		built_object = build_final_object_liveclient(content) # build data similar to the one given by the Live Client API from Riot.
+		if built_object:
+			for x in built_object:
+				res = db.insert('predictor_liveclient', x) # insert in new collection.
+				if res == -1:
+					# Change column value to processed.
+					print(doc.getContent().get('metadata').get('matchId'))
+					change_column_value_by_key(db, 'match_detail', 'classifier_processed_liveclient', 1, doc.key) # after processing, update processed bit.
+					break
+	db.close_connection(connection)
 
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import StandardScaler 
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import StandardScaler
-from sklearn.linear_model import LogisticRegression
+# builds liveclient-affine data object.
+def build_final_object_liveclient(json_object):
+	all_frames = list()   
+	match_id = str()
+	try:
+		match_id = json_object.get('metadata').get('matchId')
+	except AttributeError:
+		print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.format(json_object))
+		return
 
-df = pd.read_json('data_location.json') # we've stored the data file locally in this case
-df.head(5)
+	winner = int()
+	# Determine winner
+	frames = json_object.get('info').get('frames')
+	last_frame = frames[-1]
+	last_event = last_frame.get('events')[-1]
+	assert last_event.get('type') == 'GAME_END'
+	winner = last_event.get('winningTeam')
+
+	for x in json_object.get('info').get('frames'):
+
+		for y in range(1, 11):
+			frame = {
+				"timestamp": x.get('timestamp')
+			}
+			frame['abilityPower'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('abilityPower')
+			frame['armor'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armor')
+			frame['armorPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPen')
+			frame['armorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPenPercent')
+			frame['attackDamage'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackDamage')
+			frame['attackSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackSpeed')
+			frame['bonusArmorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusArmorPenPercent')
+			frame['bonusMagicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusMagicPenPercent')
+			frame['cooldownReduction'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('cooldownReduction')
+			frame['currentHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('health')
+			frame['maxHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthMax')
+			frame['healthRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthRegen')
+			frame['lifesteal'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('lifesteal')
+			frame['magicPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPen')
+			frame['magicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPenPercent')
+			frame['magicResist'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicResist')
+			frame['moveSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('movementSpeed')
+			frame['resourceValue'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('power')
+			frame['resourceMax'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerMax')
+			frame['resourceRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerRegen')
+			frame['spellVamp'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('spellVamp')
+
+			frame['identifier'] = '{}_{}'.format(match_id, x.get('participantFrames').get('{}'.format(y)).get('participantId'))
+
+			if winner == 100:
+				if y in (1,2,3,4,5):
+					frame['winner'] = 1
+				else:
+					frame['winner'] = 0
+			elif winner == 200:
+				if y in (1,2,3,4,5):
+					frame['winner'] = 0
+				else:
+					frame['winner'] = 1
+			all_frames.append(frame)
+			del frame
+		
+	return all_frames
+
 ```
 
-| match_id	| champ1 | champ2 |	win |
-| :----------:	| :------:	| :------:	| :----: |
-| EUN1_2910807891_utility |	Velkoz | Yuumi | 1 |
-| EUN1_2910807891_jungle | Shaco |	Nidalee	| 1 |
-| EUN1_2909987530_top | Riven |	Sett |	0 |
-| EUN1_2909987530_middle | Lissandra |	Kassadin |	0 |
-| EUN1_2909987530_bottom | Ashe | Ezreal | 0 |
+With this structure, we're able to generate data which is exactly like the data provided by the Live Client Data API. Making this correspondence is important as it will allow us to compare real-time data with trained data. 
 
-In this simple model, there is almost no need for data exploration since we fully understand what each variable means, as they are by-products of our initial data structure.
-
-We split our data into train-test sets:
+From the Live Client API standpoint, we have a similar structure, with some missing variables and different variable names. We can amend that by modifying the names of the variables from the Live Client Data API to match the names of our trained model; and by eliminating those variables from the original model that don't appear in the Live Client API:
 
 ```python
-# We want to predict the 'win' variable.
-train_features = train_dataset.copy()
-test_features = test_dataset.copy()
+# This method parses input from Live Client API and adapts the names to what's expected in our ML model.
+def process_and_predict(input):
 
-train_labels = train_features.pop('win') # returns column 'win'
-test_labels = test_features.pop('win') # returns column 'win'
+    json_obj = json.loads(input)
+    team_color = str()
+    for x in json_obj['allPlayers']:
+        if x['team'] == 'ORDER':
+            team_color = 'blue'
+        else:
+            team_color = 'red'
+        
+        print('Team {}: {}'.format(team_color, x['championName']))
+
+    # Timestamp given by the Live Client API is in thousands of a second from the starting point. (assumption)
+
+    timestamp = int(json_obj['gameData']['gameTime'] * 1000)
+    data = [
+        json_obj['activePlayer']['championStats']['magicResist'],
+        json_obj['activePlayer']['championStats']['healthRegenRate'],
+        json_obj['activePlayer']['championStats']['spellVamp'],
+        timestamp,
+        json_obj['activePlayer']['championStats']['maxHealth'],
+        json_obj['activePlayer']['championStats']['moveSpeed'],
+        json_obj['activePlayer']['championStats']['attackDamage'],
+        json_obj['activePlayer']['championStats']['armorPenetrationPercent'],
+        json_obj['activePlayer']['championStats']['lifeSteal'],
+        json_obj['activePlayer']['championStats']['abilityPower'],
+        json_obj['activePlayer']['championStats']['resourceValue'],
+        json_obj['activePlayer']['championStats']['magicPenetrationFlat'],
+        json_obj['activePlayer']['championStats']['attackSpeed'],
+        json_obj['activePlayer']['championStats']['currentHealth'],
+        json_obj['activePlayer']['championStats']['armor'],
+        json_obj['activePlayer']['championStats']['magicPenetrationPercent'],
+        json_obj['activePlayer']['championStats']['resourceMax'],
+        json_obj['activePlayer']['championStats']['resourceRegenRate']
+    ]
+
+
+    sample_df = pd.DataFrame([data], columns=['magicResist', 'healthRegenRate', 'spellVamp', 'timestamp', 'maxHealth',
+        'moveSpeed', 'attackDamage', 'armorPenetrationPercent', 'lifesteal', 'abilityPower', 'resourceValue', 'magicPenetrationFlat',
+        'attackSpeed', 'currentHealth', 'armor', 'magicPenetrationPercent', 'resourceMax', 'resourceRegenRate'])
+    prediction = _PREDICTOR.predict(sample_df)
+    pred_probs = _PREDICTOR.predict_proba(sample_df)
+    #print(type(prediction))
+    #print(type(pred_probs))
+    expected_result = prediction.get(0)
+    if expected_result == 0:
+        print('Expected LOSS, {}% probable'.format(pred_probs.iloc[0][0] * 100))
+    else:
+        print('Expected WIN, {}% probable'.format(pred_probs.iloc[0][1] * 100))
+    
+    print('Win/loss probability: {}%/{}%'.format(
+        pred_probs.iloc[0][1] * 100,
+        pred_probs.iloc[0][0] * 100
+    ))
 ```
 
-We encode the data following the Data Science process:
+Now that we have a plan, let's execute it step by step.
+
+## Training the final classifier model
+
+To achieve real-time predictions, we must first have a trained predictor. For that, we'll create an ML model that considers only the variables provided both in the Live Client Data API and in the offline API (articles 1 and 2). 
+We get data from our Autonomous JSON DB. We'll consider 24 variables in total at the beginning.
 
 ```python
-le = LabelEncoder()
+data = db.open_collection('predictor_liveclient')
+all_data = list()
+i = 0
+for doc in data.find().getCursor():
+    content = doc.getContent()
+    all_data.append(content)
+    i+= 1
 
-le = le.fit(champ_list) # fit the label encoder with the whole champion list.
+print('Data length: {}'.format(len(all_data)))
 
-train_features = train_features.apply(lambda x: le.transform(x))
-test_features = test_features.apply(lambda x: le.transform(x))
+# Data length: 3060133
 ```
 
-Note that the `champ_list` referenced in this code block is the list of all unique champions in LoL.
-
-We need to fit our label encoder with all possible values. Otherwise, new values will not be properly encoded or may be encoded as a duplicate number.
-
+We convert from non-relational to a relational structure, which is what ML models like
 ```python
-# Normalization
-scaler = StandardScaler()
-train_features = scaler.fit_transform(train_features)
-test_features = scaler.transform(test_features)
+df = pd.read_json(json.dumps(all_data), orient='records')
 ```
 
-After scaling the data we can fit our model:
-
-```python
-logreg = LogisticRegression()
-logreg.fit(train_features, train_labels)
-print('Accuracy of Logistic regression classifier on training set: {:.2f}'
-     .format(logreg.score(train_features, train_labels)))
-print('Accuracy of Logistic regression classifier on test set: {:.2f}'
-     .format(logreg.score(test_features, test_labels)))
-```
-
-The accuracies obtained for the logistic regression classifier are 0.51. This is like tossing a coin. We could be making better assumptions by having a bit of knowledge about the game and champion performances. So our hypothesis saying that this simplistic model would not work correctly is correct. We need to improve our model or add variables to it.
-
-However, we can still make predictions using our model. The code to make a prediction needs to consider new data, encode it and scale it, and then make a prediction:
-
-```python
-new_data = {
-    'champ1': ['Xayah', 'Karma', 'Xerath', 'Gragas', 'Chogath'],
-    'champ2': ['Tristana', 'Lulu', 'Syndra', 'Sejuani', 'Gnar']
-}
-new_df = pd.DataFrame(new_data)
-```
-
-In this case, as our model is very limited in regards to input variables, we make the following assumption: we'll calculate a team winning by taking the mode of all lanes' predictions.
-
-Let's transform our data:
-
-```python
-new_df = new_df.apply(lambda x: le.transform(x))
-
-new_df.tail(5)
-```
-
-| champ1 | champ2  |
-| :---:	| :---:	|
-| 143 | 126 |
-| 52 | 69 |
-| 144 | 119 |
-| 36 | 104 |
-| 19 | 35 |
-
-As we can see, our champion input variables have been properly one-hot encoded. As these are the two only variables we have for our model, applying a standard scaler will not make a difference, since all variables have a standard deviation of 1 between each other (all champions are translated into distinct integer numbers).
-
-If we make the prediction:
-
-```python
-result = logreg.predict(new_df)
-
-def find_winner(lst):
-    return max(set(lst), key=lst.count)
-
-winner_prediction = find_winner(result.tolist())
-```
-
-> [0 0 0 0 0]
-
-The results of the prediction indicate the predicted winning team in each case. In this case, it's predicting `champ2` to win in all five cases. This can be a coincidence or not, but it happens to be the correct prediction. In case of having discrepancies, we'd use the `find_winner()` function to find the mode of the prediction. Adding this to the ML model actually improves the implicit accuracy of our code, but not of the model itself: we're simply combining a 51% accuracy ML model with additional statistics to make a better prediction. 
-
-We may ask ourselves how we can measure the accuracy of our combined ML-statistics model The problem is **we can't**, since we have no programming framework able to assist us with this. We'd have to code our own object-oriented programming framework that extends the functionalities of the current Pandas framework, for example. And the time required to do so greatly exceeds the expected results. It's better we focus our resources, as data scientists, to using the frameworks available to us with our structured data, and  finding a better model by improving the quality of our input data. No need to reinvent the wheel.
-
-Finally, to see the results in a human-readable way, we need to apply the `inverse_transform()` function to our still-encoded data:
-
-```python
-inverse_prediction = new_df.apply(lambda x: le.inverse_transform(x)) # we apply inverse transform
-
-if winner_prediction == 1:
-    print('Predicted winner is team 1: \n{}'.format(str(inverse_prediction['champ1'])))
-else:
-     print('Predicted winner is team 2: \n{}'.format(str(inverse_prediction['champ2'])))
-```
-
-Now, we can see one prediction per case, totaling 5 cases, and one final team prediction using our `find_winner()`:
-
-```console
-Predicted winner is team 2: 
-Tristana
-Lulu
-Syndra
-Sejuani
-Gnar
-```
-
-## Improving the model
-
-As we've seen in practice, the accuracy of our model is not as good as it could be. We can improve it by adding more variables to our model. We're going to create a model that considers all variables in our *matchup* data structure, and reduce the complexity of our ML code by using AutoML open-source tools for data exploration and model training.
-
-```python
-from pandas_profiling import ProfileReport
-df = pd.read_csv('matchups.csv')
-report = ProfileReport(df)
-report
-```
-
-This simple code generates a dynamic report that shows the data types, missing values, and other information about the data. We explore the Pearson's r correlation coefficient between the variables:
-
-{% imgx assets/lol-3-pearson.png "Visualization of Pearson's r daya" %}
-
-We proceed to train our model with all variables, taking into consideration that most of the variables in our model are highly correlated. This is especially true for the amount of gold earned with respect to the number of kills and minions killed (which makes sense, as these are two of the actions that give out the most gold in-game). We also see that the vision score highly correlates with the amount of assists a player makes in a game.
+We start our ML process: we do a sample 80%/20% train-test split and drop the columns we don't want (columns with constant values and player identifiers add no value).
 
 ```python
 from autogluon.tabular import TabularPredictor, TabularDataset
-# train-test split
-df = TabularDataset('matchups.csv')
 
-train = df.sample(frac=0.8, random_state=200)
+df = TabularDataset(df)
+
+# drop columns we don't want (constant values + identifier)
+df = df.drop(columns=['bonusArmorPenetrationPercent', 'bonusMagicPenetrationPercent',
+    'identifier', 'cooldownReduction', 'armorPenetrationFlat'])
+
+train = df.sample(frac=0.8,random_state=200) #random state is a seed value
 test = df.drop(train.index)
-
-# a simple look into our data
-df.head(2)
 ```
 
-| P_MATCH_ID | 	GOLDEARNED | 	TOTALMINIONSKILLED | 	WIN | 	KILLS | 	ASSISTS | 	DEATHS | 	CHAMPION | 	VISIONSCORE | 	PUUID | 	TOTALDAMAGEDEALTTOCHAMPIONS | 	SUMMONERNAME | 	GAMEVERSION |
-| :--------: | :----------: | :---------------------: | :----: | :-----: | :------: | :------: | :--------: | :---------: | :--------: | :--------: | :--------: | :--------: |
-| BR1_2309470512_jungle | 7670 | 37 | False | 4 | 2 | 7 | Graves | 23 | b1ZVlTG630NWh8Hgc7H-_-SErq3E3OkV50XSBuz_uzkIuA... |11215 | tired blessed | 	11.14.385.9967 |
-| EUN1_2809958230_top | 11108 | 202 | False | 1 | 9 | 8 | Gwen | 28 | 19ii6j4OOWmkUaw_yAXhMOhcgUvZaK8M1yVT0I3HwBYQka... | 17617 | ozzyDD 	| 11.8.370.4668 |
-
-We determine our predicting feature and fit the model:
+We specify we want to predict the __winner__ variable and perform the AutoML + hyperparametrization. Also, we export our model, as our plan is to use it in a Python script later on to make real-time predictions while we're playing.
 
 ```python
-label = 'WIN'
+label = 'winner'
 
-save_path = './trained_models'  # specifies folder to store trained models
+save_path = './autogluon_trained_models_liveclient_classifier'  # specifies folder to store trained models
 predictor = TabularPredictor(label=label, path=save_path).fit(train)
-```
 
-We can now make predictions on our test data:
-
-```python
-y_test = test[label]  # predict 'WIN'
+y_test = test[label]  # values to predict
 test_data_nolabel = test.drop(columns=[label]) 
-test_data_nolabel.head()
-
-predictor = TabularPredictor.load(save_path)
-y_pred = predictor.predict(test_data_nolabel)
-print("Predictions:  \n", y_pred)
-perf = predictor.evaluate_predictions(y_true=y_test, y_pred=y_pred, auxiliary_metrics=True)
+test_data_nolabel.head(5)
 ```
 
-We can see some sample predictions by our model on the test data.
+| magicResist | healthRegenRate |	spellVamp |	timestamp |	maxHealth |	moveSpeed |	attackDamage |	armorPenetrationPercent |	lifesteal |	abilityPower |	resourceValue |	magicPenetrationFlat |	attackSpeed |	currentHealth |	armor |	magicPenetrationPercent |	resourceMax |	resourceRegenRate |
+| :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | 
+| 2 | 33 |	15 |	0 |	180067 |	698 |	345 |	77 |	0 |	0 |	0 |	30 |	0 |	118 |	644 |	41 |	0 |	125 |	0 |
+| 4 | 30 |	18 |	0 |	180067 |	628 |	335 |	57 |	0 |	0 |	26 |	187 |	0 |	102 |	552 |	37 |	0 |	305 |	13 |
+| 6 |	33 |	34 |	0 |	180067 |	710 |	340 |	62 |	0 |	0 |	15 |	251 |	0 |	114 |	503 |	42 |	0 |	383 |	149 |
+| 7 |	29 |	19 |	0 |	180067 |	762 |	335 |	101 |	0 |	0 |	0 |	151 |	0 |	143 |	399 |	46 |	0 |	423 |	18 |
+| 14 |	32 | 0 |	0 |	0 |	620 |	340 |	25 |	0 |	0 |	0 |	0 |	0 |	100 |	620 |	36 |	0 |	0 |	0 |
 
-| row_id | win |
-| :----: | :--: |  
-| 2 | False |
-| 4 | False |
-| 8 | False |
-| 13 | False |
-| 21 | True |
-
-And with all trained models, we create a leaderboard with descending accuracy:
+And we test our model.
 
 ```python
-predictor.leaderboard(test, silent=True)
+predictor = TabularPredictor.load(save_path)
+
+y_pred = predictor.predict(test_data_nolabel)
+print("Predictions: {}".format(y_pred))
 ```
 
-| model | score_test | score_val | pred_time_test | pred_time_val | fit_time | pred_time_test_marginal | pred_time_val_marginal | fit_time_marginal | stack_level | can_infer | fit_order |
-| :----: | :---------: | :---------: | :-------------: | :-------------: | :--------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :----------: |
-| NeuralNetMXNet | 0.836975 |	0.836461 |	33.964055 | 2.709942 |	6597.902246 |	33.964055 |	2.709942 | 6597.902246 | 1 | True | 12 |
-| NeuralNetFastAI | 0.835870 |	0.839318 |	5.002273 | 0.199540 |	823.687658 |	5.002273 | 0.199540 | 823.687658 | 	1 |	True |	10 |
-| LightGBMXT |	0.835717 |	0.833317 | 	12.957499 | 0.471436 |	82.666493 | 	12.957499 |	0.471436 | 82.666493 | 	1	| True |	3 |
-| LightGBMLarge | 0.835348 | 	0.831603 | 22.367250 | 1.271694 | 136.043589 | 22.367250 | 1.271694 | 136.043589 |	1 |	True |	13 |
-| WeightedEnsemble_L2 | 0.833629 | 0.966949 | 53.280581 | 4.445315 | 7548.607457 | 0.009523 | 0.044953 | 8.442531 |	2 |	True |	14 |
-| LightGBM | 0.832460 |	0.829127 | 5.237847 | 0.278245 | 57.027379 | 5.237847 | 0.278245 |	57.027379 |	1 |	True |	4 |
-| RandomForestEntr | 0.824462 | 0.822840 | 21.206490 | 0.434653 | 396.571945 | 21.206490 |	0.434653 |	396.571945 |	1 |	True |	6 |
-| RandomForestGini | 0.823243 | 0.821697 | 29.693281 | 0.436249 | 256.947097 | 29.693281 |	0.436249 |	256.947097 |	1 |	True |	5 |
-| XGBoost |	0.823159 | 0.823602 | 2.646490 | 0.696468 |	27.096065 | 2.646490 | 0.696468 |	27.096065 |	1 |	True |	11 |
-| ExtraTreesGini | 0.817348 | 0.817602 | 22.973135 | 0.235120 | 40.649245 | 22.973135 |	0.235120 |	40.649245 |	1 |	True |	8 |
-| ExtraTreesEntr | 0.817314 | 0.817316 | 10.118013 | 0.233918 | 47.698864 | 10.118013 |	0.233918 |	47.698864 |	1 |	True |	9 |
-| CatBoost | 0.789888 |	0.956377 | 1.347230 | 1.019444 | 35.908529 | 1.347230 |	1.019444 |	35.908529 |	1 |	True |	7 |
-| KNeighborsUnif | 0.637996 | 0.641109 | 3.568800 | 0.234611 | 5.264223 | 3.568800 |	0.234611 |	5.264223 |	1 |	True |	1 |
-| KNeighborsDist | 0.637668 | 0.640442 | 3.253163 | 0.237193 | 5.326229 | 3.253163 |	0.237193 |	5.326229 |	1 |	True |	2 |
+Our most accurate models are:
 
-As we can see, including more variables in the model greatly improved the accuracy and reduced MAE and MSE of our model. We can also see that the model is able to predict the outcome of the game in the test data given the features in our data structure. This proves that a simple model is not always the best solution. We can achieve better results by using more advanced models, in this case about 83% accuracy, which is pretty good for a real-world problem.
+```python
+predictor.leaderboard(test, silent=False)
+```
 
-Also, note that we don't really care how the models are trained as long as they make good predictions. Of course, it's important to know the basics of ML to see how data is structured, but I'd like you, as a reader, to finish reading this article and remember that the hardest part about data science and data engineering is not coding the ML model, but understanding the data and the problem, and structuring the data accordingly to satisfy our needs.
+| model |	score_test |	score_val |	pred_time_test |	pred_time_val |	fit_time |	pred_time_test_marginal |	pred_time_val_marginal |	fit_time_marginal |	stack_level |	can_infer |	fit_order |
+| :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: |
+| 0 |	WeightedEnsemble_L2 |	0.66544 |	0.689078 |	12.998381 |	1.530008 |	866.161298 |	0.006004 |	0.006177 |	1.356416 |	2 |	True |	14 |
+| 1 |	RandomForestGini |	0.66069 |	0.676831 |	2.016773 |	0.315675 |	22.368041 |	2.016773 |	0.315675 |	22.368041 |	1 |	True |	5 |
+| 2 |	RandomForestEntr |	0.66011 |	0.677081 |	1.908432 |	0.314932 |	24.854358 |	1.908432 |	0.314932 |	24.854358 |	1 |	True |	6 |
+| 3 |	ExtraTreesGini |	0.65994 |	0.669833 |	4.162963 |	0.314386 |	11.347579 |	4.162963 |	0.314386 |	11.347579 |	1 |	True |	8 |
+| 4 |	ExtraTreesEntr |	0.65928 |	0.673332 |	3.386951 |	0.313787 |	11.595320 |	3.386951 |	0.313787 |	11.595320 |	1 |	True |	9 |
+| 5 |	NeuralNetMXNet |	0.64286 |	0.648588 |	1.480003 |	0.242218 |	793.445433 |	1.480003 |	0.242218 |	793.445433 |	1 |	True |	12 |
+| 6 |	LightGBMLarge |	0.60645 |	0.622844 |	0.079303 |	0.015620 |	3.809432 |	0.079303 |	0.015620 |	3.809432 |	1 |	True |	13 |
+| 7 |	NeuralNetFastAI |	0.60542 |	0.615846 |	7.990198 |	0.051421 |	325.652130 |	7.990198 |	0.051421 |	325.652130 |	1 |	True |	10 |
+| 8 |	XGBoost |	0.59687 |	0.614096 |	0.070154 |	0.033291 |	0.968276 |	0.070154 |	0.033291 |	0.968276 |	1 |	True |	11 |
+| 9 |	LightGBM |	0.56626 |	0.575606 |	0.022063 |	0.011376 |	0.475452 |	0.022063 |	0.011376 |	0.475452 |	1 |	True |	4 |
+| 10 |	LightGBMXT |	0.56100 |	0.572107 |	0.015192 |	0.011457 |	0.718697 |	0.015192 |	0.011457 |	0.718697 |	1 |	True |	3 |
+| 11 |	CatBoost |	0.55881 |	0.565859 |	0.010589 |	0.009640 |	0.813448 |	0.010589 |	0.009640 |	0.813448 |	1 |	True |	7 |
+| 12 |	KNeighborsUnif |	0.53039 |	0.534116 |	934.033610 |	40.197675 |	0.079255 |	934.033610 |	40.197675 |	0.079255 |	1 |	True |	1 |
+| 13 |	KNeighborsDist |	0.53001 |	0.532617 |	955.057964 |	39.491652 |	0.077697 |	955.057964 |	39.491652 |	0.077697 |	1 |	True |	2 |
 
-## The Problem and Next Steps
 
-In short, in the first model, we didn't consider enough variables. The results of this ML model were no better than using simple statistics, and heavily relied on additional statistics support to make a bit more sense.
+With an average score of **66% categorization accuracy**. Note that this model has been trained only with 50 thousand rows, to drastically reduce the **pred_time_val** time (as our plan is to use the model in real time with the lowest latency possible). If we train the model with all rows (3 million+ in my dataset) we get about **81% accuracy**, but a much higher prediction time. 
 
-After expanding the model further, we saw that the model could make predictions much more accurately. However, we needed to ask ourselves if this model is useful. Are we, as players of League of Legends, able to have this amount of data in the middle of a game? The answer is **no**. We're just given simple statistics like the gold from the team and KDA ratio. Only programatically through the API do we have the possibility to access all this data. So, while the model is pretty good, it doesn't have a practical side that we can use and take advantage of. This is what we'll explore in the fourth article in this series: integrating such a model (or a similar one) with data that we can actually use in real-time to make accurate predictions; data aligned with what players have at hand. Stay tuned for article 4!
+
+And here are the feature importances:
+
+```python
+predictor.feature_importance(test)
+```
+
+| variable |	importance |	stddev |	p_value |	n |	p99_high |	p99_low |
+| :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: |
+| timestamp |	0.115667 |	0.015044 |	0.002796 |	3 |	0.201873 |	0.029461 |
+| attackDamage |	0.090333 |	0.018610 |	0.006927 |	3 |	0.196971 |	-0.016304 |
+| abilityPower |	0.069000 |	0.009000 |	0.002812 |	3 |	0.120571 |	0.017429 |
+| maxHealth |	0.044667 |	0.025541 |	0.046946 |	3 |	0.191018 |	-0.101685 |
+| armor |	0.040667 |	0.021502 |	0.040951 |	3 |	0.163875 |	-0.082542 |
+| resourceMax |	0.038667 |	0.009713 |	0.010195 |	3 |	0.094321 |	-0.016987 |
+| magicResist |	0.037333 |	0.013650 |	0.020895 |	3 |	0.115552 |	-0.040885 |
+| resourceValue |	0.030667 |	0.024028 |	0.078814 |	3 |	0.168348 |	-0.107015 |
+| attackSpeed |	0.028667 |	0.022301 |	0.077944 |	3 |	0.156454 |	-0.099120 |
+| resourceRegenRate |	0.027333 |	0.015503 |	0.046289 |	3 |	0.116165 |	-0.061499 |
+| moveSpeed |	0.018333 |	0.017039 |	0.101700 |	3 |	0.115970 |	-0.079303 |
+| currentHealth |	0.013000 |	0.012166 |	0.102702 |	3 |	0.082710 |	-0.056710 |
+| healthRegenRate |	0.011333 |	0.013051 |	0.135733 |	3 |	0.086118 |	-0.063451 |
+| lifesteal |	0.006667 |	0.009018 |	0.164422 |	3 |	0.058344 |	-0.045010 |
+| armorPenetrationPercent |	0.006000 |	0.002000 |	0.017549 |	3 |	0.017460 |	-0.005460 |
+| magicPenetrationFlat |	0.004333 |	0.003512 |	0.083025 |	3 |	0.024457 |	-0.015790 |
+| magicPenetrationPercent |	0.002333 |	0.001528 |	0.059041 |	3 |	0.011086 |	-0.006420 |
+| spellVamp |	-0.000667 |	0.000577 |	0.908248 |	3 |	0.002642 |	-0.003975 |
+
+
+
+
+
+
+Note that, even if the timestamp is a number and can't be used to predict, it has a good feature importance. This is because the rest of the data depends a lot on how long the League game has been in progress. So, in reality, this is a really useful variable that complements the rest of the variables to determine whether a player's statistics are good or bad with respect to the game progress.
+
+Now that we have our model trained, we have the same data that the Live Client Data API. In the following article, we'll connect to the Live Client Data API, extract data from it with Python and make real-time predictions. I hope to see you soon with the next article.
+
 
 ## How can I get started on OCI?
 
@@ -326,11 +434,18 @@ Remember that you can always sign up for free with OCI! Your Oracle Cloud accoun
 
 ## License
 
-Written by [Ignacio Guillermo Martínez](https://www.linkedin.com/in/ignacio-g-martinez/) [@jasperan](https://github.com/jasperan)
+Written by [Ignacio Guillermo Martínez](https://www.linkedin.com/in/ignacio-g-martinez/) [@jasperan](https://github.com/jasperan), edited by [GreatGhostsss](https://github.com/GreatGhostsss)
 
 Copyright (c) 2021 Oracle and/or its affiliates.
 
 Licensed under the Universal Permissive License (UPL), Version 1.0.
 
 See [LICENSE](../LICENSE) for more details.
+
+
+
+| P_MATCH_ID | 	GOLDEARNED | 	TOTALMINIONSKILLED | 	WIN | 	KILLS | 	ASSISTS | 	DEATHS | 	CHAMPION | 	VISIONSCORE | 	PUUID | 	TOTALDAMAGEDEALTTOCHAMPIONS | 	SUMMONERNAME | 	GAMEVERSION |
+| :--------: | :----------: | :---------------------: | :----: | :-----: | :------: | :------: | :--------: | :---------: | :--------: | :--------: | :--------: | :--------: |
+| BR1_2309470512_jungle | 7670 | 37 | False | 4 | 2 | 7 | Graves | 23 | b1ZVlTG630NWh8Hgc7H-_-SErq3E3OkV50XSBuz_uzkIuA... |11215 | tired blessed | 	11.14.385.9967 |
+| EUN1_2809958230_top | 11108 | 202 | False | 1 | 9 | 8 | Gwen | 28 | 19ii6j4OOWmkUaw_yAXhMOhcgUvZaK8M1yVT0I3HwBYQka... | 17617 | ozzyDD 	| 11.8.370.4668 |
 
