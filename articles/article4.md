@@ -101,10 +101,10 @@ There are several endpoints available, from which we're especially interested in
 ```
 
 
-We can access these endpoints through a web browser, or programatically. The only impediment is that the data is only accessed through localhost (127.0.0.1) and requests coming in from a different IP address will be rejected automatically. So, we'll need to consider this in our code.
-From these endpoints, we are interested in extracting as much information as possible, cross-referencing the information we have in our already-trained model in article 3. Ideally, we want to extract all variables present in the model. For that, we'll explore the names of the variables we have and cross-reference them to see if there are equivalences in the data we were using until now.
+We can access these endpoints through a web browser, or programatically. The only impediment is that the data can only be accessed through localhost (127.0.0.1) and requests coming in from a different IP address will be rejected automatically. So, we'll need to consider this in our code.
+From these endpoints, we are interested in extracting as much information as possible, cross-referencing the information we have in our already-trained model in article 3. Ideally, we want to be able to extract all variables present in article 3's model. For that, we'll explore the names of the variables we have and check them to see if there are equivalences.
 
-Taking a look at the data available from the /allgamedata endpoint, we can approach the problem in many ways: make a model based on KDA (kills / deaths / assists) or based on champion statistics. We will go with the second one, as I think it's less straightforward to predict for a human than simply looking at the scoreboard (much easier for humans since that's what we're used to). So, we'll be operating with these variables:
+Taking a look at the data available from the /allgamedata endpoint, we can approach the problem in several ways: make a model based on KDA (kills / deaths / assists) or based on champion statistics. We will go with the second option, as it's less straightforward to predict for a human than simply looking at the scoreboard (much easier for humans since that's what we're used to). So, we'll be operating with these variables:
 
 
 ```json
@@ -277,10 +277,10 @@ def process_and_predict(input):
     sample_df = pd.DataFrame([data], columns=['magicResist', 'healthRegenRate', 'spellVamp', 'timestamp', 'maxHealth',
         'moveSpeed', 'attackDamage', 'armorPenetrationPercent', 'lifesteal', 'abilityPower', 'resourceValue', 'magicPenetrationFlat',
         'attackSpeed', 'currentHealth', 'armor', 'magicPenetrationPercent', 'resourceMax', 'resourceRegenRate'])
+
     prediction = _PREDICTOR.predict(sample_df)
     pred_probs = _PREDICTOR.predict_proba(sample_df)
-    #print(type(prediction))
-    #print(type(pred_probs))
+
     expected_result = prediction.get(0)
     if expected_result == 0:
         print('Expected LOSS, {}% probable'.format(pred_probs.iloc[0][0] * 100))
@@ -347,8 +347,8 @@ test_data_nolabel = test.drop(columns=[label])
 test_data_nolabel.head(5)
 ```
 
-| magicResist | healthRegenRate |	spellVamp |	timestamp |	maxHealth |	moveSpeed |	attackDamage |	armorPenetrationPercent |	lifesteal |	abilityPower |	resourceValue |	magicPenetrationFlat |	attackSpeed |	currentHealth |	armor |	magicPenetrationPercent |	resourceMax |	resourceRegenRate |
-| :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | 
+| row | magicResist | healthRegenRate |	spellVamp |	timestamp |	maxHealth |	moveSpeed |	attackDamage |	armorPenetrationPercent |	lifesteal |	abilityPower |	resourceValue |	magicPenetrationFlat |	attackSpeed |	currentHealth |	armor |	magicPenetrationPercent |	resourceMax |	resourceRegenRate |
+| :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | 
 | 2 | 33 |	15 |	0 |	180067 |	698 |	345 |	77 |	0 |	0 |	0 |	30 |	0 |	118 |	644 |	41 |	0 |	125 |	0 |
 | 4 | 30 |	18 |	0 |	180067 |	628 |	335 |	57 |	0 |	0 |	26 |	187 |	0 |	102 |	552 |	37 |	0 |	305 |	13 |
 | 6 |	33 |	34 |	0 |	180067 |	710 |	340 |	62 |	0 |	0 |	15 |	251 |	0 |	114 |	503 |	42 |	0 |	383 |	149 |
@@ -370,8 +370,8 @@ Our most accurate models are:
 predictor.leaderboard(test, silent=False)
 ```
 
-| model |	score_test |	score_val |	pred_time_test |	pred_time_val |	fit_time |	pred_time_test_marginal |	pred_time_val_marginal |	fit_time_marginal |	stack_level |	can_infer |	fit_order |
-| :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: |
+| id | model |	score_test |	score_val |	pred_time_test |	pred_time_val |	fit_time |	pred_time_test_marginal |	pred_time_val_marginal |	fit_time_marginal |	stack_level |	can_infer |	fit_order |
+| :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: | :--------: |
 | 0 |	WeightedEnsemble_L2 |	0.66544 |	0.689078 |	12.998381 |	1.530008 |	866.161298 |	0.006004 |	0.006177 |	1.356416 |	2 |	True |	14 |
 | 1 |	RandomForestGini |	0.66069 |	0.676831 |	2.016773 |	0.315675 |	22.368041 |	2.016773 |	0.315675 |	22.368041 |	1 |	True |	5 |
 | 2 |	RandomForestEntr |	0.66011 |	0.677081 |	1.908432 |	0.314932 |	24.854358 |	1.908432 |	0.314932 |	24.854358 |	1 |	True |	6 |
@@ -388,7 +388,7 @@ predictor.leaderboard(test, silent=False)
 | 13 |	KNeighborsDist |	0.53001 |	0.532617 |	955.057964 |	39.491652 |	0.077697 |	955.057964 |	39.491652 |	0.077697 |	1 |	True |	2 |
 
 
-With an average score of **66% categorization accuracy**. Note that this model has been trained only with 50 thousand rows, to drastically reduce the **pred_time_val** time (as our plan is to use the model in real time with the lowest latency possible). If we train the model with all rows (3 million+ in my dataset) we get about **81% accuracy**, but a much higher prediction time. 
+With an average score of **66% categorization accuracy**. Note that this model has been trained only with 50 thousand rows, to drastically reduce the **pred_time_val** time (as our plan is to use the model in real time with the lowest latency possible). If we train the model with all rows (3 million+ in my dataset) we get about **83% accuracy**, but a much higher prediction time. 
 
 
 And here are the feature importances:
