@@ -3,15 +3,15 @@
 ## Recap and Introduction
 Welcome to the fourth article of the League of Legends Optimizer series!
 
-In this article, we'll look at how all work developed during the first articles comes to fruition. In article 3, we developed several ML models with AutoML tools like AutoGluon. The first developed model didn't include too many variables, which caused a very poor accuracy. After expanding the model further, we realized that including more variables increased the accuracy to a manageable ~83% accuracy with Neural Networks.
+In this article, we'll look at how all the work we've done so far comes to fruition. In article 3, we developed several ML models with AutoML tools like AutoGluon. The first developed model didn't include too many variables, which caused very poor accuracy. After expanding the model further, we realized that including more variables increased the accuracy to a manageable ~83% accuracy with Neural Networks.
 
-Also, it's worth mentioning that we didn't expand further on how to tap into live data from League of Legends. We're going to consider this as the main topic of this fourth article, by exploring Riot Game's **Live Client API**. It will allow us to access, through HTTP requests, to real-time data while we are playing, in the hopes of being able to use the model developed in article 3 to make real-time predictions.
+Also, it's worth mentioning that we didn't expand further on how to tap into live data from League of Legends. We're going to consider this as the main topic of this fourth article, by exploring Riot Game's **Live Client API**. It will allow us to access, through HTTP requests, real-time data while we're playing, in the hopes of being able to use the model developed in article 3 to make real-time predictions.
 
-So, without further ado, let's back into it. Exciting times are coming if you keep reading.
+So, without further ado, let's back into it. Exciting times are coming if you keep reading!
 
 ## Riot Game's Live Client Data API
 
-The Live Client Data API is an API that allows us to gather data during an active game. Many players don't know this, but whenever you play a League of Legends in your computer, port 2999 is reserved for League and receives real-time data which we can easily access through HTTP requests.
+The Live Client Data API allows us to gather data during an active game. Many players don't know this, but whenever you play a LoL, port 2999, which is reserved for League, receives real-time data which we can easily access through HTTP requests.
 
 There are several endpoints available, from which we're especially interested in the following:
 
@@ -100,12 +100,10 @@ There are several endpoints available, from which we're especially interested in
 }
 ```
 
+We can access these endpoints through a web browser, or programatically. The only impediment is that the data can only be accessed through localhost (127.0.0.1) and requests coming in from a different IP address will be rejected automatically. So we'll need to consider this in our code.
+From these endpoints, we are interested in extracting as much information as possible, cross-referencing the information we have in our already-trained model from article 3. Ideally, we want to be able to extract all variables  in article 3's model. For that, we'll explore the names of the variables we have and check them to see if there are equivalences.
 
-We can access these endpoints through a web browser, or programatically. The only impediment is that the data can only be accessed through localhost (127.0.0.1) and requests coming in from a different IP address will be rejected automatically. So, we'll need to consider this in our code.
-From these endpoints, we are interested in extracting as much information as possible, cross-referencing the information we have in our already-trained model in article 3. Ideally, we want to be able to extract all variables present in article 3's model. For that, we'll explore the names of the variables we have and check them to see if there are equivalences.
-
-Taking a look at the data available from the /allgamedata endpoint, we can approach the problem in several ways: make a model based on KDA (kills / deaths / assists) or based on champion statistics. We will go with the second option, as it's less straightforward to predict for a human than simply looking at the scoreboard (much easier for humans since that's what we're used to). So, we'll be operating with these variables:
-
+Taking a look at the data available from the `allgamedata` endpoint, we can approach the problem in several ways: make a model based on KDA (kills / deaths / assists) or based on champion statistics. We'll go with the second option, as it's less straightforward to predict for a human than simply looking at the scoreboard (much easier for humans since that's what we're used to). So, we'll be operating with these variables:
 
 ```json
 {
@@ -142,9 +140,9 @@ Taking a look at the data available from the /allgamedata endpoint, we can appro
 }
 ```
 
-From this example, any human would probably say that these variables aren't enough to build a reliable model. But they're more than enough, as you'll discover through the rest of the article.
+From this example, anyone would probably say that these variables aren't enough to build a reliable model. But they're more than enough, as you'll discover through the rest of the article.
 
-From the DB standpoint, we create a new JSON collection to create our training data. 
+From a DB standpoint, we'll create a new JSON collection to create our training data: 
 
 ```python
 # CLASSIFIER MODEL (LIVE CLIENT API AFFINITY DATA)
@@ -314,12 +312,12 @@ print('Data length: {}'.format(len(all_data)))
 # Data length: 3060133
 ```
 
-We convert from non-relational to a relational structure, which is what ML models like
+We convert from non-relational to a relational structure, which is what ML models like!
 ```python
 df = pd.read_json(json.dumps(all_data), orient='records')
 ```
 
-We start our ML process: we do a sample 80%/20% train-test split and drop the columns we don't want (columns with constant values and player identifiers add no value).
+Let's start our ML process with a sample 80%/20% train-test split and drop the columns we don't want (columns with constant values and player identifiers add no value).
 
 ```python
 from autogluon.tabular import TabularPredictor, TabularDataset
@@ -334,7 +332,7 @@ train = df.sample(frac=0.8,random_state=200) #random state is a seed value
 test = df.drop(train.index)
 ```
 
-We specify we want to predict the __winner__ variable and perform the AutoML + hyperparametrization. Also, we export our model, as our plan is to use it in a Python script later on to make real-time predictions while we're playing.
+We specify that we want to predict the `winner` variable and perform the AutoML + hyperparametrization. Also, we export our model, as our plan is to use it in a Python script later on to make real-time predictions while we're playing.
 
 ```python
 label = 'winner'
@@ -388,8 +386,7 @@ predictor.leaderboard(test, silent=False)
 | 13 |	KNeighborsDist |	0.53001 |	0.532617 |	955.057964 |	39.491652 |	0.077697 |	955.057964 |	39.491652 |	0.077697 |	1 |	True |	2 |
 
 
-With an average score of **66% categorization accuracy**. Note that this model has been trained only with 50 thousand rows, to drastically reduce the **pred_time_val** time (as our plan is to use the model in real time with the lowest latency possible). If we train the model with all rows (3 million+ in my dataset) we get about **83% accuracy**, but a much higher prediction time. 
-
+We see an average score of **66% categorization accuracy**. Note that this model has been trained with only 50 thousand rows, to drastically reduce the **pred_time_val** time (as our plan is to use the model in real time with the lowest latency possible). If we train the model with all rows (3 million+ in my dataset), we get about **83% accuracy**, but a much higher prediction time. 
 
 And here are the feature importances:
 
@@ -418,17 +415,19 @@ predictor.feature_importance(test)
 | magicPenetrationPercent |	0.002333 |	0.001528 |	0.059041 |	3 |	0.011086 |	-0.006420 |
 | spellVamp |	-0.000667 |	0.000577 |	0.908248 |	3 |	0.002642 |	-0.003975 |
 
-
-Note that, even if the timestamp is a number and can't be used to predict, it has a good feature importance. This is because the rest of the data depends a lot on how long the League game has been in progress. So, in reality, this is a really useful variable that complements the rest of the variables to determine whether a player's statistics are good or bad with respect to the game progress.
+Note that, even if the timestamp can't be used to predict, it's still useful as a feature. This is because the rest of the data depends a lot on how long the League game has been in progress. So, in reality, this is a useful variable that complements the rest of the variables to determine whether a player's statistics are good or bad with respect to the game progress.
 
 ## Next Steps
 
-Now that we have our model trained, we have the same data that the Live Client Data API. In the following article, we'll connect to the Live Client Data API, extract data from it with Python and make real-time predictions. I hope to see you soon with the next article.
-
+Now that we have our model trained, we have the same data that the Live Client Data API. In the following article, we'll connect to the Live Client Data API and extract data from it with Python and make real-time predictions.
 
 ## How can I get started on OCI?
 
 Remember that you can always sign up for free with OCI! Your Oracle Cloud account provides a number of Always Free services and a Free Trial with US$300 of free credit to use on all eligible OCI services for up to 30 days. These Always Free services are available for an **unlimited** period of time. The Free Trial services may be used until your US$300 of free credits are consumed or the 30 days has expired, whichever comes first. You can [sign up here for free](https://signup.cloud.oracle.com/?source=:ex:tb:::::WWMK211125P00027&SC=:ex:tb:::::WWMK211125P00027&pcode=WWMK211125P00027).
+
+## Join the conversation!
+
+If you’re curious about the goings-on of Oracle Developers in their natural habitat, come join us on our public Slack channel! We don’t mind being your fish bowl 🐠
 
 ## License
 
