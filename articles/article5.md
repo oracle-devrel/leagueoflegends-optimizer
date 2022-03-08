@@ -205,12 +205,13 @@ And that's the last code piece we need for everything to work. Now, we can get i
 
 ## The Setup
 
-We initialize our producer and consumer:
+We initialize our producer and consumer processes:
 
 ```bash
+# producer must be run in the same server as where we're playing League
 python live_client_producer.py --ip="RABBITMQ_IP_ADDRESS"
-
-python live_client_receiver.py --ip="RABBITMQ_IP_ADDRESS" -p="MODEL_PATH" # in this case, it's running in localhost (in the same server as the rabbitmq server).
+# in this case, receiver is running in localhost (in the same server as the rabbitmq server).
+python live_client_receiver.py --ip="RABBITMQ_IP_ADDRESS" -p="MODEL_PATH" 
 ```
 
 ## The Game!
