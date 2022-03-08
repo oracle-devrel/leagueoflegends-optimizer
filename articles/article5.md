@@ -203,5 +203,81 @@ def process_and_predict(input):
 
 And that's the last code piece we need for everything to work. Now, we can get into a game and run our producer code (in the machine where we play the League match) and the consumer (simultaneously, although not necessary) to get real-time predictions on the game.
 
-### The Game!
+## The Setup
 
+We initialize our producer and consumer:
+
+```bash
+python live_client_producer.py --ip="RABBITMQ_IP_ADDRESS"
+
+python live_client_receiver.py --ip="RABBITMQ_IP_ADDRESS" -p="MODEL_PATH" # in this case, it's running in localhost (in the same server as the rabbitmq server).
+```
+
+## The Game!
+
+Since I'm using a lightweight model to make predictions, and training data is only 50000 rows, I'm expecting results to be roughly inaccurate. Therefore, to make things obvious and demonstrate the functionality, I've chosen to play a League match in the practice tool against an AI bot. This will allow me to level up quickly and buy items with lent out gold from the practice tool, something that would take me about 30 to 35 minutes in a real match. 
+
+I chose to play Ezreal and bought a standard hybrid AD-AP build, which is especially good in lategame as cooldown reduction makes you a monster and it'd be really hard for enemies to catch me offguard with my E. 
+
+From the producer's POV, we're making requests every 30 seconds and expecting a prediction. This is the kind of data we're storing in, and then consuming from our message queue:
+
+![](../images/producerdebug.JPG?raw=true)
+
+As we start the game, we get a very average 60/40% winrate probability. This is due to the fact that Ezreal is usually superior in early game compared to Miss Fortune if we keep our distance. As training data comes from real Masters+ players, usually games are very quiet at the beginning and players perform very safely until mid game. Therefore, it makes sense that Ezreal starts with a bigger win percentage probability.
+
+![](../images/started_game.JPG?raw=true)
+
+After starting the game, since we're in the practice tool, I chose to go full-build and buy all items from the shop (the standard AD-AP build).
+
+![](../images/game1.JPG?raw=true)
+
+Immediately after the next request, the HTTP request fed the model my current stats, which were severely overpowered for the beginning of the game. If we review the statistics that are taken into account by our model, they are:
+
+```python
+# Code from where we built the model
+sample_df = pd.DataFrame([data], columns=['magicResist', 'healthRegenRate', 'spellVamp', 'timestamp', 'maxHealth',
+        'moveSpeed', 'attackDamage', 'armorPenetrationPercent', 'lifesteal', 'abilityPower', 'resourceValue', 'magicPenetrationFlat',
+        'attackSpeed', 'currentHealth', 'armor', 'magicPenetrationPercent', 'resourceMax', 'resourceRegenRate'])
+```
+
+Therefore, any statistic that's considered an outlier from the interquartile range with respect to a specific timestamp, will cause the model to consider it as an anomaly, and ultimately return a favorable prediction towards victory. In the case of my build, I'm deliberately increasing my movement speed, attack damage, armor penetration, lifesteal, ability power, attack speed, maximum mana (resourceMax) and magic penetration percentage. To make this clearer, I also added 17 levels to my match level, which in turn increased my magic resistance, armor and maximum health. This will "trick" my model into seeing all my values are way above average for the duration of the game I've been playing.
+
+Consequently, the predicted winrate spiked to about 70% and stayed that way during the rest of the match:
+
+![](../images/bought_items.JPG?raw=true)
+
+
+As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score... aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the tens of millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that in this article since prediction times would increase significantly.
+
+![](../images/20.JPG?raw=true)
+
+
+I leave this task (which should be fun enough with all the data you have available in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer)) to you: trying to improve the current model by adding more variables like:
+- Kills
+- Deaths
+- Assists
+- Vision Score
+- Crowd Control score
+- Player level
+
+You're welcome to make an open source contribution to the repository! It's never too late to get into open-source, together with us at Developer Relations @ Oracle.
+
+I really wish you enjoyed reading and learning about League of Legends during this article series, and how we built something truly amazing from scratch in a couple of months.
+
+## How can I get started on OCI?
+
+Remember that you can always sign up for free with OCI! Your Oracle Cloud account provides a number of Always Free services and a Free Trial with US$300 of free credit to use on all eligible OCI services for up to 30 days. These Always Free services are available for an **unlimited** period of time. The Free Trial services may be used until your US$300 of free credits are consumed or the 30 days has expired, whichever comes first. You can [sign up here for free](https://signup.cloud.oracle.com/?source=:ex:tb:::::WWMK211125P00027&SC=:ex:tb:::::WWMK211125P00027&pcode=WWMK211125P00027).
+
+## Join the conversation!
+
+If you’re curious about the goings-on of Oracle Developers in their natural habitat, come join us on our public Slack channel! We don’t mind being your fish bowl 🐠
+
+## License
+
+Written by [Ignacio Guillermo Martínez](https://www.linkedin.com/in/ignacio-g-martinez/) [@jasperan](https://github.com/jasperan), edited by [GreatGhostsss](https://github.com/GreatGhostsss)
+
+Copyright (c) 2021 Oracle and/or its affiliates.
+
+Licensed under the Universal Permissive License (UPL), Version 1.0.
+
+See [LICENSE](../LICENSE) for more details.

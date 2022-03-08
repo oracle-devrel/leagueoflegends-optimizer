@@ -22,7 +22,7 @@ def main():
 
     try:
 
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', heartbeat=600, blocked_connection_timeout=300))
         channel = connection.channel()
 
         # declare queue, in case the receiver is initialized before the producer.
@@ -38,7 +38,7 @@ def main():
         print(' [*] Waiting for messages. To exit press CTRL+C')
         channel.start_consuming()
     except pika.exceptions.StreamLostError:
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', heartbeat=600, blocked_connection_timeout=300))
 
 
 
