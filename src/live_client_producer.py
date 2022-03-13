@@ -25,7 +25,8 @@ pika.ConnectionParameters(
     '{}'.format(args.ip),
     5672,
     '/',
-    credentials))
+    credentials,
+    heartbeat=600, blocked_connection_timeout=300))
 channel = connection.channel()
 
 channel.queue_declare(queue=_MQ_NAME)

@@ -22,7 +22,7 @@ def main():
 
     try:
 
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', heartbeat=600, blocked_connection_timeout=300))
         channel = connection.channel()
 
         # declare queue, in case the receiver is initialized before the producer.
@@ -38,23 +38,13 @@ def main():
         print(' [*] Waiting for messages. To exit press CTRL+C')
         channel.start_consuming()
     except pika.exceptions.StreamLostError:
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost', heartbeat=600, blocked_connection_timeout=300))
 
 
 
 def process_and_predict(input):
 
     json_obj = json.loads(input)
-
-    '''
-    print('{} | Level {} | Current stats: {}'.format(json_obj['activePlayer']['summonerName'], 
-        json_obj['activePlayer']['level'],
-        json_obj['activePlayer']['championStats']))
-    
-    print('{} | Level {}'.format(json_obj['activePlayer']['summonerName'], 
-        json_obj['activePlayer']['level']))
-    '''
-
     team_color = str()
     for x in json_obj['allPlayers']:
         if x['team'] == 'ORDER':
@@ -64,7 +54,7 @@ def process_and_predict(input):
         
         print('Team {}: {}'.format(team_color, x['championName']))
 
-    # Timestamp given by the Live Client API is in thousands of a second from the starting point. (assumption)
+    # Timestamp given by the Live Client API is in thousands of a second from the starting point.
 
     timestamp = int(json_obj['gameData']['gameTime'] * 1000)
     data = [
