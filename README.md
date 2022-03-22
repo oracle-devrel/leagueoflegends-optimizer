@@ -56,7 +56,7 @@ Obtained new summoner: kaito in region br1, queue RANKED_SOLO_5x5
 
 If we get one of these players, we check that their information is correct:
 
-![challenger player](./img/micao.png?raw=true)
+![challenger player](./images/micao.png?raw=true)
 
 
 ```bash
