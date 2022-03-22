@@ -472,7 +472,7 @@ def match_download_detail(db):
 		match_detail = get_match_timeline(x.getContent().get('match_id'), overall_region)
 		if match_detail:
 			db.insert('match_detail', match_detail)
-			# Now, set a processed_1v1 bit in the match
+			# Now, set a processed_5v5 bit in the match in order not to process it again in the future.
 			change_column_value_by_key(db, 'match', 'processed_5v5', 1, x.key)
 
 
