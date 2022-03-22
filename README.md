@@ -133,9 +133,9 @@ To extract live game information, we need to access the Live Client Data API fro
 
 Communications between the CEF and this C++ library happen locally, that's why we're obligated to use localhost as our connection endpoint. You can find additional information about this communication [here.](https://developer.riotgames.com/docs/lol)
 
-You can also refer back to article 4, where I explain the most interesting endpoints that we encounter when using the Live Client Data API. 
+You can also refer back to [article 4](./articles/article4.md), where I explain the most interesting endpoints that we encounter when using the Live Client Data API. 
 
-For this article, we'll use the following endpoint:
+We'll primarily use the following endpoint:
 
 ```python
 # GET https://127.0.0.1:2999/liveclientdata/allgamedata
@@ -149,7 +149,7 @@ When we join a League of Legends game, the League process opens port 2999. We'll
 
 In order to make requests properly, we need to access localhost as the calling endpoint. However, we may not want to access data in a local computer where we are playing (as computer resources should be used to get maximum game performance). For that, I have created an architecture which uses **message queues** and would allow us to make requests from any machine in the Internet.
 
-For this architecture proposal, I've created two files, which you can find in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer) under the src/ section: live_client_producer.py and live_client_receiver.py.
+For this architecture proposal, I've created two files, which you can find in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer): [live_client_producer.py](./src/live_client_producer.py) and [live_client_receiver.py](./src/live_client_receiver.py).
 
 ### Producer
 
@@ -160,7 +160,6 @@ Therefore, we declare the main part of our producer this way:
 ```python
 while True:
     try:
-        # We access the endpoint we mentioned above in the article
         response = requests.get('https://127.0.0.1:2999/liveclientdata/allgamedata', verify=False)
     except requests.exceptions.ConnectionError:
         # Try again every 5 seconds
@@ -230,7 +229,7 @@ As we've built our message queue producer, if we run this while in a game, our e
 
 ### Consumer
 
-In the consumer, we'll connect to the RabbitMQ server (doesn't necessarily have to be located where we run our producer module, it can be anywhere as if it was an Apache web server, you just need to make sure connection in the producer and consumer both point to the same RabbitMQ server's IP address) and make predictions with the light model (trained with 50.000 rows from our original dataset, as using a bigger model would yield higher prediction times) we trained in article 4:
+In the consumer, we'll connect to the RabbitMQ server (doesn't necessarily have to be located where we run our producer module, it can be anywhere as if it was an Apache web server, you just need to make sure connection in the producer and consumer both point to the same RabbitMQ server's IP address) and make predictions with the light model (trained with 50.000 rows from our original dataset, as using a bigger model would yield higher prediction times) we trained in [article 4](./articles/article4.md):
 
 ```python
 # We load the AutoGluon model.
@@ -366,7 +365,7 @@ Consequently, the predicted winrate spiked to about 70% and stayed that way duri
 ![](../images/bought_items.JPG?raw=true)
 
 
-As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score... aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the tens of millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that in this article since prediction times would increase significantly.
+As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score... aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the tens of millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that since prediction times would increase significantly.
 
 ![](../images/20.JPG?raw=true)
 
