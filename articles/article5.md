@@ -13,7 +13,7 @@ The League Client API involves a set of protocols that CEF (Chromium Embedded Fr
 
 ![](https://static.developer.riotgames.com/img/docs/lol/lcu_architecture.png?raw=true)
 
-Communications between the CEF and this C++ library happen locally, that's why we're obligated to use localhost as our connection endpoint. You can find additional information about this communication [here.](https://developer.riotgames.com/docs/lol)
+Communication between the CEF and this C++ library happen locally, so we're obligated to use localhost as our connection endpoint. You can find additional information about this communication [here.](https://developer.riotgames.com/docs/lol)
 
 You can also refer back to article 4, where I explain the most interesting endpoints that we encounter when using the Live Client Data API. 
 
@@ -29,13 +29,13 @@ When we join a League of Legends game, the League process opens port 2999. We'll
 
 ## Architecture
 
-In order to make requests properly, we need to access localhost as the calling endpoint. However, we may not want to access data in a local computer where we are playing (as computer resources should be used to get maximum game performance). For that, I have created an architecture which uses **message queues** and would allow us to make requests from any machine in the Internet.
+In order to make requests properly, we need to access localhost as the calling endpoint. However, we may not want to access data on a local computer where we are playing (as computer resources should be used to get maximum game performance). For that, I have created an architecture which uses **message queues** and would allow us to make requests from any machine in the Internet.
 
 For this architecture proposal, I've created two files, which you can find in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer) under the src/ section: live_client_producer.py and live_client_receiver.py.
 
 ### Producer
 
-The producer is in charge of making requests to localhost and storing them, without making any predictions itself. The idea behind this is to allow the computer where we're playing League to offload and concentrate on playing the match as well as possible, without adding extra complexity caused by making ML predictions (which can take quite a lot of resources).
+The producer is in charge of making requests to localhost and storing them without making any predictions itself. The idea behind this is to allow the computer where we're playing League to offload and concentrate on playing the match as well as possible, without adding extra complexity caused by making ML predictions (which can take quite a lot of resources).
 
 Therefore, we declare the main part of our producer this way:
 
@@ -59,7 +59,7 @@ while True:
 
 We need to consider that, if we're not inside a game, we'll get a ConnectionError exception. To avoid this hardware interrupt, we catch the exception and keep making requests to the endpoint until something useful comes in.
 
-I've chosen **RabbitMQ message queues** a very simple and efficient solution to store our results into a queue. This ensures the following:
+For this, I've chosen **RabbitMQ message queues** a very simple and efficient solution to store our results into a queue. This ensures the following:
 - Accessing and consuming the data present in the queues from any IP address, not only localhost
 - Message order is guaranteed, should we ever need to make a time series visualization of our predictions.
 Therefore, we declare our message queues. 
@@ -79,7 +79,7 @@ channel = connection.channel()
 channel.queue_declare(queue=_MQ_NAME)
 ```
 
-Note that, in the above code snippet, we need to create a __PlainCredentials__ object, otherwise authentication from a public network to our IP address where the producer is located would fail. [Check this article out](https://programmerall.com/article/92801023802/) to learn how to set up the virtual host, authentication and permissions for our newly-created user.
+Note that, in the above code snippet, we need to create a __PlainCredentials__ object, otherwise authentication from a public network to our IP address where the producer is located would fail. [Check this article out](https://programmerall.com/article/92801023802/) to learn how to set up the virtual host, authentication, and permissions for our newly-created user.
 
 Additionally, every object that comes in needs to be processed and 'transformed' into the same structure expected by the ML pipeline:
 
@@ -108,11 +108,11 @@ def send_message(queue_name, message):
     print('{} | MQ {} OK'.format(datetime.datetime.now(), message))
 ```
 
-As we've built our message queue producer, if we run this while in a game, our ever-growing message queue will store messages even if noone decides to "consume" them and make predictions. Now, we need to do exactly this through a **consumer**.
+As we've built our message queue producer, if we run this while in a game, our ever-growing message queue will store messages even if no one decides to "consume" them and make predictions. Now, we need to do exactly this through a **consumer**.
 
 ### Consumer
 
-In the consumer, we'll connect to the RabbitMQ server (doesn't necessarily have to be located where we run our producer module, it can be anywhere as if it was an Apache web server, you just need to make sure connection in the producer and consumer both point to the same RabbitMQ server's IP address) and make predictions with the light model (trained with 50.000 rows from our original dataset, as using a bigger model would yield higher prediction times) we trained in article 4:
+In the consumer, we'll connect to the RabbitMQ server. This server doesn't necessarily need to be located where we run our producer module. It can be anywhere just like if it was an Apache web server. Just be sure to that the connection in the producer and consumer both point to the same server IP address for RabbitMQ. We'll make predictions with the light model (trained with 50.000 rows from our original dataset, as using a bigger model would yield higher prediction times) we trained in article 4:
 
 ```python
 # We load the AutoGluon model.
@@ -143,7 +143,7 @@ def main():
 
 Note: if you run into 'connection reset' error, [check out this documentation piece on pika](https://pika.readthedocs.io/en/stable/examples/heartbeat_and_blocked_timeouts.html) which adds some parameters to the pika ConnectionParameters object to ensure well-behaved connections.
 
-And, every time we consume a message from the queue, we predict the outcome using our AutoGluon model, by calling **process_and_predict**:
+Every time we consume a message from the queue, we predict the outcome using our AutoGluon model, by calling **process_and_predict**:
 
 ```python
 def process_and_predict(input):
@@ -201,7 +201,7 @@ def process_and_predict(input):
     ))
 ```
 
-And that's the last code piece we need for everything to work. Now, we can get into a game and run our producer code (in the machine where we play the League match) and the consumer (simultaneously, although not necessary) to get real-time predictions on the game.
+And that's the last piece of code we need for everything to work. Now, we can get into a game and run our producer code (in the machine where we play the League match) and the consumer (simultaneously, although not necessary) to get real-time predictions on the game.
 
 ## The Setup
 
@@ -216,7 +216,7 @@ python live_client_receiver.py --ip="RABBITMQ_IP_ADDRESS" -p="MODEL_PATH"
 
 ## The Game!
 
-Since I'm using a lightweight model to make predictions, and training data is only 50000 rows, I'm expecting results to be roughly inaccurate. Therefore, to make things obvious and demonstrate the functionality, I've chosen to play a League match in the practice tool against an AI bot. This will allow me to level up quickly and buy items with lent out gold from the practice tool, something that would take me about 30 to 35 minutes in a real match. 
+Since I'm using a lightweight model to make predictions, and training data is only 50000 rows, I'm expecting results to be roughly inaccurate. Therefore, to make things obvious and demonstrate the functionality, I've chosen to play a League match in the practice tool against an AI bot. This will allow me to level up quickly and buy items with gold from the practice tool, something that would take me about 30 to 35 minutes in a real match. 
 
 I chose to play Ezreal and bought a standard hybrid AD-AP build, which is especially good in lategame as cooldown reduction makes you a monster and it'd be really hard for enemies to catch me offguard with my E. 
 
@@ -224,7 +224,7 @@ From the producer's POV, we're making requests every 30 seconds and expecting a 
 
 ![](../images/producerdebug.JPG?raw=true)
 
-As we start the game, we get a very average 60/40% winrate probability. This is due to the fact that Ezreal is usually superior in early game compared to Miss Fortune if we keep our distance. As training data comes from real Masters+ players, usually games are very quiet at the beginning and players perform very safely until mid game. Therefore, it makes sense that Ezreal starts with a bigger win percentage probability.
+As we start the game, we get a very average 60/40% winrate probability. This is because Ezreal is usually superior in early game compared to Miss Fortune if we keep our distance. As training data comes from real Masters+ players, usually games are very quiet at the beginning and players perform very safely until midgame. Therefore, it makes sense that Ezreal starts with a bigger win percentage probability.
 
 ![](../images/started_game.JPG?raw=true)
 
@@ -241,17 +241,15 @@ sample_df = pd.DataFrame([data], columns=['magicResist', 'healthRegenRate', 'spe
         'attackSpeed', 'currentHealth', 'armor', 'magicPenetrationPercent', 'resourceMax', 'resourceRegenRate'])
 ```
 
-Therefore, any statistic that's considered an outlier from the interquartile range with respect to a specific timestamp, will cause the model to consider it as an anomaly, and ultimately return a favorable prediction towards victory. In the case of my build, I'm deliberately increasing my movement speed, attack damage, armor penetration, lifesteal, ability power, attack speed, maximum mana (resourceMax) and magic penetration percentage. To make this clearer, I also added 17 levels to my match level, which in turn increased my magic resistance, armor and maximum health. This will "trick" my model into seeing all my values are way above average for the duration of the game I've been playing.
+Therefore, any statistic that's considered an outlier from the interquartile range with respect to a specific timestamp will cause the model to consider it as an anomaly, and ultimately return a favorable prediction towards victory. In the case of my build, I'm deliberately increasing my movement speed, attack damage, armor penetration, lifesteal, ability power, attack speed, maximum mana (resourceMax), and magic penetration percentage. To make this clearer, I also added 17 levels to my match level, which in turn increased my magic resistance, armor and maximum health. This will "trick" my model into seeing all my values are way above average for the duration of the game I've been playing.
 
 Consequently, the predicted winrate spiked to about 70% and stayed that way during the rest of the match:
 
 ![](../images/bought_items.JPG?raw=true)
 
-
-As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score... aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the tens of millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that in this article since prediction times would increase significantly.
+As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score, etc. aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the tens of millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that in this article since prediction times would increase significantly.
 
 ![](../images/20.JPG?raw=true)
-
 
 I leave this task (which should be fun enough with all the data you have available in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer)) to you: trying to improve the current model by adding more variables like:
 - Kills
@@ -261,24 +259,24 @@ I leave this task (which should be fun enough with all the data you have availab
 - Crowd Control score
 - Player level
 
-You're welcome to make an open source contribution to the repository! It's never too late to get into open-source, together with us at Developer Relations @ Oracle.
+You're welcome to make an open source contribution to the repository! It's never too late to get into open-source with us at Developer Relations @ Oracle.
 
-I really wish you enjoyed reading and learning about League of Legends during this article series, and how we built something truly amazing from scratch in a couple of months.
+I really hope tgat you enjoyed reading and learning about League of Legends in this article series. We built something truly amazing from scratch in a couple of months.
 
 ## How can I get started on OCI?
 
-Remember that you can always sign up for free with OCI! Your Oracle Cloud account provides a number of Always Free services and a Free Trial with US$300 of free credit to use on all eligible OCI services for up to 30 days. These Always Free services are available for an **unlimited** period of time. The Free Trial services may be used until your US$300 of free credits are consumed or the 30 days has expired, whichever comes first. You can [sign up here for free](https://signup.cloud.oracle.com/?source=:ex:tb:::::WWMK211125P00027&SC=:ex:tb:::::WWMK211125P00027&pcode=WWMK211125P00027).
+Remember that you can always sign up for free with OCI! Your Oracle Cloud account provides a number of Always Free services and a Free Trial with US$300 of free credit to use on all eligible OCI services for up to 30 days. These Always Free services are available for an **unlimited** period of time. The Free Trial services may be used until your US$300 of free credits are consumed or the 30 days has expired, whichever comes first. You can [sign up here for free](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:te::::&intcmp=:ow:de:te::::).
 
 ## Join the conversation!
 
-If you’re curious about the goings-on of Oracle Developers in their natural habitat, come join us on our public Slack channel! We don’t mind being your fish bowl 🐠
+If you’re curious about the goings-on of Oracle Developers in their natural habitat, come [join us on our public Slack channel](https://join.slack.com/t/oracledevrel/shared_invite/zt-uffjmwh3-ksmv2ii9YxSkc6IpbokL1g?customTrackingParam=:ow:de:te::::RC_WWMK220210P00062:Medium_nachoLoL5)! We don’t mind being your fish bowl 🐠
 
 ## License
 
-Written by [Ignacio Guillermo Martínez](https://www.linkedin.com/in/ignacio-g-martinez/) [@jasperan](https://github.com/jasperan), edited by [GreatGhostsss](https://github.com/GreatGhostsss)
+Written by [Ignacio Guillermo Martínez](https://www.linkedin.com/in/ignacio-g-martinez/) [@jasperan](https://github.com/jasperan), edited by [Erin Dawson](https://www.linkedin.com/in/dawsontech/)
 
 Copyright (c) 2021 Oracle and/or its affiliates.
 
 Licensed under the Universal Permissive License (UPL), Version 1.0.
 
-See [LICENSE](../LICENSE) for more details.
+See [LICENSE](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/main/LICENSE) for more details.
