@@ -230,7 +230,7 @@ As we start the game, we get a very average 60/40% winrate probability. This is 
 
 After starting the game, since we're in the practice tool, I chose to go full-build and buy all items from the shop (the standard AD-AP build).
 
-![Game 1]https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/main/images/game1.JPG?raw=true)
+![Game 1](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/main/images/game1.JPG?raw=true)
 
 Immediately after the next request, the HTTP request fed the model my current stats, which were severely overpowered for the beginning of the game. If we review the statistics that are taken into account by our model, they are:
 
