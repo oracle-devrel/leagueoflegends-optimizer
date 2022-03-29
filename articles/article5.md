@@ -222,15 +222,15 @@ I chose to play Ezreal and bought a standard hybrid AD-AP build, which is especi
 
 From the producer's POV, we're making requests every 30 seconds and expecting a prediction. This is the kind of data we're storing in, and then consuming from our message queue:
 
-![](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/images/producerdebug.JPG?raw=true)
+![Producer Debug](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/main/images/producerdebug.JPG?raw=true)
 
 As we start the game, we get a very average 60/40% winrate probability. This is because Ezreal is usually superior in early game compared to Miss Fortune if we keep our distance. As training data comes from real Masters+ players, usually games are very quiet at the beginning and players perform very safely until midgame. Therefore, it makes sense that Ezreal starts with a bigger win percentage probability.
 
-![](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/images/started_game.JPG?raw=true)
+![Started Game](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/main/images/started_game.JPG?raw=true)
 
 After starting the game, since we're in the practice tool, I chose to go full-build and buy all items from the shop (the standard AD-AP build).
 
-![](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/images/game1.JPG?raw=true)
+![Game 1](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/main/images/game1.JPG?raw=true)
 
 Immediately after the next request, the HTTP request fed the model my current stats, which were severely overpowered for the beginning of the game. If we review the statistics that are taken into account by our model, they are:
 
@@ -245,11 +245,11 @@ Therefore, any statistic that's considered an outlier from the interquartile ran
 
 Consequently, the predicted winrate spiked to about 70% and stayed that way during the rest of the match:
 
-![](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/images/bought_items.JPG?raw=true)
+![Bought Items](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/main/images/bought_items.JPG?raw=true)
 
 As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score, etc. aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the tens of millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that in this article since prediction times would increase significantly.
 
-![](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/images/20.JPG?raw=true)
+![20](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/main/images/20.JPG?raw=true)
 
 I leave this task (which should be fun enough with all the data you have available in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer)) to you: trying to improve the current model by adding more variables like:
 - Kills
