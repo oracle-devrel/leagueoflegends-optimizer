@@ -5,7 +5,6 @@ import yaml
 import datetime
 import pandas as pd
 import time
-import cx_Oracle
 import os
 from pathlib import Path
 import argparse
@@ -14,8 +13,8 @@ home = str(Path.home())
 import sys
 p = os.path.abspath('..')
 sys.path.insert(1, p) # add parent directory to path.
-from utils.oracledb import OracleJSONDatabaseThinConnection, OracleJSONDatabaseThickConnection
-
+from utils.oracle_database import OracleJSONDatabaseThinConnection, OracleJSONDatabaseThickConnection
+import oracledb.exceptions
 # parse arguments for different execution modes.
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--mode', help='Mode to execute',
@@ -320,7 +319,7 @@ def get_top_players(region, queue, db):
 			else:
 				print('Summoner {} already inserted'.format(x['summonerName']))
 				continue
-		except cx_Oracle.IntegrityError:
+		except oracledb.exceptions.IntegrityError:
 			print('Summoner {} already inserted'.format(x['summonerName']))
 			continue
 	
@@ -401,7 +400,7 @@ def extract_matches(region, match_id, db, key):
 			}
 			try:
 				db.insert('matchups', to_insert_obj)
-			except cx_Oracle.IntegrityError:
+			except oracledb.exceptions.IntegrityError:
 				print('Match details {} already inserted'.format(to_insert_obj.get('p_match_id')))
 				continue
 			print('Inserted new matchup with ID {} in region {}'.format('{}_{}'.format(match_id, x), region))
@@ -442,7 +441,7 @@ def match_list(db):
 				for i in z_match_ids:
 					try:
 						collection_match.insertOne(i)
-					except cx_Oracle.IntegrityError:
+					except oracledb.exceptions.IntegrityError:
 						print('Match ID {} already inserted'.format(i))
 						continue
 					print('Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(i['match_id'],
