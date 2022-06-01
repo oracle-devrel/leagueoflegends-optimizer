@@ -14,7 +14,7 @@ home = str(Path.home())
 import sys
 p = os.path.abspath('..')
 sys.path.insert(1, p) # add parent directory to path.
-from utils.oracledb import OracleJSONDatabaseConnection
+from utils.oracledb import OracleJSONDatabaseThinConnection, OracleJSONDatabaseThickConnection
 
 # parse arguments for different execution modes.
 parser = argparse.ArgumentParser()
@@ -712,7 +712,7 @@ def data_mine(db):
 
 
 def main():
-	db = OracleJSONDatabaseConnection()
+	db = OracleJSONDatabaseThickConnection()
 	data_mine(db)
 	db.close_pool()
 
