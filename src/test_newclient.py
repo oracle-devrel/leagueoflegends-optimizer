@@ -15,9 +15,10 @@ if platform.system() == "Windows":
 # You must always call init_oracle_client() to use thick mode in any platform
 oracledb.init_oracle_client(lib_dir=instant_client_dir)
 
-un = 'admin'
-pw = 'Welcome1#Welcome1#'
-cs = """(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.eu-frankfurt-1.oraclecloud.com))(connect_data=(service_name=g2f4dc3e5463897_esportsdb_tpurgent.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)(ssl_server_cert_dn="CN=adwc.eucom-central-1.oraclecloud.com, OU=Oracle BMCS FRANKFURT, O=Oracle Corporation, L=Redwood City, ST=California, C=US")))"""
+un = 'INSERT YOUR USERNAME HERE'
+pw = 'INSERT YOUR PASSWORD HERE'
+# also insert your connection string here with this format!
+cs = """(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=............rnia, C=US")))"""
 
 connection = oracledb.connect(user=un, password=pw, dsn=cs)
 cursor = connection.cursor()
