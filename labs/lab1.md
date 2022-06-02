@@ -38,9 +38,93 @@ We'll also need to create an autonomous database. We'll use it as our storage fo
 
 To create an autonomous database, [follow the steps in this video](https://www.youtube.com/watch?v=JOcmoXE1zqY).
 
+After creating the autonomous database, you should have access to this panel in OCI:
+
+![menu](../images/lab1-menu.PNG)
+
+At the panel, we're going to modify a couple of network settings to allow us to connect using TLS instead of m-TLS (mutual TLS). Long story short, using TLS instead of mTLS will make the task of connecting to the database easier (and additionally, it makes it possible to connect and use the __python-oracledb__ thin client if we want to, instead of only using the Thick client). Note that activating TLS as the authentication mechanism doesn't restrict us from connecting using mTLS still, it just expands our possibilities of connecting
+    Note: mTLS will use port 1522 by default and TLS will use port 1521. If you're in a machine with firewall activated, make sure that ingress/egress packets are possible for those ports.
+
+So, we will need to modify the Access Control List (ACL) to allow our own IP address to connect to the database (or whichever IP you want). In my case, I've added the most unrestrictive CIDR block, so that anyone can make a request with the proper username/password/connection string, by adding the CIDR block 0.0.0.0/0 (all IPs):
+
+![acl](../images/lab1-acl.PNG)
+
+
+And finally, disable the parameter that "requires" us to connect through mTLS, and make TLS authentication also possible:
+
+![tls](../images/lab1-tls.PNG)
+
+Finally, after the database has finished updating, we can access the "DB Connection" section on top, and get our connection strings:
+
+![database connection](../images/lab1-dbconnection.PNG)
+
+Note that we want our TLS connection strings (not mTLS connection strings) as they are different.
+
+![TLS connection strings](../images/lab1-connectionstrings.PNG)
+
+You can use any of the connection strings available, just note that the __tpurgent__ connection strings supports parallel calls and many more operations per second compared to all other connection strings. It's reserved for urgent operations, but since we're the only ones who are going to use the database, and just for this use case, let's not worry about prioritizing our tasks for now.
+
+So, in my case, an example connection string would be:
+
+```bash
+(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=XXXXXXXXXXXX))(connect_data=(service_name=XXXXXXXXXXXXXXXX))(security=(ssl_server_dn_match=yes)(ssl_server_cert_dn="CN=XXXXXXXXXXXXX, OU=XXXXX, O=XXXXX XXXXXX, L=Redwood XXXXX, ST=XXXX, C=XXXX")))
+```
+Let's make note of this as well, as we'll need to add this to our configuration file as well.
+
+### Downloading Instant Client
+
+As we're going to want to connect to our newly created Autonomous Database, we also need to consider the supporting Oracle packages required to support this connection. This is facilitated by Oracle Instant Client, which we'll need to install. 
+
+Depending on the Operating System where you are, you'll need to download your respective binary files from [this link](https://www.oracle.com/database/technologies/instant-client/downloads.html). After installing instant client, we'll need to unzip into a directory (and remember this directory, we'll need to use it as a configuration parameter). 
+
+In the end, your installation should look something like this:
+
+![instant client](../images/lab1-instantclient.PNG)
+
+And, in my case, my path to my instant client installation is:
+
+```bash
+D:\Programs\instantclient
+```
+Which is what we'll use in our configuration file soon.
+
+### Downloading Wallet
+
+After setting up the Autonomous Database, we need to download the client credentials (required by design for mTLS connections). 
+
+After downloading it, we'll copy all the contents that we found inside our Instant Client installation folder.
+
+Recalling the directory:
+
+```bash
+D:\Programs\instantclient
+```
+
+So, in my case, I'd paste the contents of the wallet into:
+
+```bash
+D:\Programs\instantclient\network\admin\
+```
+
+Finally, I'll modify the contents of **sqlnet.ora** to make sure that the Python thick client can find the files it needs to connect through mTLS. 
+
+By default, the file has these contents:
+
+```bash
+WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="?/network/admin")))
+SSL_SERVER_DN_MATCH=yes
+```
+
+I'll replace this with the specified directory where my wallet has been placed, and leave no place for error:
+
+```bash
+WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="D:/Programs/instantclient/network/admin")))
+SSL_SERVER_DN_MATCH=yes
+```
+
 ## Getting Started
 
-1. We'll also need to obtain a Riot Games API key [from the official Riot Games Developer website.](https://developer.riotgames.com/) For that, you need to create a League of Legends account (if you don't have one already) and ask for a development API key.
+1. We'll also need to obtain a Riot Games API key [from the official Riot Games Developer website.](https://developer.riotgames.com/) For that, you need to create a League of Legends account (if you don't have one already) and ask for a development API key. Note that if you're planning to develop a League of Legends project out of this repository, you can also apply for a production API key which has a longer expiration date, as well as more requests per minute.
 
 ![login to your league account](../images/lab1-login.PNG)
 
@@ -51,13 +135,54 @@ To create an autonomous database, [follow the steps in this video](https://www.y
 3. After having the API key, we need to create a hidden file in the repository called config.yaml. This file shall contain configuration variables like our API key. This is the format that's been configured in the YAML file in order to be properly parsed inside [the main code of this repository](../src/league.py):
 
 ![yaml file structure](../images/lab1-yaml.PNG)
-    This file considers that we're using the __cx_Oracle__ Python client to connect to the Autonomous Database. If you're planning on developing a custom Python class and extend the functionalities of this repository, consider using the newest Python thin client to connect to the database, which doesn't require downloading a wallet and its credentials. [Here's the link to the official documentation.](https://python-oracledb.readthedocs.io/en/latest/user_guide/installation.html#quickstart)
+    This file considers that we're using the latest __python-oracledb__ thin/thick Python client to connect to the Autonomous Database. [Here's the link to the official documentation.](https://python-oracledb.readthedocs.io/en/latest/user_guide/installation.html#quickstart)
 
-For that, 
+4. To check the validity of our YAML file settings, we can run [a sample program](../src/test_newclient.py) against the database, to check whether we can connect to it successfully or not.
 
+```bash
+cd src/
+python test_newclient.py 
+# this will return the current date if you were able to successfully connect to the database.
+>>> (datetime.datetime(2022, 6, 1, 21, 11, 40)) # when I executed it.
+```
 
+5. After checking that we can successfully connect to the database, it's time to get started with the cool stuff.
+
+## Interacting with leagueoflegends-optimizer
+
+If we want to build an AI/ML model, we need data. For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [league.py](../src/league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode. 
+
+At the time of writing, the following execution modes are available:
+- player_list: gets the top players from a region and adds them automatically to our database. This includes players above master's elo in League of Legends (really good players), which is the kind of data we want if we're going to build a reliable ML model.
+- match_list: from all users already present in the database, extract their last 999 matches (capped at 999 by Riot Games), or get as many as there are, with the IDs from each one of the games.
+- match_download_standard: for every ID in the __match__ collection, get some information about them. This yields data useful to make a 1v1 predictor.
+- match_download_detail: for every ID in the __match__ collection, get some global information. This yields data useful to make a 5v5 predictor. It inserts the new data into the __match_detail__ collection.
+- process_predictor: uses the __match_detail__ collection and processes the data to build a pandas-friendly object. Aims to predict a win(1) or a loss(0)
+- process_predictor_liveclient: similar to process_predictor, but it has the same column names as the ones we can find in the LiveClient API (what gives us **real-time data**, which means, what we'll be able to use in the end to make real-time predictions)
+- process_regressor: similar to process_predictor, but instead of trying to create a classifier model, it attempts to predict winning probability [0,1].
+- process_regressor_liveclient: similar to process_regressor, but with LiveClient API-compatible names.
+- Default mode, which basically performs: player_list -> match_list -> match_download_standard -> match_download_detail.
 
 ## Extracting Data / Generating Dataset
+
+To extract player data, we can run:
+
+```bash
+λ python league.py --mode "player_list"
+>>> Connection successful.
+>>> Region: br1 | Tier: CHALLENGER | Queue: RANKED_SOLO_5x5 | Total Players: 200
+>>> Region: br1 | Tier: GRANDMASTER | Queue: RANKED_SOLO_5x5 | Total Players: 500
+>>> Region: br1 | Tier: MASTER | Queue: RANKED_SOLO_5x5 | Total Players: 3733 
+```
+This execution mode will iteratively look for League of Legends leaderboards in every region in the world, and insert these players' information into our database. If the user has already been inserted, it will prevent re-insertion. 
+    Note: if a user changes their in-game name, the next time the code runs, their new name will be updated in the database. (This is achieved by using their PUUID, a very long identifier instead of their in-game name to identify every player).
+
+To extract match data from our pool of players in the database, we can do this:
+
+```bash
+
+```
+
 
 ### Obtaining Player Data
 
