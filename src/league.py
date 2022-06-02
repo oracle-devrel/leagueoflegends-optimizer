@@ -1,5 +1,6 @@
 # Copyright (c) 2021 Oracle and/or its affiliates.
 
+from attr import Attribute
 import requests
 import yaml
 import datetime
@@ -586,31 +587,36 @@ def build_final_object_liveclient(json_object):
 
 		for y in range(1, 11):
 			frame = {
-				"timestamp": x.get('timestamp')
+				'timestamp': x.get('timestamp')
 			}
-			frame['abilityPower'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('abilityPower')
-			frame['armor'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armor')
-			frame['armorPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPen')
-			frame['armorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPenPercent')
-			frame['attackDamage'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackDamage')
-			frame['attackSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackSpeed')
-			frame['bonusArmorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusArmorPenPercent')
-			frame['bonusMagicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusMagicPenPercent')
-			frame['cooldownReduction'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('cooldownReduction')
-			frame['currentHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('health')
-			frame['maxHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthMax')
-			frame['healthRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthRegen')
-			frame['lifesteal'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('lifesteal')
-			frame['magicPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPen')
-			frame['magicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPenPercent')
-			frame['magicResist'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicResist')
-			frame['moveSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('movementSpeed')
-			frame['resourceValue'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('power')
-			frame['resourceMax'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerMax')
-			frame['resourceRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerRegen')
-			frame['spellVamp'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('spellVamp')
+			try:
+				frame['abilityPower'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('abilityPower')
+				frame['armor'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armor')
+				frame['armorPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPen')
+				frame['armorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPenPercent')
+				frame['attackDamage'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackDamage')
+				frame['attackSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackSpeed')
+				frame['bonusArmorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusArmorPenPercent')
+				frame['bonusMagicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusMagicPenPercent')
+				frame['cooldownReduction'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('cooldownReduction')
+				frame['currentHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('health')
+				frame['maxHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthMax')
+				frame['healthRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthRegen')
+				frame['lifesteal'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('lifesteal')
+				frame['magicPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPen')
+				frame['magicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPenPercent')
+				frame['magicResist'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicResist')
+				frame['moveSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('movementSpeed')
+				frame['resourceValue'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('power')
+				frame['resourceMax'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerMax')
+				frame['resourceRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerRegen')
+				frame['spellVamp'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('spellVamp')
+				frame['identifier'] = '{}_{}'.format(match_id, x.get('participantFrames').get('{}'.format(y)).get('participantId'))
+			except AttributeError as e:
+				print('[DBG] LIVECLIENT BUILDING OBJECT FAILED: {}'.format(e))
+				# if there's a problem with a frame, skip this iteration
+				return list()
 
-			frame['identifier'] = '{}_{}'.format(match_id, x.get('participantFrames').get('{}'.format(y)).get('participantId'))
 
 			if winner == 100:
 				if y in (1,2,3,4,5):
