@@ -1,5 +1,9 @@
 # Copyright (c) 2021 Oracle and/or its affiliates.
 
+# this file uses a database connection with the old cx_Oracle library
+# now, check out python-oracledb module for more updated functionalities.
+
+
 # This code updates the summoner names given their encrypted summoner Ids.
 import yaml
 import cx_Oracle
