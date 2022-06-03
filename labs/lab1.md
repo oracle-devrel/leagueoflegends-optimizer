@@ -2,9 +2,10 @@
 
 ## Introduction
 
-Welcome to this hands-on lab, where we'll talk about how we can leverage the power of AI into League of Legends into a unique an innovative way. We'll do a deep dive into the data that we can extract from the game's API, as well as how to structure this data and how to use it in a Machine Learning model.
+Welcome to this hands-on lab, where we'll talk about how we can leverage the power of AI with League of Legends in a unique an innovative way. We'll do a deep dive into the extractable data through the game's API, as well as how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
 
-TODO IMG
+![Bought Items](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/main/images/bought_items.JPG?raw=true)
+G
 
 The above image represents the final functionality of [this repository](https://github.com/oracle-devrel/leagueoflegends-optimizer), where we're able to use our already-trained ML model to make real-time predictions about our in-game performances. 
 
@@ -43,7 +44,7 @@ After creating the autonomous database, you should have access to this panel in 
 ![menu](../images/lab1-menu.PNG)
 
 At the panel, we're going to modify a couple of network settings to allow us to connect using TLS instead of m-TLS (mutual TLS). Long story short, using TLS instead of mTLS will make the task of connecting to the database easier (and additionally, it makes it possible to connect and use the __python-oracledb__ thin client if we want to, instead of only using the Thick client). Note that activating TLS as the authentication mechanism doesn't restrict us from connecting using mTLS still, it just expands our possibilities of connecting
-    Note: mTLS will use port 1522 by default and TLS will use port 1521. If you're in a machine with firewall activated, make sure that ingress/egress packets are possible for those ports.
+    **Note**: mTLS will use port 1522 by default and TLS will use port 1521. If you're in a machine with firewall activated, make sure that in/egress firewall rules are suited for those ports.
 
 So, we will need to modify the Access Control List (ACL) to allow our own IP address to connect to the database (or whichever IP you want). In my case, I've added the most unrestrictive CIDR block, so that anyone can make a request with the proper username/password/connection string, by adding the CIDR block 0.0.0.0/0 (all IPs):
 
@@ -69,24 +70,24 @@ So, in my case, an example connection string would be:
 ```bash
 (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=XXXXXXXXXXXX))(connect_data=(service_name=XXXXXXXXXXXXXXXX))(security=(ssl_server_dn_match=yes)(ssl_server_cert_dn="CN=XXXXXXXXXXXXX, OU=XXXXX, O=XXXXX XXXXXX, L=Redwood XXXXX, ST=XXXX, C=XXXX")))
 ```
-Let's make note of this as well, as we'll need to add this to our configuration file as well.
+Let's make note of this as well, as we'll need to add this to our configuration file later on.
 
 ### Downloading Instant Client
 
 As we're going to want to connect to our newly created Autonomous Database, we also need to consider the supporting Oracle packages required to support this connection. This is facilitated by Oracle Instant Client, which we'll need to install. 
 
-Depending on the Operating System where you are, you'll need to download your respective binary files from [this link](https://www.oracle.com/database/technologies/instant-client/downloads.html). After installing instant client, we'll need to unzip into a directory (and remember this directory, we'll need to use it as a configuration parameter). 
+Depending on the Operating System where you are, you'll need to download your respective binary files from [this link](https://www.oracle.com/database/technologies/instant-client/downloads.html). After installing Instant Client, we'll need to unzip the file into a directory (and remember the directory in which we put the unzipped file, we'll need to use it as a configuration parameter). 
 
 In the end, your installation should look something like this:
 
 ![instant client](../images/lab1-instantclient.PNG)
 
-And, in my case, my path to my instant client installation is:
+And, in my case, my path to my instant client installation would be:
 
 ```bash
 D:\Programs\instantclient
 ```
-Which is what we'll use in our configuration file soon.
+Which is what we'll use in our configuration file.
 
 ### Downloading Wallet
 
@@ -155,7 +156,7 @@ If we want to build an AI/ML model, we need data. For that, Riot Games has provi
 
 At the time of writing, the following execution modes are available:
 - **player_list**: gets the top players from a region and adds them automatically to our database. This includes players above master's elo in League of Legends (really good players), which is the kind of data we want if we're going to build a reliable ML model.
-- **match_list**: from all users already present in the database, extract their last 999 matches (capped at 999 by Riot Games), or get as many as there are, with the IDs from each one of the games.
+- **match_list**: from all users already present in the database, extract their last 999 matches, or get as many as there are, with the IDs from each one of the games.
 - **match_download_standard**: for every ID in the __match__ collection, get some information about them. This yields data useful to make a 1v1 predictor.
 - **match_download_detail**: for every ID in the __match__ collection, get some global information. This yields data useful to make a 5v5 predictor. It inserts the new data into the __match_detail__ collection.
 - **process_predictor**: uses the __match_detail__ collection and processes the data to build a pandas-friendly object. Aims to predict a win(1) or a loss(0)
@@ -166,6 +167,11 @@ At the time of writing, the following execution modes are available:
 
 ## Extracting Data / Generating Dataset
 
+There are two components we need to consider in our flow:
+1. Training process: for this, we need to access historical data, and train a model based on this data.
+2. Testing process: for this, we need to have a model that's already been trained, and make incoming (new, live) predictions against the model.
+
+#### Player Data
 To extract player data, we can run:
 
 ```bash
@@ -174,18 +180,138 @@ To extract player data, we can run:
 >>> Region: br1 | Tier: CHALLENGER | Queue: RANKED_SOLO_5x5 | Total Players: 200
 >>> Region: br1 | Tier: GRANDMASTER | Queue: RANKED_SOLO_5x5 | Total Players: 500
 >>> Region: br1 | Tier: MASTER | Queue: RANKED_SOLO_5x5 | Total Players: 3733 
+>>> ...
 ```
 This execution mode will iteratively look for League of Legends leaderboards in every region in the world, and insert these players' information into our database. If the user has already been inserted, it will prevent re-insertion. 
-    Note: if a user changes their in-game name, the next time the code runs, their new name will be updated in the database. (This is achieved by using their PUUID, a very long identifier instead of their in-game name to identify every player).
+    **Note**: if a user changes their in-game name, the next time the code runs, their new name will be updated in the database. (This is achieved by using their PUUID, a very long identifier instead of their in-game name to identify every player).
 
-To extract match data from our pool of players in the database, we can do this:
+#### Players' Match History Data
+To extract previously played matches' IDs from our pool of players in the database, we can do this:
 
 ```bash
+λ python league.py --mode="match_list"
+>>> Connection successful.
+>>> @get_n_match_ids: obtained 0 matches from region europe
+>>> @get_n_match_ids: obtained 0 matches from region europe
+>>> @get_n_match_ids: obtained 0 matches from region americas
+>>> @get_n_match_ids: obtained 0 matches from region americas
+>>> @get_n_match_ids: obtained 0 matches from region asia
+>>> @get_n_match_ids: obtained 0 matches from region asia
+>>> @get_n_match_ids: obtained 0 matches from region europe
+>>> @get_n_match_ids: obtained 0 matches from region europe
+>>> @get_n_match_ids: obtained 269 matches from region americas
+>>> Inserted new match with ID BR1_2410397628 from summoner Josedeodo2 in region americas, queue ranked
+>>> Inserted new match with ID BR1_2399292144 from summoner Josedeodo2 in region americas, queue ranked
+>>> Match ID {'match_id': 'BR1_2392375868'} already inserted
+>>> ...
+```
+It finds matches played by every player in our database, in every region. This allows us to obtain more matches per player, in case the player travels abroad from their original region, e.g. to compete internationally.
 
+**Note**: this only extracts Match IDs. Processing these IDs is done in the next section
+
+### Download Match Details by ID
+
+For that, we use the collection __match_detail__. We can process all matches in our current database (found in collection __match__) by executing:
+
+```bash
+λ python league.py --mode="match_download_detail"
+>>> Connection successful.
+# it will then start extracting match information.
+# each match contains a huge amount of information, so I'm not putting any examples here, but you'll see when you execute.
 ```
 
+This gives us timestamped information about what occurred in each game, in thorough detail. From this, we can build an object with all variables that can be useful in our model. For that, 
 
-### Obtaining Player Data
 
-### Obtain Players' Match History Data
+### Building Data Object for ML
+
+We'll use the execution mode __process_predictor_liveclient__. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
+
+[Here you can find the builder object, to check the set of variables that were considered for the model.](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/1/src/league.py#L568)
+
+Here's how to build the object:
+
+```bash
+λ python league.py --mode="process_predictor_liveclient"
+>>> Connection successful.
+>>> Total match_detail documents (to process): 106448
+# resilient to errors, deleted match IDs, etc...
+>>> [DBG] ERR MATCH_ID RETRIEVAL: {'status': {'message': 'Data not found - match file not found', 'status_code': 404}}
+>>> [DBG] ERR MATCH_ID RETRIEVAL: {'status': {'message': 'Service unavailable', 'status_code': 503}}
+# will skip invalid matches
+>>> [DBG] LIVECLIENT BUILDING OBJECT FAILED: 'NoneType' object has no attribute 'get'
+# and insert the ones who are well-formed.
+>>> [DBG] INSERT {'timestamp': 0, 'abilityPower': 0, 'armor': 28, 'armorPenetrationFlat': 0, 'armorPenetrationPercent': 0, 'attackDamage': 25, 'attackSpeed': 100, 'bonusArmorPenetrationPercent': 0, 'bonusMagicPenetrationPercent': 0, 'cooldown
+Reduction': 0, 'currentHealth': 590, 'maxHealth': 590, 'healthRegenRate': 0, 'lifesteal': 0, 'magicPenetrationFlat': 0, 'magicPenetrationPercent': 0, 'magicResist': 32, 'moveSpeed': 335, 'resourceValue': 320, 'resourceMax': 320, 'resource
+RegenRate': 0, 'spellVamp': 0, 'identifier': 'LA2_1049963085_1', 'winner': 0} OK
+```
+
+## Live Client API
+
+To extract live game information, we need to access the Live Client Data API from Riot Games.
+
+The League Client API involves a set of protocols that CEF (Chromium Embedded Framework) uses to communicate between the League of Legends process and a C++ library.
+
+![](https://static.developer.riotgames.com/img/docs/lol/lcu_architecture.png?raw=true)
+
+Communication between the CEF and this C++ library happen locally, so we're obligated to use localhost as our connection endpoint. You can find additional information about this communication [here.](https://developer.riotgames.com/docs/lol)
+
+You can also refer back to [article 4](../articles/article4.md), where I explain the most interesting endpoints that we encounter when using the Live Client Data API. 
+
+For this article, we'll use the following endpoint:
+
+```python
+# GET https://127.0.0.1:2999/liveclientdata/allgamedata
+# Sample output can be found in the following URL, if interested. https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json
+# This endpoint encapsulates all other endpoints into one.
+```
+
+When we join a League of Legends game, the League process opens port 2999. We'll use this to our advantage and we'll make recurring requests to localhost:2999 to extract live match information.
+
+### Testing the Live Client API
+
+If you want to test the Live Client API, you'll need to create a League of Legends match:
+
+![league loading screen](../images/lab1-league1.PNG)
+
+After clicking on "play", we'll create a custom match and set to play against an AI bot:
+
+![creating match](../images/lab1-league2.PNG)
+
+![creating match 2](../images/lab1-league3.PNG)
+
+![in game](../images/lab1-league4.PNG)
+
+
+After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc. [To make the requests automatically, you can use this code.](../src/live_client_producer.py)
+[This is an example packet returned by the Live Client API](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json) and we can observe the kind of information we can access from a player. I've attached the obtained sample from the screenshots above [in this file](../src/aux_files/example_live_client.txt).
+
+```json
+{
+    "magicResist": 32,
+    "healthRegenRate": 0,
+    "spellVamp": 0,
+    "timestamp": 0,
+    "bonusArmorPenetrationPercent": 0,
+    "bonusMagicPenetrationPercent": 0,
+    "maxHealth": 540,
+    "moveSpeed": 335,
+    "attackDamage": 25,
+    "armorPenetrationPercent": 0,
+    "lifesteal": 0,
+    "abilityPower": 0,
+    "cooldownReduction": 0,
+    "resourceValue": 350,
+    "magicPenetrationFlat": 0,
+    "attackSpeed": 100,
+    "currentHealth": 540,
+    "armor": 35,
+    "magicPenetrationPercent": 0,
+    "armorPenetrationFlat": 0,
+    "resourceMax": 350,
+    "resourceRegenRate": 0
+}
+```
+
+All this champion information is the information we'll use as input in our ML model. So, we need to harmonize column names and amount of variables in our pre-trained models, with the information we have available in real-time, so that the ML model can make predictions with everything available. This is achieved thanks to the __process_predictor_liveclient__ function.
 
