@@ -270,7 +270,7 @@ When we join a League of Legends game, the League process opens port 2999. We'll
 
 ### Testing the Live Client API
 
-If you want to test the Live Client API, you'll need to create a League of Legends match:
+If you want to test the Live Client API, you'll need to join a League of Legends match:
 
 ![league loading screen](../images/lab1-league1.PNG)
 
