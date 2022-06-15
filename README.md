@@ -14,9 +14,9 @@ From the initial set of tools to extract data (provided by Riot Games), there ar
 
 1. Extract offline data from players, matches and accounts from the official (offline) API; and create a ML model to predict the outcome of games based on compositions and game versions.
 
-Note that there are loads of information about champion stats from each version, so training models for each game patch is a consideration to make.
+    Note that there are loads of information about champion stats from each version, so training models for each game patch is a consideration to make.
 
-The information provided by the game can be complemented with external data, like tier lists of champions: this is beneficial to leverage the compositions depending on specific champions in a patch.
+    The information provided by the game can be complemented with external data, like tier lists of champions: this is beneficial to leverage the compositions depending on specific champions in a patch.
 
 
 2. Extract live data using the [Live Client Data API](https://developer.riotgames.com/docs/lol#game-client-api_live-client-data-api) and see what we can do. We use the Live Client Data API in [article 5.](./articles/article5.md)
