@@ -1,4 +1,4 @@
-# League of Legends Machine Learning with Oracle - Hands-On Lab
+# League of Legends Machine Learning with Oracle - Building a DataSet and Extracting Data - Hands-On Lab
 
 ## Introduction
 
