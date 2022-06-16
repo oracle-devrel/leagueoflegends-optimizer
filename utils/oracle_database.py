@@ -1,4 +1,3 @@
-import cx_Oracle
 import yaml
 import os
 from pathlib import Path
@@ -10,7 +9,8 @@ def process_yaml():
 	with open("../config.yaml") as file:
 		return yaml.safe_load(file)
 
-
+# deprecated class due to old cx_Oracle library, new one is oracledb and implemented below.
+'''
 class OracleJSONDatabaseConnection:
     def __init__(self, data=process_yaml()):
         # wallet location (default is HOME/wallets/wallet_X)
@@ -76,7 +76,7 @@ class OracleJSONDatabaseConnection:
         returning_object = connection.getSodaDatabase().getCollectionNames(startName=None, limit=0)
         self.pool.release(connection)
         return returning_object
-
+'''
 
 
 
@@ -87,11 +87,9 @@ class OracleJSONDatabaseThinConnection:
         print('Connection successful.')
 
 
-
     def close_pool(self):
         self.pool.close()
         print('Connection pool closed.')
-
 
 
     def insert(self, collection_name, json_object_to_insert):
@@ -110,7 +108,6 @@ class OracleJSONDatabaseThinConnection:
         return 1
 
 
-
     def delete(self, collection_name, on_column, on_value):
         connection = self.pool.acquire()
         connection.autocommit = True
@@ -121,17 +118,14 @@ class OracleJSONDatabaseThinConnection:
         self.pool.release(connection)
 
 
-
     def get_connection(self):
         connection = self.pool.acquire()
         connection.autocommit = True
         return connection
 
 
-
     def close_connection(self, conn_object):
         self.pool.release(conn_object)
-
 
 
     def get_collection_names(self):
@@ -140,6 +134,13 @@ class OracleJSONDatabaseThinConnection:
         returning_object = connection.getSodaDatabase().getCollectionNames(startName=None, limit=0)
         self.pool.release(connection)
         return returning_object
+
+    def open_collection(self, collection_name):
+        connection = self.pool.acquire()
+        returning_object = self.pool.acquire().getSodaDatabase().openCollection(collection_name)
+        self.pool.release(connection)
+        return returning_object
+
 
 
 
@@ -153,11 +154,9 @@ class OracleJSONDatabaseThickConnection:
         print('Connection successful.')
 
 
-
     def close_pool(self):
         self.pool.close()
         print('Connection pool closed.')
-
 
 
     def insert(self, collection_name, json_object_to_insert):
@@ -175,8 +174,6 @@ class OracleJSONDatabaseThickConnection:
         self.pool.release(connection)
         return 1
 
-
-
     def delete(self, collection_name, on_column, on_value):
         connection = self.pool.acquire()
         connection.autocommit = True
@@ -187,17 +184,14 @@ class OracleJSONDatabaseThickConnection:
         self.pool.release(connection)
 
 
-
     def get_connection(self):
         connection = self.pool.acquire()
         connection.autocommit = True
         return connection
 
 
-
     def close_connection(self, conn_object):
         self.pool.release(conn_object)
-
 
 
     def get_collection_names(self):
@@ -208,9 +202,16 @@ class OracleJSONDatabaseThickConnection:
         return returning_object
 
 
+    def open_collection(self, collection_name):
+        connection = self.pool.acquire()
+        returning_object = self.pool.acquire().getSodaDatabase().openCollection(collection_name)
+        self.pool.release(connection)
+        return returning_object
+
+
 
 def test_class():
-    object = OracleJSONDatabaseConnection()
+    object = OracleJSONDatabaseThickConnection()
     print(object.pool)
     object.close_pool()
 
