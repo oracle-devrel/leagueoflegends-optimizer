@@ -1,0 +1,5 @@
+gunicorn==20.1.*
+Flask==2.*
+pymongo==4.1.*
+Flask-PyMongo==2.3.*
+python-dotenv==0.20.*
