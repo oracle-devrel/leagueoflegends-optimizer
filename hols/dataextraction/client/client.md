@@ -1,4 +1,4 @@
-# xxx
+# Client API
 
 ## Introduction
 To extract live game information, we need to access the Live Client Data API from Riot Games.

@@ -46,6 +46,7 @@ build/
 develop-eggs/
 dist/
 downloads/
+generated/
 eggs/
 .eggs/
 lib/
@@ -173,3 +174,16 @@ cython_debug/
 
 # Ignore config file with sensitive data
 config.yaml
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+.terraformrc
+terraform.rc
