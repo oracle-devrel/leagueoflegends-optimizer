@@ -12,7 +12,7 @@ Estimated Lab Time: xx minutes
 
 At the time of writing, the following execution modes are available:
   - **player_list**: gets the top players from a region and adds them automatically to our database. This includes players above master's elo in League of Legends (really good players), which is the kind of data we want if we're going to build a reliable ML model.
-  - **match_list**: from all users already present in the database, extract their last 999 matches, or get as many as there are, with the IDs from each one of the games.
+  - **`match_list`**: from all users already present in the database, extract their last 999 matches, or get as many as there are, with the IDs from each one of the games.
   - **match_download_standard**: for every ID in the __match__ collection, get some information about them. This yields data useful to make a 1v1 predictor.
   - **match_download_detail**: for every ID in the __match__ collection, get some global information. This yields data useful to make a 5v5 predictor. It inserts the new data into the __match_detail__ collection.
   - **process_predictor**: uses the __match_detail__ collection and processes the data to build a pandas-friendly object. Aims to predict a win(1) or a loss(0)

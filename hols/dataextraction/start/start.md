@@ -18,11 +18,11 @@ TODO
     ![login to your league account](images/lab1-login.png)
 2. After creating the account, we [access the development website](https://developer.riotgames.com/) and get our development API key. Note that by default, the development API key expires every 24 hours. So, if you're planning to generate a dataset for more than 24 hours at a time, in the end you'll start getting HTTP unauthorized errors. To fix this, just regenerate the API key and use the new one.
     ![get api key](images/lab1-apikey.png)
-3. After having the API key, we need to create a hidden file in the repository called config.yaml. This file shall contain configuration variables like our API key. This is the format that's been configured in the YAML file in order to be properly parsed inside [the main code of this repository](../src/league.py):
+3. After having the API key, we need to create a hidden file in the repository called config.yaml. This file shall contain configuration variables like our API key. This is the format that's been configured in the YAML file in order to be properly parsed inside [the main code of this repository](files/league.py):
     ![yaml file structure](images/lab1-yaml.png)
 
     > This file considers that we're using the latest __python-oracledb__ thin/thick Python client to connect to the Autonomous Database. [Here's the link to the official documentation.](https://python-oracledb.readthedocs.io/en/latest/user_guide/installation.html#quickstart)
-4. To check the validity of our YAML file settings, we can run [a sample program](../src/test_newclient.py) against the database, to check whether we can connect to it successfully or not.
+4. To check the validity of our YAML file settings, we can run [a sample program](files/test_newclient.py) against the database, to check whether we can connect to it successfully or not.
     ```bash
     cd src/
     python test_newclient.py 
