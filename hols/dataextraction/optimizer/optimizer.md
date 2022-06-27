@@ -11,15 +11,15 @@ Estimated Lab Time: xx minutes
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 
 At the time of writing, the following execution modes are available:
-  - **player_list**: gets the top players from a region and adds them automatically to our database. This includes players above master's elo in League of Legends (really good players), which is the kind of data we want if we're going to build a reliable ML model.
+  - **`player_list`**: gets the top players from a region and adds them automatically to our database. This includes players above master's elo in League of Legends (really good players), which is the kind of data we want if we're going to build a reliable ML model.
   - **`match_list`**: from all users already present in the database, extract their last 999 matches, or get as many as there are, with the IDs from each one of the games.
-  - **match_download_standard**: for every ID in the __match__ collection, get some information about them. This yields data useful to make a 1v1 predictor.
-  - **match_download_detail**: for every ID in the __match__ collection, get some global information. This yields data useful to make a 5v5 predictor. It inserts the new data into the __match_detail__ collection.
-  - **process_predictor**: uses the __match_detail__ collection and processes the data to build a pandas-friendly object. Aims to predict a win(1) or a loss(0)
-  - **process_predictor_liveclient**: similar to **process_predictor**, but it has the same column names as the ones we can find in the LiveClient API (what gives us **real-time data**, which means, what we'll be able to use in the end to make real-time predictions)
-  - **process_regressor**: similar to **process_predictor**, but instead of trying to create a classifier model, it attempts to predict winning probability [0,1].
-  - **process_regressor_liveclient**: similar to **process_regressor**, but with LiveClient API-compatible names.
-  - **Default** mode, which basically performs: **player_list** -> **match_list** -> **match_download_standard** -> **match_download_detail**.
+  - **`match_download_standard`**: for every ID in the `__match__` collection, get some information about them. This yields data useful to make a 1v1 predictor.
+  - **`match_download_detail`**: for every ID in the `__match__` collection, get some global information. This yields data useful to make a 5v5 predictor. It inserts the new data into the `__match_detail__` collection.
+  - **`process_predictor`**: uses the `__match_detail__` collection and processes the data to build a pandas-friendly object. Aims to predict a win(1) or a loss(0)
+  - **`process_predictor_liveclient`**: similar to **`process_predictor`**, but it has the same column names as the ones we can find in the LiveClient API (what gives us **real-time data**, which means, what we'll be able to use in the end to make real-time predictions)
+  - **`process_regressor`**: similar to **`process_predictor`**, but instead of trying to create a classifier model, it attempts to predict winning probability [0,1].
+  - **`process_regressor_liveclient`**: similar to **`process_regressor`**, but with LiveClient API-compatible names.
+  - **`Default`** mode, which basically performs: **`player_list`** -> **`match_list`** -> **`match_download_standard`** -> **`match_download_detail`**.
 
 ## Task 1: Extracting Data / Generating Dataset
 
@@ -103,4 +103,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - 
+* **Last Updated By/Date** -
