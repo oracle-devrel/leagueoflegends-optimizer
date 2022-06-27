@@ -1,0 +1,23 @@
+---
+- name: Copy source code
+  copy:
+    src: "files/src/"
+    dest: /home/opc/src/
+    owner: opc
+    group: opc        
+    mode: 0640
+- name: Copy generated dotenv
+  copy:
+    src: "../../../../../terraform/generated/.env"
+    dest: /home/opc/src/
+    owner: opc
+    group: opc
+    mode: 0740
+- name: Install dependencies
+  command: python3 -m pip install -r /home/opc/src/requirements.txt
+- name: FIXME probably not needed chown opc:opc for pythonapp and venv
+  file:
+    dest=/home/opc/src
+    owner=opc
+    group=opc
+    recurse=yes

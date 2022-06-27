@@ -1,0 +1,5 @@
+config_file_profile = "DEFAULT"
+tenancy_ocid        = "XXXXX"
+compartment_ocid    = "XXXXX"
+ssh_public_key      = "XXXXX"
+riotgames_api_key   = "XXXXX"
