@@ -1,6 +1,6 @@
-cx_Oracle
 ujson
 pyyaml
 requests
 pandas
 autogluon
+oracledb

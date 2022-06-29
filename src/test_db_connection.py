@@ -4,6 +4,9 @@ import cx_Oracle
 from pathlib import Path
 import argparse
 
+# this file tests database connection with the old cx_Oracle library
+# now, check out python-oracledb module for more updated functionalities.
+
 # parse arguments for different execution modes.
 parser = argparse.ArgumentParser()
 parser.add_argument('-w', '--wallet-location', help='Wallet location',

@@ -261,7 +261,7 @@ I leave this task (which should be fun enough with all the data you have availab
 
 You're welcome to make an open source contribution to the repository! It's never too late to get into open-source with us at Developer Relations @ Oracle.
 
-I really hope tgat you enjoyed reading and learning about League of Legends in this article series. We built something truly amazing from scratch in a couple of months.
+I really hope that you enjoyed reading and learning about League of Legends in this article series. We built something truly amazing from scratch in a couple of months.
 
 ## How can I get started on OCI?
 

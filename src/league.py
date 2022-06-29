@@ -1,11 +1,11 @@
 # Copyright (c) 2021 Oracle and/or its affiliates.
 
+from attr import Attribute
 import requests
 import yaml
 import datetime
 import pandas as pd
 import time
-import cx_Oracle
 import os
 from pathlib import Path
 import argparse
@@ -14,8 +14,8 @@ home = str(Path.home())
 import sys
 p = os.path.abspath('..')
 sys.path.insert(1, p) # add parent directory to path.
-from utils.oracledb import OracleJSONDatabaseConnection
-
+from utils.oracle_database import OracleJSONDatabaseThinConnection, OracleJSONDatabaseThickConnection
+from oracledb import exceptions
 # parse arguments for different execution modes.
 parser = argparse.ArgumentParser()
 parser.add_argument('-m', '--mode', help='Mode to execute',
@@ -320,7 +320,7 @@ def get_top_players(region, queue, db):
 			else:
 				print('Summoner {} already inserted'.format(x['summonerName']))
 				continue
-		except cx_Oracle.IntegrityError:
+		except exceptions.IntegrityError:
 			print('Summoner {} already inserted'.format(x['summonerName']))
 			continue
 	
@@ -401,7 +401,7 @@ def extract_matches(region, match_id, db, key):
 			}
 			try:
 				db.insert('matchups', to_insert_obj)
-			except cx_Oracle.IntegrityError:
+			except exceptions.IntegrityError:
 				print('Match details {} already inserted'.format(to_insert_obj.get('p_match_id')))
 				continue
 			print('Inserted new matchup with ID {} in region {}'.format('{}_{}'.format(match_id, x), region))
@@ -442,7 +442,7 @@ def match_list(db):
 				for i in z_match_ids:
 					try:
 						collection_match.insertOne(i)
-					except cx_Oracle.IntegrityError:
+					except exceptions.IntegrityError:
 						print('Match ID {} already inserted'.format(i))
 						continue
 					print('Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(i['match_id'],
@@ -587,31 +587,36 @@ def build_final_object_liveclient(json_object):
 
 		for y in range(1, 11):
 			frame = {
-				"timestamp": x.get('timestamp')
+				'timestamp': x.get('timestamp')
 			}
-			frame['abilityPower'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('abilityPower')
-			frame['armor'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armor')
-			frame['armorPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPen')
-			frame['armorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPenPercent')
-			frame['attackDamage'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackDamage')
-			frame['attackSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackSpeed')
-			frame['bonusArmorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusArmorPenPercent')
-			frame['bonusMagicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusMagicPenPercent')
-			frame['cooldownReduction'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('cooldownReduction')
-			frame['currentHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('health')
-			frame['maxHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthMax')
-			frame['healthRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthRegen')
-			frame['lifesteal'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('lifesteal')
-			frame['magicPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPen')
-			frame['magicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPenPercent')
-			frame['magicResist'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicResist')
-			frame['moveSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('movementSpeed')
-			frame['resourceValue'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('power')
-			frame['resourceMax'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerMax')
-			frame['resourceRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerRegen')
-			frame['spellVamp'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('spellVamp')
+			try:
+				frame['abilityPower'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('abilityPower')
+				frame['armor'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armor')
+				frame['armorPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPen')
+				frame['armorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('armorPenPercent')
+				frame['attackDamage'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackDamage')
+				frame['attackSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('attackSpeed')
+				frame['bonusArmorPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusArmorPenPercent')
+				frame['bonusMagicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('bonusMagicPenPercent')
+				frame['cooldownReduction'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('cooldownReduction')
+				frame['currentHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('health')
+				frame['maxHealth'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthMax')
+				frame['healthRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('healthRegen')
+				frame['lifesteal'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('lifesteal')
+				frame['magicPenetrationFlat'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPen')
+				frame['magicPenetrationPercent'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicPenPercent')
+				frame['magicResist'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('magicResist')
+				frame['moveSpeed'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('movementSpeed')
+				frame['resourceValue'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('power')
+				frame['resourceMax'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerMax')
+				frame['resourceRegenRate'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('powerRegen')
+				frame['spellVamp'] = x.get('participantFrames').get('{}'.format(y)).get('championStats').get('spellVamp')
+				frame['identifier'] = '{}_{}'.format(match_id, x.get('participantFrames').get('{}'.format(y)).get('participantId'))
+			except AttributeError as e:
+				print('[DBG] LIVECLIENT BUILDING OBJECT FAILED: {}'.format(e))
+				# if there's a problem with a frame, skip this iteration
+				return list()
 
-			frame['identifier'] = '{}_{}'.format(match_id, x.get('participantFrames').get('{}'.format(y)).get('participantId'))
 
 			if winner == 100:
 				if y in (1,2,3,4,5):
@@ -712,7 +717,7 @@ def data_mine(db):
 
 
 def main():
-	db = OracleJSONDatabaseConnection()
+	db = OracleJSONDatabaseThickConnection()
 	data_mine(db)
 	db.close_pool()
 
