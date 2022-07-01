@@ -69,7 +69,12 @@ You can also refer back to [article 4](../articles/article4.md), where I explain
     ```
 6. All this champion information is the information we'll use as input in our ML model. So, we need to harmonize column names and amount of variables in our pre-trained models, with the information we have available in real-time, so that the ML model can make predictions with everything available. This is achieved thanks to the __process_predictor_liveclient__ function.
 
-Congratulations, you have completed the Workshop!
+Congratulations, you have completed the Workshop! A recap of what we have learned is:
+- How to provision resources in OCI for Data Science purposes
+- How to create a datastore architecture for our problems
+- How to data mine League of Legends through an API
+- How to build and structure the data
+- How to connect to the Live Client API
 
 
 ## Acknowledgements
