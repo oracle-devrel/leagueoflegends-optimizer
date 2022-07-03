@@ -55,7 +55,7 @@ From the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-
 
 The intricacies of how we built the data structure and derived the result from it are explained in the [previous article](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/main/articles/article2.md). It is important to remember that structuring and manipulating data in the data science process takes an average of 80 to 90% of the time, according to expert sources (image courtesy of [“2020 State of Data Science: Moving From Hype Toward Maturity.”](https://www.anaconda.com/state-of-data-science-2020)), and we shouldn't be discouraged when spending most of our time processing and manipulating data structures. The ML algorithm is the easy part if you've correctly identified the correct data structure and adapted it to the structure ML algorithms expect.
 
-![Breakdown of effort to train model](https://raw.githubusercontent.com/jasperan/leagueoflegends-optimizer/blob/main/images/lol-3-anaconda_1.PNG?raw=true)
+![Breakdown of effort to train model](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/blob/main/images/lol-3-anaconda_1.PNG?raw=true)
 
 
 For our first model, we're going to simplify the present data structure even more and get something like this:
@@ -235,7 +235,7 @@ report
 
 This simple code generates a dynamic report that shows the data types, missing values, and other information about the data. We explore the Pearson's r correlation coefficient between the variables:
 
-![Visualization of Pearson's r data](https://raw.githubusercontent.com/jasperan/leagueoflegends-optimizer/blob/main/images/lol-3-pearson.PNG?raw=true)
+![Visualization of Pearson's r data](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/blob/main/images/lol-3-pearson.PNG?raw=true)
 
 
 We proceed to train our model with all variables, taking into consideration that most of the variables in our model are highly correlated. This is especially true for the amount of gold earned with respect to the number of kills and minions killed (which makes sense, as these are two of the actions that give out the most gold in-game). We also see that the vision score highly correlates with the amount of assists a player makes in a game.
