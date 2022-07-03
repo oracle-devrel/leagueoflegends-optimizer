@@ -235,7 +235,7 @@ report
 
 This simple code generates a dynamic report that shows the data types, missing values, and other information about the data. We explore the Pearson's r correlation coefficient between the variables:
 
-![Visualization of Pearson's r data](images/lol-3-pearson.png?raw=true)
+![Visualization of Pearson's r data](../images/lol-3-pearson.png?raw=true)
 
 
 We proceed to train our model with all variables, taking into consideration that most of the variables in our model are highly correlated. This is especially true for the amount of gold earned with respect to the number of kills and minions killed (which makes sense, as these are two of the actions that give out the most gold in-game). We also see that the vision score highly correlates with the amount of assists a player makes in a game.
