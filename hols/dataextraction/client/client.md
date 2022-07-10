@@ -1,4 +1,4 @@
-# xxx
+# Getting Started
 
 ## Introduction
 To extract live game information, we need to access the Live Client Data API from Riot Games.
@@ -18,7 +18,7 @@ The League Client API involves a set of protocols that CEF (Chromium Embedded Fr
 
 Communication between the CEF and this C++ library happen locally, so we're obligated to use localhost as our connection endpoint. You can find additional information about this communication [here.](https://developer.riotgames.com/docs/lol)
 
-You can also refer back to [article 4](../articles/article4.md), where I explain the most interesting endpoints that we encounter when using the Live Client Data API.
+You can also refer back to [article 4](../../../articles/article4.md), where I explain the most interesting endpoints that we encounter when using the Live Client Data API.
 
 1. TODO
 2. For this article, we'll use the following endpoint:
@@ -35,12 +35,12 @@ You can also refer back to [article 4](../articles/article4.md), where I explain
     ![league loading screen](images/lab1-league1.png)
 2. After clicking on "play", we'll create a custom match and set to play against an AI bot:
     ![creating match](images/lab1-league2.png)
-3. TODO
+3. Now, we'll add an AI bot to play against us in the enemy team and start the game. Afterwards, we'll be in the champion select screen, where we'll have the option to select any champion.
     ![creating match 2](images/lab1-league3.png)
-4. TODO
+4. Now, we are inside the game after loading.
     ![in game](images/lab1-league4.png)
-5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc. [To make the requests automatically, you can use this code.](../src/live_client_producer.py)
-[This is an example packet returned by the Live Client API](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json) and we can observe the kind of information we can access from a player. I've attached the obtained sample from the screenshots above [in this file](../src/aux_files/example_live_client.txt).
+5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc. [To make the requests automatically, you can use this code.](../../../src/live_client_producer.py)
+[This is an example packet returned by the Live Client API](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json) and we can observe the kind of information we can access from a player. I've attached the obtained sample from the screenshots above [in this file](../../../src/aux_files/example_live_client.txt).
     ```json
     {
         "magicResist": 32,
@@ -81,4 +81,4 @@ Congratulations, you have completed the Workshop! A recap of what we have learne
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** -
+* **Last Updated By/Date** - July 10th, 2022

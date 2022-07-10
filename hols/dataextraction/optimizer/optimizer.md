@@ -1,7 +1,7 @@
 # Interacting with leagueoflegends-optimizer
 
 ## Introduction
-If we want to build an AI/ML model, we need data. For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [league.py](../src/league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode. 
+If we want to build an AI/ML model, we need data. For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [league.py](../../../src/league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode. 
 
 Estimated Lab Time: xx minutes
 
@@ -63,23 +63,20 @@ There are two components we need to consider in our flow:
 
 ## Task 2: Download Match Details by ID
 
-TODO
-
-1. TODO
-2. For that, we use the collection __match_detail__. We can process all matches in our current database (found in collection __match__) by executing:
+1. In order to download match details given their IDs, we use the collection __match_detail__. We can process all matches in our current database (found in collection __match__) by executing:
     ```bash
     λ python league.py --mode="match_download_detail"
     >>> Connection successful.
     # it will then start extracting match information.
     # each match contains a huge amount of information, so I'm not putting any examples here, but you'll see when you execute.
     ```
-3. This gives us timestamped information about what occurred in each game, in thorough detail. From this, we can build an object with all variables that can be useful in our model.
+2. This gives us timestamped information about what occurred in each game, in thorough detail. From this, we can build an object with all variables that can be useful in our model.
 
 ## Task 3: Building Data Object for ML
 
 We'll use the execution mode __process_predictor_liveclient__. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
 
-1. [Here you can find the builder object, to check the set of variables that were considered for the model.](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/1/src/league.py#L568)
+1. [Here you can find the builder object, to check the set of variables that were considered for the model.](../../../src/league.py#L568)
 2. Here's how to build the object:
     ```bash
     λ python league.py --mode="process_predictor_liveclient"
@@ -103,4 +100,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** -
+* **Last Updated By/Date** - July 10th, 2022

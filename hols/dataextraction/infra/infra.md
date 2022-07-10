@@ -225,7 +225,6 @@ We'll also need to create an autonomous database. We'll use it as our storage fo
     (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=XXXXXXXXXXXX))(connect_data=(service_name=XXXXXXXXXXXXXXXX))(security=(ssl_server_dn_match=yes)(ssl_server_cert_dn="CN=XXXXXXXXXXXXX, OU=XXXXX, O=XXXXX XXXXXX, L=Redwood XXXXX, ST=XXXX, C=XXXX")))
     ```
 
-//////
 
 ## Task 4: Install Instant Client and Upload Wallet
 
@@ -273,4 +272,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** -
+* **Last Updated By/Date** - July 10th, 2022
