@@ -44,3 +44,23 @@ resource "oci_database_autonomous_database" "adb" {
     is_auto_scaling_enabled = true
     license_model = "LICENSE_INCLUDED"
 }
+
+resource "random_password" "adb_wallet_password" {
+  length  = 16
+  special = true
+  min_numeric = 2
+  min_special = 2
+  min_lower = 2
+  min_upper = 2
+}
+
+resource "oci_database_autonomous_database_wallet" "adb_wallet" {
+  autonomous_database_id = oci_database_autonomous_database.adb.id
+  password               = random_password.adb_wallet_password.result
+  base64_encode_content  = "true"
+}
+
+resource "local_file" "adb_wallet_file" {
+  content_base64 = oci_database_autonomous_database_wallet.adb_wallet.content
+  filename       = "${path.module}/generated/wallet.zip"
+}

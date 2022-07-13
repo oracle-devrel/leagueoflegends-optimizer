@@ -13,7 +13,7 @@ provider "oci" {
 }
 
 variable "region" {
-  type = string
+  type    = string
   default = "eu-frankfurt-1"
 }
 
@@ -34,5 +34,9 @@ variable "config_file_profile" {
 }
 
 variable "riotgames_api_key" {
+  type = string
+}
+
+variable "instant_client_lib_dir" {
   type = string
 }

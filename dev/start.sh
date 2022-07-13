@@ -26,6 +26,7 @@ terraform apply -auto-approve
 sleep 2
 
 banner "Ansible Provisioning"
+export ANSIBLE_HOST_KEY_CHECKING=False
 ansible-playbook -i generated/app.ini ../ansible/server/server.yaml
 
 banner "Output"
