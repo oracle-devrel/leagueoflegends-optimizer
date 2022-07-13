@@ -19,16 +19,4 @@ Here are the official links for the Kaggle datasets:
 ![Breakdown of effort to train model](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/blob/main/images/lab1-anaconda_1.PNG?raw=true)
 
 
-For our offline model, we're going to simplify the present data structure even more and get something like this:
-
-```json
-{
-    "match_id": "EUN1_2910807891_utility",
-    "champ1": "Velkoz",
-    "champ2": "Yuumi",
-    "win": 1
-}
-```
-
-Where `win` is a boolean variable that represents whether `champ1` won or not. So, in this example, Velkoz won the game.
 
