@@ -74,7 +74,7 @@ There are two components we need to consider in our flow:
 
 ## Task 3: Building Data Object for ML
 
-We'll use the execution mode __process_predictor_liveclient__. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
+We'll use the execution mode _`process_predictor_liveclient`_. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
 
 1. [Here you can find the builder object, to check the set of variables that were considered for the model.](../../../src/league.py#L568)
 2. Here's how to build the object:
