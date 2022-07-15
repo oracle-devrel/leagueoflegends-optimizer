@@ -67,7 +67,7 @@ Match:
 BEGIN
   DBMS_CLOUD.EXPORT_DATA(
     credential_name => 'LOL_BUCKET_CREDENTIALS',
-    file_uri_list   => 'https://objectstorage.us-phoenix-1.oraclecloud.com/n/namespace-string/b/bucketname/o/match_export',
+    file_uri_list   => 'https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/namespace-string/b/lolbackup/o/match_export',
     query           => 'SELECT * FROM match',
     format          => JSON_OBJECT('type' value 'csv', 'delimiter' value '|', 'compression' value 'gzip'));
 END;
@@ -79,7 +79,7 @@ Match Detail:
 BEGIN
   DBMS_CLOUD.EXPORT_DATA(
     credential_name => 'LOL_BUCKET_CREDENTIALS',
-    file_uri_list   => 'https://objectstorage.us-phoenix-1.oraclecloud.com/n/namespace-string/b/bucketname/o/match_detail_export',
+    file_uri_list   => 'https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/namespace-string/b/lolbackup/o/match_detail_export',
     query           => 'SELECT * FROM match_detail',
     format          => JSON_OBJECT('type' value 'csv', 'delimiter' value '|', 'compression' value 'gzip'));
 END;
@@ -91,7 +91,7 @@ Summoner:
 BEGIN
   DBMS_CLOUD.EXPORT_DATA(
     credential_name => 'LOL_BUCKET_CREDENTIALS',
-    file_uri_list   => 'https://objectstorage.us-phoenix-1.oraclecloud.com/n/namespace-string/b/bucketname/o/summoner_export',
+    file_uri_list   => 'https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/namespace-string/b/lolbackup/o/summoner_export',
     query           => 'SELECT * FROM summoner',
     format          => JSON_OBJECT('type' value 'csv', 'delimiter' value '|', 'compression' value 'gzip'));
 END;
@@ -103,9 +103,20 @@ Predictor Live Client:
 BEGIN
   DBMS_CLOUD.EXPORT_DATA(
     credential_name => 'LOL_BUCKET_CREDENTIALS',
-    file_uri_list   => 'https://objectstorage.us-phoenix-1.oraclecloud.com/n/namespace-string/b/bucketname/o/predictor_liveclient_export',
+    file_uri_list   => 'https://objectstorage.eu-frankfurt-1.oraclecloud.com/n/namespace-string/b/lolbackup/o/predictor_liveclient_export',
     query           => 'SELECT * FROM predictor_liveclient',
     format          => JSON_OBJECT('type' value 'csv', 'delimiter' value '|', 'compression' value 'gzip'));
 END;
 /
 ```
+
+> Update Credentials?
+> ```
+> BEGIN
+>   DBMS_CLOUD.UPDATE_CREDENTIAL(
+>      credential_name => 'LOL_BUCKET_CREDENTIALS',
+>      attribute => 'PASSWORD',
+>      value => '3UN-Ot2it$:Ib>cP!6YF'); 
+> END;
+> /
+> ```
