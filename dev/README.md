@@ -11,13 +11,49 @@
 Python 3.7 instead of 3.9:
 - autogluon
 
+## Download
+
+Open OCI Console, and click Cloud Shell.
+
+```
+git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
+```
+
+> Better from Object Storage but it is good for quick iteration to use GitHub, at the moment.
+
+Change to `leagueoflegends-optimizer` directory:
+```
+cd leagueoflegends-optimizer/
+```
+
 ## Set up
 
 From this directory `./dev`.
+```
+cd dev/
+```
 
 ```
-cp /terraform/terraform.tfvars.template terraform/terraform.tfvars
+cp terraform/terraform.tfvars.template terraform/terraform.tfvars
 ```
+
+Get details for the `terraform.tfvars` file:
+- Tenancy:
+  ```
+  echo $OCI_TENANCY
+  ```
+- Compartment (root by default):
+  ```
+  echo $OCI_TENANCY
+  ```
+  > If you need a specific compartment, get the OCID by name with:
+  > ```
+  > oci iam compartment list --all --compartment-id-in-subtree true --name COMPARTMENT_NAME --query "data[].id"
+  > ```
+- SSH Public Key:
+  ```
+  cat ~/.ssh/id_rsa.pub
+  ```
 
 Refresh the Riot Developer API key, only valid for 24 hours.
 

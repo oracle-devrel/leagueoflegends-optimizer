@@ -9,9 +9,9 @@ resource "oci_datascience_project" "lol_project" {
   ]
 }
 
-# FIXME bad hack: fail to create notebook session with subnet
+# FIXME bad hack to avoid: The specified subnet is not accessible. Select a different subnet.
 resource "time_sleep" "wait_a_bit" {
-  create_duration = "60s"
+  create_duration = "120s"
 }
 
 resource "oci_datascience_notebook_session" "lol_notebook_session" {
