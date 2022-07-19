@@ -1,5 +1,11 @@
 # LoL Optimizer deployment
 
+## Requirements
+
+- Active Oracle Cloud Account
+- Credits available
+- Administrative permissions
+
 ## FIX
 
 Python 3.7 instead of 3.9:

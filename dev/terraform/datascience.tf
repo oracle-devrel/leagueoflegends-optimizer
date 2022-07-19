@@ -3,6 +3,15 @@ resource "oci_datascience_project" "lol_project" {
 
   description  = "League of Legends Project"
   display_name = "LoL Project"
+
+  depends_on = [
+    oci_core_subnet.privatesubnet
+  ]
+}
+
+# FIXME bad hack: fail to create notebook session with subnet
+resource "time_sleep" "wait_a_bit" {
+  create_duration = "60s"
 }
 
 resource "oci_datascience_notebook_session" "lol_notebook_session" {
@@ -14,11 +23,11 @@ resource "oci_datascience_notebook_session" "lol_notebook_session" {
   notebook_session_config_details {
     shape = data.oci_datascience_notebook_session_shapes.ds_shapes.notebook_session_shapes[0].name
 
-    subnet_id = oci_core_subnet.publicsubnet.id
+    subnet_id = oci_core_subnet.privatesubnet.id
   }
 
   depends_on = [
-    oci_identity_policy.datascience_vcn_policy
+    time_sleep.wait_a_bit
   ]
 
 }
