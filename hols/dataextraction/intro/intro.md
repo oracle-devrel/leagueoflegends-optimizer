@@ -31,11 +31,12 @@ Estimated Lab Time: xx minutes
 
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account
 * Active Oracle Cloud Account with available credits to use for Data Science service.
+* Creating a League of Legends account and completing the in-game tutorial, as we'll need an account to get an API key and perform in-game tests.
 
 
 ## Task 1: Get Started
 
-1. If you don't have a League of Legends account, you'll need to register and download the videogame. 
+1. If you don't have a League of Legends account, you'll need to [download the game and register](https://www.leagueoflegends.com/en-gb/). 
 
 1. We'll need to obtain a Riot Games API key [from the official Riot Games Developer website.](https://developer.riotgames.com/) For that, you need to create a League of Legends account (if you don't have one already) and ask for a development API key. Note that if you're planning to develop a League of Legends project out of this repository, you can also apply for a production API key which has a longer expiration date, as well as more requests per minute.
     ![login to your league account](images/lab1-login.png)
@@ -45,6 +46,7 @@ Estimated Lab Time: xx minutes
     ![yaml file structure](images/lab1-yaml.png)
 
     > This file considers that we're using the latest __python-oracledb__ thin/thick Python client to connect to the Autonomous Database. [Here's the link to the official documentation.](https://python-oracledb.readthedocs.io/en/latest/user_guide/installation.html#quickstart)
+    
 4. To check the validity of our YAML file settings, we can run [a sample program](../../../src/test_newclient.py) against the database, to check whether we can connect to it successfully or not.
     ```bash
     cd src/

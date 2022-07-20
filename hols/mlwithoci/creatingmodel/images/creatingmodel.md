@@ -3,6 +3,15 @@
 ## Recap and Introduction
 
 
+## The Notebook
+
+Everything that we're going to talk about, you can find in two files:
+1. (Optional) If you're using your own data (generating it by following the workshop), and you have [all the prerequisites](../../intro/intro.md) installed, you can check out [this notebook](../../../../notebooks/hol1_online_analysis.ipynb) that connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
+2. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results): [access this notebook](../../../../notebooks/hol1_offline_analysis.ipynb)
+    > For more advanced users, you always have the possibility to download the dataset directly from Kaggle using [Kaggle's API](https://github.com/Kaggle/kaggle-api), and running:
+    ```bash
+    kaggle datasets download jasperan/league-of-legends-1v1-matchups-results
+    ```
 ## The Data Structure
 
 From the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results), we see an example of the data structure we're going to use to build our model:
@@ -209,3 +218,4 @@ Sejuani
 Gnar
 ```
 
+> Note: by taking each matchup's individual prediction and pairing them up together, we're normalizing the result that the model returns. This attempts to counteract the poor accuracy of the model in some way.
