@@ -21,7 +21,7 @@
     },
     {
       "title": "Optimizer",
-      "description": "optimizer.",
+      "description": "Interacting with the optimizer.",
       "filename": "../../dataextraction/optimizer/optimizer.md",
       "type": "dbcs"
     },
@@ -29,6 +29,12 @@
       "title": "Client",
       "description": "Client API.",
       "filename": "../../dataextraction/client/client.md",
+      "type": "dbcs"
+    },
+    {
+      "title": "Creating a Model",
+      "description": "Creating Model",
+      "filename": "../../dataextraction/creatingmodel/creatingmodel.md",
       "type": "dbcs"
     },
     {
