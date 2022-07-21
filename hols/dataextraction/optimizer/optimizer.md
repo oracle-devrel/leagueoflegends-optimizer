@@ -1,7 +1,7 @@
 # Interacting with leagueoflegends-optimizer
 
 ## Introduction
-If we want to build an AI/ML model, we need data. For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [league.py](../../../src/league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode. 
+If we want to build an AI/ML model, we need data. For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [league.py](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode. 
 
 Estimated Lab Time: xx minutes
 
@@ -13,9 +13,9 @@ Estimated Lab Time: xx minutes
 At the time of writing, the following execution modes are available:
   - **`player_list`**: gets the top players from a region and adds them automatically to our database. This includes players above master's elo in League of Legends (really good players), which is the kind of data we want if we're going to build a reliable ML model.
   - **`match_list`**: from all users already present in the database, extract their last 999 matches, or get as many as there are, with the IDs from each one of the games.
-  - **`match_download_standard`**: for every ID in the `__match__` collection, get some information about them. This yields data useful to make a 1v1 predictor.
-  - **`match_download_detail`**: for every ID in the `__match__` collection, get some global information. This yields data useful to make a 5v5 predictor. It inserts the new data into the `__match_detail__` collection.
-  - **`process_predictor`**: uses the `__match_detail__` collection and processes the data to build a pandas-friendly object. Aims to predict a win(1) or a loss(0)
+  - **`match_download_standard`**: for every ID in the **`__match__`** collection, get some information about them. This yields data useful to make a 1v1 predictor.
+  - **`match_download_detail`**: for every ID in the **`__match__`** collection, get some global information. This yields data useful to make a 5v5 predictor. It inserts the new data into the **`__match_detail__`** collection.
+  - **`process_predictor`**: uses the **`__match_detail__`** collection and processes the data to build a pandas-friendly object. Aims to predict a win(1) or a loss(0)
   - **`process_predictor_liveclient`**: similar to **`process_predictor`**, but it has the same column names as the ones we can find in the LiveClient API (what gives us **real-time data**, which means, what we'll be able to use in the end to make real-time predictions)
   - **`process_regressor`**: similar to **`process_predictor`**, but instead of trying to create a classifier model, it attempts to predict winning probability [0,1].
   - **`process_regressor_liveclient`**: similar to **`process_regressor`**, but with LiveClient API-compatible names.
@@ -28,6 +28,7 @@ There are two components we need to consider in our flow:
 - Testing process: for this, we need to have a model that's already been trained, and make incoming (new, live) predictions against the model.
 
 1. To extract player data, we can run:
+
     ```bash
     λ python league.py --mode "player_list"
     >>> Connection successful.
@@ -37,8 +38,10 @@ There are two components we need to consider in our flow:
     >>> ...
     ```  
 2. This execution mode will iteratively look for League of Legends leaderboards in every region in the world, and insert these players' information into our database. If the user has already been inserted, it will prevent re-insertion.
-    > If a user changes their in-game name, the next time the code runs, their new name will be updated in the database. (This is achieved by using their PUUID, a very long identifier instead of their in-game name to identify every player).
+
+    > If a user changes their in-game name, the next time the code runs, their new name will be updated in the database. (This is achieved by using their PUUID - a very long identifier - instead of their in-game name to identify every player).
 3. To extract previously played matches' IDs from our pool of players in the database, we can do this:
+
     ```bash
     λ python league.py --mode="match_list"
     >>> Connection successful.
@@ -64,6 +67,7 @@ There are two components we need to consider in our flow:
 ## Task 2: Download Match Details by ID
 
 1. In order to download match details given their IDs, we use the collection __match_detail__. We can process all matches in our current database (found in collection __match__) by executing:
+
     ```bash
     λ python league.py --mode="match_download_detail"
     >>> Connection successful.
@@ -74,10 +78,11 @@ There are two components we need to consider in our flow:
 
 ## Task 3: Building Data Object for ML
 
-We'll use the execution mode _`process_predictor_liveclient`_. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
+We'll use the execution mode __`process_predictor_liveclient`__. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
 
-1. [Here you can find the builder object, to check the set of variables that were considered for the model.](../../../src/league.py#L568)
+1. [Here you can find the builder object, to check the set of variables that were considered for the model.](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/league.py#L568)
 2. Here's how to build the object:
+
     ```bash
     λ python league.py --mode="process_predictor_liveclient"
     >>> Connection successful.

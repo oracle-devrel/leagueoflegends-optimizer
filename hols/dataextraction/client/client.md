@@ -10,7 +10,7 @@ Estimated Lab Time: xx minutes
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 
-## Task 1: Live Client API
+## Task 1: Live Client API - Connecting
 
 The League Client API involves a set of protocols that CEF (Chromium Embedded Framework) uses to communicate between the League of Legends process and a C++ library.
 
@@ -18,16 +18,16 @@ The League Client API involves a set of protocols that CEF (Chromium Embedded Fr
 
 Communication between the CEF and this C++ library happen locally, so we're obligated to use localhost as our connection endpoint. You can find additional information about this communication [here.](https://developer.riotgames.com/docs/lol)
 
-You can also refer back to [article 4](../../../articles/article4.md), where I explain the most interesting endpoints that we encounter when using the Live Client Data API.
+You can also refer back to [article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.py), where I explain the most interesting endpoints that we encounter when using the Live Client Data API.
 
-1. TODO
-2. For this article, we'll use the following endpoint:
+1. For this article, we'll access the following HTTP endpoint:
+
     ```python
     # GET https://127.0.0.1:2999/liveclientdata/allgamedata
     # Sample output can be found in the following URL, if interested. https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json
     # This endpoint encapsulates all other endpoints into one.
     ```
-3. When we join a League of Legends game, the League process opens port 2999. We'll use this to our advantage and we'll make recurring requests to localhost:2999 to extract live match information.
+3. When we join a League of Legends game, the League process automatically opens port 2999. We'll use this to our advantage and we'll make recurring requests to localhost:2999 to extract live match information.
 
 ## Task 2: Testing the Live Client API
 
@@ -39,8 +39,9 @@ You can also refer back to [article 4](../../../articles/article4.md), where I e
     ![creating match 2](images/lab1-league3.png)
 4. Now, we are inside the game after loading.
     ![in game](images/lab1-league4.png)
-5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc. [To make the requests automatically, you can use this code.](../../../src/live_client_producer.py)
-[This is an example packet returned by the Live Client API](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json) and we can observe the kind of information we can access from a player. I've attached the obtained sample from the screenshots above [in this file](../../../src/aux_files/example_live_client.txt).
+5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc. [To make the requests automatically, you can use this code.](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/live_client_producer.py)
+
+    [This is an example packet returned by the Live Client API](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json) and we can observe the kind of information we can access from a player. I've attached the obtained sample from the screenshots above [in this file](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/aux_files/example_live_client.txt).
     ```json
     {
         "magicResist": 32,
@@ -67,7 +68,7 @@ You can also refer back to [article 4](../../../articles/article4.md), where I e
         "resourceRegenRate": 0
     }
     ```
-6. All this champion information is the information we'll use as input in our ML model. So, we need to harmonize column names and amount of variables in our pre-trained models, with the information we have available in real-time, so that the ML model can make predictions with everything available. This is achieved thanks to the __process_predictor_liveclient__ function.
+6. All this champion information is the information we'll use as input in our ML model. So, we need to harmonize column names and amount of variables in our pre-trained models, with the information we have available in real-time, so that the ML model can make predictions with everything available. This is achieved thanks to the __`process_predictor_liveclient`__ function.
 
 
 You may now [proceed to the next lab](#next).

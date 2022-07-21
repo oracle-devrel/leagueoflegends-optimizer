@@ -1,21 +1,30 @@
 # Creating the Model
 
-## Recap and Introduction
 
+## Introduction
 In this lab, we're going to create a very primitive ML model. This model will use very few variables and will only have one target variable. It'll be useful to us as it'll allow us to make an introduction towards the most basic and fundamental ML concepts.
 
-## Notebooks
+Estimated Lab Time: xx minutes
+
+### Prerequisites
+
+* An Oracle Free Tier, Paid or LiveLabs Cloud Account
+* Active Oracle Cloud Account with available credits to use for Data Science service.
+
+## Task 1: Downloading / Accessing Notebooks
 
 Everything that we're going to talk about, you can find in two files:
-1. (Optional) If you're using your own data (generating it by following the workshop), and you have [all the prerequisites](../intro/intro.md) installed, you can check out [this notebook](../../../notebooks/hol1_online_analysis.ipynb) that connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
-2. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results): [access this notebook](../../../notebooks/hol1_offline_analysis.ipynb)
+1. (Optional) If you're using your own data (generating it by following the workshop), and you have [all the prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out [this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb) that connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
+
+2. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results): [access this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb)
     > For more advanced users, you always have the possibility to download the dataset directly from Kaggle using [Kaggle's API](https://github.com/Kaggle/kaggle-api), and running:
+    
     ```bash
     kaggle datasets download jasperan/league-of-legends-1v1-matchups-results
     ```
 
 
-## The Data Structure
+## Task 2: The Data Structure
 
 From the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results), we see an example of the data structure we're going to use to build our model:
 
@@ -72,7 +81,7 @@ For our first model, we're going to simplify the present data structure even mor
 
 Where `win` is a boolean variable that represents whether `champ1` won or not. So, in this example, Velkoz won the game.
 
-## Loading Data / Generating Dataset
+## Task 3: Loading Data / Generating Dataset
 
 We begin with simple data exploration of our initial dataset.
 
@@ -112,11 +121,10 @@ df.head(5)
 
 We see that the matchups.csv file contains information from every game, based on a P_MATCH_ID. In this case, we'll have the following ID structure:
 
-```console
+```bash
 XXn_YYYYYYYYY_z
 
 where XX = region, YYYYYYYYY = match id, z = lane played in the match. Possible lanes are (utility, jungle, top, middle, bottom).
-
 ```
 
 After exploring this big dataset, we observe that, in order to create a meaningful model, and with the purpose of trying to make the model decide which champion should win in every matchup, we will modify this initial structure and adapt it to predict whether a champion won or not.
@@ -196,6 +204,7 @@ champ_list = df['champ1'].unique().tolist()
 print(type(champ_list), champ_list)
 ```
 
+
 ```bash
 array(['Ezreal', 'Pyke', 'Diana', 'Jayce', 'Pantheon', 'Galio',
        'Mordekaiser', 'Anivia', 'Kalista', 'Brand', 'LeeSin', 'Katarina',
@@ -232,6 +241,7 @@ To make sure we have all desired columns in our dataset, we print the columns:
 ```python
 print(df.columns) # we have 4 columns, 'win' is what we want to predict
 ```
+
 
 ```bash
 Index(['match_id', 'champ1', 'champ2', 'win'], dtype='object')

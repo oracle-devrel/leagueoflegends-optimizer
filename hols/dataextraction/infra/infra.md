@@ -4,7 +4,7 @@
 
 In this lab we will build the infrastructure that we will use to run the rest of the workshop.
 
-The main three elements that we will be creating are a Virtual Cloud Network which helps you define your own data center network topology inside the Oracle Cloud by defining some of the following components (Subnets, Route Tables, Security Lists, Gateways, etc.), Compute instance using an image from the Oracle Cloud based on Linux engien. And finally an Autonomous JSON Database where we will allocate the JSON documents.
+The main three elements that we will be creating are a Virtual Cloud Network, which helps you define your own data center network topology inside the Oracle Cloud by defining some of the following components (Subnets, Route Tables, Security Lists, Gateways, etc.); a Compute instance using a Linux-based image from Oracle Cloud. And finally, an Autonomous JSON Database where we'll allocate the JSON documents.
 
 Estimated Lab Time: xx minutes
 
@@ -272,4 +272,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - July 10th, 2022
+* **Last Updated By/Date** - July 21st, 2022
