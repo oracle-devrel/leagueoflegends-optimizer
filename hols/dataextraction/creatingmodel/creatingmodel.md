@@ -14,12 +14,14 @@ Estimated Lab Time: xx minutes
 ## Task 1: Downloading / Accessing Notebooks
 
 Everything that we're going to talk about, you can find in two files:
-1. (Optional) If you're using your own data (generating it by following the workshop), and you have [all the prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out [this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb) that connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
 
-2. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results): [access this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb)
-    > For more advanced users, you always have the possibility to download the dataset directly from Kaggle using [Kaggle's API](https://github.com/Kaggle/kaggle-api), and running:
+1. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results): [access this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb)
+
+2. (Optional) If you're using your own data (generating it by following the workshop), and you have [all the prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out [this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb) that connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
+
+3. (Optional) For advanced users, you always have the possibility to download the dataset directly from Kaggle using [Kaggle's API](https://github.com/Kaggle/kaggle-api), and running:
     
-    ```bash
+    ```console
     kaggle datasets download jasperan/league-of-legends-1v1-matchups-results
     ```
 
@@ -28,7 +30,8 @@ Everything that we're going to talk about, you can find in two files:
 
 From the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results), we see an example of the data structure we're going to use to build our model:
 
-```json 
+```json
+
 {
     "p_match_id": "BR1_2133948485_bottom",
     "data": [
@@ -63,7 +66,7 @@ From the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-
 }
 ```
 
-The intricacies of how we built the data structure and derived the result from it are explained in the [previous article](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/main/articles/article2.md). It is important to remember that structuring and manipulating data in the data science process takes an average of 80 to 90% of the time, according to expert sources (image courtesy of [“2020 State of Data Science: Moving From Hype Toward Maturity.”](https://www.anaconda.com/state-of-data-science-2020)), and we shouldn't be discouraged when spending most of our time processing and manipulating data structures. The ML algorithm is the easy part if you've correctly identified the correct data structure and adapted it to the structure ML algorithms expect.
+The intricacies of how we built the data structure and derived the result from it are explained in [a previous article](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article2.md). It is important to remember that structuring and manipulating data in the data science process takes about 80 to 90% of the time, according to expert sources (image courtesy of [“2020 State of Data Science: Moving From Hype Toward Maturity.”](https://www.anaconda.com/state-of-data-science-2020)), and we shouldn't be discouraged when spending most of our time processing and manipulating data structures. The ML algorithm is the easy part if you've correctly identified the correct data structure and adapted it to the structure ML algorithms expect.
 
 ![Breakdown of effort to train model](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/blob/main/images/lab1-anaconda_1.PNG?raw=true)
 
@@ -111,15 +114,16 @@ df = pd.read_csv('matchups.csv', sep=',')
 df.head(5)
 ```
 
-| P_MATCH_ID | GOLDEARNED |	TOTALMINIONSKILLED |	WIN |	KILLS |	ASSISTS |	DEATHS |	CHAMPION |	VISIONSCORE |	PUUID |	TOTALDAMAGEDEALTTOCHAMPIONS |	SUMMONERNAME |	GAMEVERSION |
-| 0 |	BR1_2304032235_utility |	5218 |	16 |	False |	1 |	6 |	6 |	Bard |	28 |	UNNl1KcPO98UoXiuRpQBefEKJbtCF_80b0_2s0Cwa5FiYia7CBuyoBqQwnvw6JDEIa8VDphv6wilow |	4500 |	batata 12121212 |	11.13.382.1241 |
-| 1	 |	BR1_2304032235_utility | 7515 |	29	|	True	| 1	| 20 |	1 |	Blitzcrank |	40 |	w2DLeo91qdfD72dpGgapMOKh_4IZ9IMF29neabiS0QTe8WAzWX4UtexFXLSjfuasgyjH2wQgagVXwg |	7716 |	love yourseIf |	11.13.382.1241 |	
-| 2 |	BR1_2304032235_jungle |	9197 |	47 |	False |	5 |	5 |	5 |	Nocturne |	17 |	wDtmVguiopT93yrxtv2L88LxAVWC8E2fj_F3FDW81nCuSUffNCG0cQZJADKWx9GlJcQMuVWL_n9OBg |	9696 |	NTM HACKER |	11.13.382.1241 |
-| 3	| BR1_2304032235_jungle |	10564 |	37 |	True |	6 |	8 |	4 |	Kayn |	12 |	zVKtTZrdKVIpXwIMlsuSQjwOgqxx0DMhnWDFL7MrAKxXZqZ8ksaJ9SVQ2Zjb-NrjQ4FB9LmDx-nx8w |	15291 |	unsuri |	11.13.382.1241 |
-| 4 |	BR1_2303451507_top |	10598 |	158 |	False |	6 |	8 |	7 |	Pantheon |	17 |	sTevUOXxKjNW7dpbtyu9wjn8KZxzN63_f2MfGc1EALDjtq7Z3JE0JZFvRtyuTjkGmbGPqMAEwvt0Hw |	20568 |	Nome e Numeros |	11.13.382.1241 |
-| 5 |	BR1_2303451507_top |	13000 |	174 |	True |	10 |	4 |	6 |	Mordekaiser |	18 | r7sMT1QKsGE_Y5O7o2tQMU8v6A5BA6hsyCKnvKqo7fAsxJ5_LXk4_7f2NW69uf5oR4YT9djAU88WKg |	20672 |	Duianr |	11.13.382.1241 |
+| `P_MATCH_ID` | GOLDEARNED |	TOTALMINIONSKILLED |	WIN |	KILLS |	ASSISTS |	DEATHS |	CHAMPION |	VISIONSCORE |	PUUID |	TOTALDAMAGEDEALTTOCHAMPIONS |	SUMMONERNAME |	GAMEVERSION |
+| :----------:	| :------:	| :------:	| :----: | :----------:	| :------:	| :------:	| :----: | :----------:	| :------:	| :------:	| :----: | :----------:	|
+| `BR1_2304032235_utility` |	5218 |	16 |	False |	1 |	6 |	6 |	Bard |	28 |	`UNNl1KcPO98UoXiuRpQBefEKJbtCF_80b0_2s0Cwa5FiYia7CBuyoBqQwnvw6JDEIa8VDphv6wilow` |	4500 |	batata 12121212 |	11.13.382.1241 |
+| `BR1_2304032235_utility` | 7515 |	29	|	True	| 1	| 20 |	1 |	Blitzcrank |	40 |	`w2DLeo91qdfD72dpGgapMOKh_4IZ9IMF29neabiS0QTe8WAzWX4UtexFXLSjfuasgyjH2wQgagVXwg` |	7716 |	love yourseIf |	11.13.382.1241 |	
+| `BR1_2304032235_jungle` |	9197 |	47 |	False |	5 |	5 |	5 |	Nocturne |	17 |	`wDtmVguiopT93yrxtv2L88LxAVWC8E2fj_F3FDW81nCuSUffNCG0cQZJADKWx9GlJcQMuVWL_n9OBg` |	9696 |	NTM HACKER |	11.13.382.1241 |
+| `BR1_2304032235_jungle` |	10564 |	37 |	True |	6 |	8 |	4 |	Kayn |	12 |	`zVKtTZrdKVIpXwIMlsuSQjwOgqxx0DMhnWDFL7MrAKxXZqZ8ksaJ9SVQ2Zjb-NrjQ4FB9LmDx-nx8w` |	15291 |	unsuri |	11.13.382.1241 |
+| `BR1_2303451507_top` |	10598 |	158 |	False |	6 |	8 |	7 |	Pantheon |	17 |	`sTevUOXxKjNW7dpbtyu9wjn8KZxzN63_f2MfGc1EALDjtq7Z3JE0JZFvRtyuTjkGmbGPqMAEwvt0Hw` |	20568 |	Nome e Numeros |	11.13.382.1241 |
+| `BR1_2303451507_top` |	13000 |	174 |	True |	10 |	4 |	6 |	Mordekaiser |	18 | `r7sMT1QKsGE_Y5O7o2tQMU8v6A5BA6hsyCKnvKqo7fAsxJ5_LXk4_7f2NW69uf5oR4YT9djAU88WKg` |	20672 |	Duianr |	11.13.382.1241 |
 
-We see that the matchups.csv file contains information from every game, based on a P_MATCH_ID. In this case, we'll have the following ID structure:
+We see that the matchups.csv file contains information from every game, based on a `P_MATCH_ID`. In this case, we'll have the following ID structure:
 
 ```bash
 XXn_YYYYYYYYY_z
@@ -127,17 +131,17 @@ XXn_YYYYYYYYY_z
 where XX = region, YYYYYYYYY = match id, z = lane played in the match. Possible lanes are (utility, jungle, top, middle, bottom).
 ```
 
-After exploring this big dataset, we observe that, in order to create a meaningful model, and with the purpose of trying to make the model decide which champion should win in every matchup, we will modify this initial structure and adapt it to predict whether a champion won or not.
+After exploring the dataset, we observe that, in order to create a meaningful model, and with the purpose of trying to make the model decide which champion should win in every matchup, we will modify this initial structure and adapt it to predict whether a champion won or not.
 
 This assimilates the structure we want to have:
 
 | match_id	| champ1 | champ2 |	win |
 | :----------:	| :------:	| :------:	| :----: |
-| EUN1_2910807891_utility |	Velkoz | Yuumi | 1 |
-| EUN1_2910807891_jungle | Shaco |	Nidalee	| 1 |
-| EUN1_2909987530_top | Riven |	Sett |	0 |
-| EUN1_2909987530_middle | Lissandra |	Kassadin |	0 |
-| EUN1_2909987530_bottom | Ashe | Ezreal | 0 |
+| `EUN1_2910807891_utility` |	Velkoz | Yuumi | 1 |
+| `EUN1_2910807891_jungle` | Shaco |	Nidalee	| 1 |
+| `EUN1_2909987530_top` | Riven |	Sett |	0 |
+| `EUN1_2909987530_middle` | Lissandra |	Kassadin |	0 |
+| `EUN1_2909987530_bottom` | Ashe | Ezreal | 0 |
 
 
 For this, we create a function that, for each match_id, it finds whether the player won or not, and adds it as a boolean variable (True/False). It will also find the enemy player (in the same match and lane) and pair it against each other in the same row.
@@ -242,9 +246,8 @@ To make sure we have all desired columns in our dataset, we print the columns:
 print(df.columns) # we have 4 columns, 'win' is what we want to predict
 ```
 
-
 ```bash
-Index(['match_id', 'champ1', 'champ2', 'win'], dtype='object')
+> Index(['match_id', 'champ1', 'champ2', 'win'], dtype='object')
 ```
 
 
@@ -255,7 +258,7 @@ df.info()
 ```
 
 ```bash
-<class 'pandas.core.frame.DataFrame'>
+> <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 1288773 entries, 0 to 1288772
 Data columns (total 4 columns):
  #   Column    Non-Null Count    Dtype 
