@@ -1,0 +1,47 @@
+---
+- name: Install Instant Client Repo
+  dnf:
+    name:
+      - "oracle-instantclient-release-el8"
+    state: latest
+- name: Install Python 3.9
+  dnf:
+    name:
+      - "python39"
+      - "python39-pip"
+    state: latest
+    update_cache: yes
+- name: Install Instant Client
+  dnf:
+    name:
+      - "oracle-instantclient-basic"
+    state: latest
+    update_cache: yes
+- name: Copy Wallet
+  unarchive:
+    src: "../../../../../terraform/generated/wallet.zip"
+    dest: "/usr/lib/oracle/21/client64/lib/network/admin/"
+- name: Copy generated dotenv
+  copy:
+    src: "../../../../../terraform/generated/.env"
+    dest: /home/opc/src/
+    owner: opc
+    group: opc
+    mode: 0640
+- name: Copy source code
+  copy:
+    src: "files/src/"
+    dest: /home/opc/src/
+    owner: opc
+    group: opc        
+    mode: 0640
+- name: python3 -> Python 3.9
+  command: update-alternatives --set python3 /usr/bin/python3.9
+- name: Install dependencies
+  command: python3 -m pip install -r /home/opc/src/requirements.txt
+- name: FIXME probably not needed chown opc:opc for pythonapp and venv
+  file:
+    dest=/home/opc/src
+    owner=opc
+    group=opc
+    recurse=yes

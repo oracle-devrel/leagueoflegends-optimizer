@@ -1,0 +1,32 @@
+{
+  "p_match_id": "BR1_2133948485_bottom",
+  "data": [
+    {
+      "goldEarned": 10767,
+      "totalMinionsKilled": 161,
+      "win": false,
+      "kills": 6,
+      "assists": 8,
+      "deaths": 6,
+      "champion": "Kayle",
+      "visionScore": 14,
+      "puuid": "s1j7_icmqQCl1vROjASKJLSGZmktnvcrt8Qm7g39T16YdxE-xTlX2nnrG400bMae7O3JWyf2Y4XX4Q",
+      "totalDamageDealtToChampions": 13008,
+      "summonerName": "EveBy"
+    },
+    {
+      "goldEarned": 14787,
+      "totalMinionsKilled": 172,
+      "win": true,
+      "kills": 14,
+      "assists": 2,
+      "deaths": 6,
+      "champion": "Kaisa",
+      "visionScore": 12,
+      "puuid": "zjBoj6G9dWbPgkKSvZpDIcDA2NG65M1FUOxlYCXUyff9I1GR_xIuOFLWXlzMjWV67gOnGFC7g6wCuw",
+      "totalDamageDealtToChampions": 23071,
+      "summonerName": "Goiasinho"
+    }
+  ],
+  "gameVersion": "10.25.348.1797"
+}

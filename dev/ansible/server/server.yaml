@@ -1,0 +1,6 @@
+---
+- name: Provision Python Flask App
+  hosts: pythonservers
+  become: true
+  roles:
+    - server
