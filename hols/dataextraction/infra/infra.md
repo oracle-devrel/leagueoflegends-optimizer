@@ -4,7 +4,11 @@
 
 In this lab we will build the infrastructure that we will use to run the rest of the workshop.
 
-The main three elements that we will be creating are a Virtual Cloud Network, which helps you define your own data center network topology inside the Oracle Cloud by defining some of the following components (Subnets, Route Tables, Security Lists, Gateways, etc.); a Compute instance using a Linux-based image from Oracle Cloud. And finally, an Autonomous JSON Database where we'll allocate the JSON documents.
+The main four elements that we will be creating are:
+- Virtual Cloud Network, which helps you define your own data center network topology inside the Oracle Cloud by defining some of the following components (Subnets, Route Tables, Security Lists, Gateways, etc.)
+- Compute instance using a Linux-based image from Oracle Cloud.
+- Autonomous JSON Database where we'll allocate the JSON documents.
+- Data Science session and notebook, to experiment with the newly-generated data using notebooks.
 
 Estimated Lab Time: xx minutes
 
@@ -265,6 +269,99 @@ As we're going to want to connect to our newly created Autonomous Database, we a
     WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="D:/Programs/instantclient/network/admin")))
     SSL_SERVER_DN_MATCH=yes
     ```
+
+
+## Task 5: Create Data Science Session
+
+### 1: Configure prerequisites for the service
+
+This guide shows how to use the Resource Manager to provision the prerequisites for the OCI Data Science service. This includes the configuration network (VCN) and security configuration (groups, dynamic groups and policies).
+
+This process is automated.  However, **if you prefer a manual** approach, to control all the aspects of the provisioning, you can find those instructions here OCI Data Science: [manual provisioning steps](https://docs.cloud.oracle.com/en-us/iaas/data-science/data-science-tutorial/tutorial/get-started.htm#concept_tpd_33q_zkb). In all other cases, please continue with the steps below for automated provisioning.
+
+1. Press this button below to open the Resource Manager.
+
+    [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-ods-orm/releases/download/1.0.6/oci-ods-orm-v1.0.6.zip)
+
+    You may have to log in first in case you were not logged into to Oracle Cloud Infrastructure already.
+
+2. Configure the Stack.
+
+   - Check "I have reviewed and accepted the Oracle Terms of Use".
+   - Select the right compartment. If you have just created your Oracle cloud account you may choose the root compartment.
+   - Click Next.
+
+    ![](./images/task5/autostack.png)
+
+3. **Important** In the section "ODS Configuration" *uncheck* "Create a Project and Notebook Session" (we will create them using the console later).
+
+    ![](./images/task5/disable-ods-creation.png)
+
+
+4. In the section "Vault Configuration" uncheck "Enable Vault Support".
+
+    ![](./images/task5/newimage6.png)
+
+5. In the section "Functions/API Gateway Configuration", uncheck "Provision Functions and API Gateway".
+
+    ![](./images/task5/disablefunctions.png)
+
+6. Click "Next".
+
+    ![](./images/task5/newimage7.png)
+
+7. Make sure that that the "Run Apply" option is _checked_.
+
+    ![](./images/task5/autoapply.png)
+
+7. Click "Create".
+
+    ![](./images/task5/create.png)
+
+   Provisioning should take about 5 minutes after which the status of the Job should become "Succeeded".
+
+   ![](./images/task5/job-succeeded.png)
+
+### 2: Create a Project and Notebook
+
+1. Open the OCI Data Science projects and choose "Create Project".
+
+    ![](./images/task5/open-ods.png)
+
+    ![](./images/task5/create-project-1.png)
+
+    - Select the right compartment. If you have just created your Oracle cloud account you may choose the root compartment.
+    - Choose a name, e.g. "Data Science Project" and press "Create".
+
+    ![](./images/task5/create-project-2.png)
+
+2. The newly created project will now be opened. Within this project, provision an Oracle Data Science notebook by clicking "Create notebook session".
+
+    ![](./images/task5/create-notebook-1.png)
+
+    - Select the right compartment. If you have just created your Oracle cloud account you may choose the root compartment.
+    - Select a name, e.g. "Data Science Notebook"
+    - We recommend you choose VM.Standard2.2 (under Intel SKYLAKE) as the shape.
+    - Set blockstorage to 50 GByte.
+    - Select defaults for VCN and subnet. These should point to the resources that were created earlier by the resource manager.
+
+    ![](./images/task5/create-notebook-3.png)
+
+    Finally click "Create". The process should finish after about 5 minutes and the status of the notebook will change to "Active".
+
+3. Open the notebook that was provisioned:
+
+    The name of the notebook may be different than shown here in the screenshot.
+
+    ![](./images/task5/open-notebook.png)
+
+    ![](./images/task5/open-notebook2.png)
+
+    You should now see the Jupyter environment
+
+    ![](./images/task5/notebook.png)
+
+
 
 You may now [proceed to the next lab](#next).
 
