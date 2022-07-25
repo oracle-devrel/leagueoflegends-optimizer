@@ -158,7 +158,7 @@ END;
 >   DBMS_CLOUD.UPDATE_CREDENTIAL(
 >      credential_name => 'LOL_BUCKET_CREDENTIALS',
 >      attribute => 'PASSWORD',
->      value => '3UN-Ot2it$:Ib>cP!6YF'); 
+>      value => 'password'); 
 > END;
 > /
 > ```
