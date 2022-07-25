@@ -281,7 +281,7 @@ This process is automated.  However, **if you prefer a manual** approach, to con
 
 1. Press this button below to open the Resource Manager.
 
-    [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-ods-orm/releases/download/1.0.6/oci-ods-orm-v1.0.6.zip)
+    [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-ods-orm/releases/download/v2.0.0/oci-ods-orm-v2.0.0.zip)
 
     You may have to log in first in case you were not logged into to Oracle Cloud Infrastructure already.
 
