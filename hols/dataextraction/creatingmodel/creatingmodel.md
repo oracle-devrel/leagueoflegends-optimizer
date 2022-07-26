@@ -10,6 +10,7 @@ Estimated Lab Time: xx minutes
 
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account
 * Active Oracle Cloud Account with available credits to use for Data Science service.
+* [Previously created](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/infra/infra.md) OCI Data Science Environment
 
 ## Task 1: Downloading / Accessing Notebooks
 
@@ -25,8 +26,34 @@ Everything that we're going to talk about, you can find in two files:
     kaggle datasets download jasperan/league-of-legends-1v1-matchups-results
     ```
 
+## Task 2: Setting up OCI Data Science Environment
 
-## Task 2: The Data Structure
+[Having previously created our OCI Data Science environment](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/infra/infra.md), we need to install the necessary Python dependencies to execute our code. For that, we'll access our environment.
+
+1. We open the notebook that was provisioned:
+
+    > The name of the notebook may be different than shown here in the screenshot.
+
+    ![](./images/open-notebook.png)
+
+    ![](./images/open-notebook2.png)
+
+    You should now see the Jupyter environment
+
+    ![](./images/notebook.png)
+
+2. Now, we have to load our notebook and datasets into our environment. For that, having the files from [the official repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs) locally, we use the upload button to transfer the files:
+
+    ![](./images/upload.jpg)
+
+    We need to upload the notebook called [`hol1_offline_analysis.ipynb`](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb), and our datasets from Kaggle ([matchups.csv](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=matchups.csv) and [1v1.csv](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=1v1.csv)).
+
+3. We run the first code cell in [the notebook we will access]((https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb) to install the dependencies.
+
+4. Afterwards, we can run the rest of the notebook in sequence.
+
+
+## Task 3: The Data Structure
 
 From the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results), we see an example of the data structure we're going to use to build our model:
 
@@ -84,7 +111,7 @@ For our first model, we're going to simplify the present data structure even mor
 
 Where `win` is a boolean variable that represents whether `champ1` won or not. So, in this example, Velkoz won the game.
 
-## Task 3: Loading Data / Generating Dataset
+## Task 4: Loading Data / Generating Dataset
 
 We begin with simple data exploration of our initial dataset.
 
@@ -187,18 +214,18 @@ def process_1v1_model():
 
 After creating this function and invoking it, we will obtain a resulting CSV file or dataframe object. We'll use this new object to create our model.
 
-## Loading Processed Dataset
+## Task 5: Loading Processed Dataset
 
 After doing this initial processing and understanding why variables are included, we load the new CSV file:
 
 ```python
 # We read the dataset from the local file, after taking a look at the original dataset.
-df = pd.read_csv('1v1.csv', sep=',')
+df = pd.read_csv('1v1.csv', sep=',', engine='python')
 
 df.head(5)
 ```
 
-## Exploring Data
+## Task 6: Exploring Data
 
 We can check the list of champions in the game:
 
@@ -273,7 +300,7 @@ memory usage: 39.3+ MB
 
 In this case we don't have any null-values, otherwise we'd drop these null values or replace them with filler values / placeholders. This is especially important to check if the dataset hasn't been curated by anyone else before; checking for **data consistency** is very important if the dataset is produced by ourselves.
 
-## Dropping ID columns
+## Task 7: Dropping ID columns
 
 ```python
 # Drop match_id column as it's a String that provides no value towards predictions, almost every value is different, and all values are categorical (Strings), not numbers.
@@ -282,7 +309,7 @@ df.drop(['match_id'], axis=1, inplace=True)
 
 > Note: the inplace=True option persists the __drop__ operation in the __df__ object. This basically means that we don't need to assign this operation back to the dataframe, as the operation is performed directly on the same dataframe.
 
-## Splitting into Train-Test
+## Task 8: Splitting into Train-Test
 
 To perform ML properly, we need to take the dataset we're going to work with, and split it into two:
 - A training dataset, from which our ML model will learn to make predictions.
@@ -305,7 +332,7 @@ train_labels = train_features.pop('win') # returns column 'win'
 test_labels = test_features.pop('win') # returns column 'win'
 ```
 
-## Encoding Data
+## Task 9: Encoding Data
 
 In order for a ML model to accept "words", or as we call them, "Strings" or categorical variables, we need to make a conversion from a String into a meaningful thing for the model. We have to understand that a ML model is just a result of a computer making millions of operations per second; and all these operations are made with numbers.
 
@@ -331,7 +358,7 @@ train_features = train_features.apply(lambda x: le.transform(x))
 test_features = test_features.apply(lambda x: le.transform(x))
 ```
 
-## Scaling Data
+## Task 10: Scaling Data
 
 Now that we have our categorical variables properly encoded into numerical variables, we need to apply **scaling** to all variables.
 Why is this important? Because, depending on which ML model to train, each of them will behave differently; and some of these models may consider "bigger" values as more important; this isn't what we want.
@@ -371,7 +398,7 @@ The accuracies obtained for the logistic regression classifier are 0.51. With so
 - Testing new regression / classification algorithms, other than Logistic Regression
 - Having a more specific target variable. This target variable is only a boolean and doesn't allow for fine-grained predictions, it's either 0 or 1.
 
-## Making New Predictions
+## Task 11: Making New Predictions
 
 However, we can still make predictions using our model. The code to make a prediction needs to consider new data, encode it and then make a prediction.
 

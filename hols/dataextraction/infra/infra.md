@@ -302,15 +302,11 @@ This process is automated.  However, **if you prefer a manual** approach, to con
 
     ![](./images/task5/newimage6.png)
 
-5. In the section "Functions/API Gateway Configuration", uncheck "Provision Functions and API Gateway".
-
-    ![](./images/task5/disablefunctions.png)
-
-6. Click "Next".
+5. Click "Next".
 
     ![](./images/task5/newimage7.png)
 
-7. Make sure that that the "Run Apply" option is _checked_.
+6. Make sure that that the "Run Apply" option is _checked_.
 
     ![](./images/task5/autoapply.png)
 
@@ -348,19 +344,6 @@ This process is automated.  However, **if you prefer a manual** approach, to con
     ![](./images/task5/create-notebook-3.png)
 
     Finally click "Create". The process should finish after about 5 minutes and the status of the notebook will change to "Active".
-
-3. Open the notebook that was provisioned:
-
-    The name of the notebook may be different than shown here in the screenshot.
-
-    ![](./images/task5/open-notebook.png)
-
-    ![](./images/task5/open-notebook2.png)
-
-    You should now see the Jupyter environment
-
-    ![](./images/task5/notebook.png)
-
 
 
 You may now [proceed to the next lab](#next).
