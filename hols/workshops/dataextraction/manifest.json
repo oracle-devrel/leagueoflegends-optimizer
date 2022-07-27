@@ -8,31 +8,31 @@
       "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login-livelabs2.md"
     },
     {
-      "title": "Introduction",
+      "title": "Lab 1: Introduction",
       "description": "Introduction",
       "filename": "../../dataextraction/intro/intro.md",
       "type": "dbcs"
     },
     {
-      "title": "Infrastructure",
+      "title": "Lab 2: Infrastructure",
       "description": "The Introduction is always second. The title and contents menu title match for the Introduction.",
       "filename": "../../dataextraction/infra/infra.md",
       "type": "dbcs"
     },
     {
-      "title": "Optimizer",
+      "title": "Lab 3: Optimizer",
       "description": "Interacting with the optimizer.",
       "filename": "../../dataextraction/optimizer/optimizer.md",
       "type": "dbcs"
     },
     {
-      "title": "Client",
+      "title": "Lab 4: Client",
       "description": "Client API.",
       "filename": "../../dataextraction/client/client.md",
       "type": "dbcs"
     },
     {
-      "title": "Creating a Model",
+      "title": "Lab 5: Creating a Model",
       "description": "Creating Model",
       "filename": "../../dataextraction/creatingmodel/creatingmodel.md",
       "type": "dbcs"
