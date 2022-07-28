@@ -5,10 +5,19 @@
 In this lab we will build the infrastructure that we will use to run the rest of the workshop.
 
 The main four elements that we will be creating are:
-- Virtual Cloud Network, which helps you define your own data center network topology inside the Oracle Cloud by defining some of the following components (Subnets, Route Tables, Security Lists, Gateways, etc.)
-- Compute instance using a Linux-based image from Oracle Cloud.
-- Autonomous JSON Database where we'll allocate the JSON documents.
-- Data Science session and notebook, to experiment with the newly-generated data using notebooks.
+- **Compute** instance using a Linux-based image from Oracle Cloud.
+- **Autonomous JSON Database** where we'll allocate the JSON documents.
+- **Data Science** session and notebook, to experiment with the newly-generated data using notebooks.
+
+![Infrastructure](images/lol_infra.png)
+
+We will use Cloud Shell to execute `start.sh` script that will call Terraform and Ansible to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform or Ansible, don't worry, there is no need.
+
+Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get it.
+
+Ansible is an Open Source tool to provision on top of the created resources. It automates the dependency installation, copy the source code, and config files so everything is ready for you to use.
+
+Do you want to learn more? Fill free to check the code for terraform and ansible after the workshop.
 
 Estimated Lab Time: xx minutes
 
@@ -18,332 +27,101 @@ Estimated Lab Time: xx minutes
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 
 
-## Task 1: Create Virtual Cloud Network (VCN)
+## Task 1: Cloud Shell
 
-1. Login to Oracle cloud console: [cloud.oracle.com](https://cloud.oracle.com/)
-
-    - Cloud Account Name: oci-tenant
-    - **Next**
-
-    ![cloud Account Name](./images/task1/cloud-account-name.png)
-
-    - User Name: oci-username - email address provided
-    - Password: oci-password
-    - **Sign In**
-
-    ![User Name & Password](./images/task1/username-password.png)
-
-2. Click on main menu ≡, then Networking > **Virtual Cloud Networks**. Select your Region and Compartment assigned by the instructor. 
-
-    >**Note**: Use **Root** Compartment, oci-tenant(root), to create all resources for this workshop.
-
-    ![Oracle Console Networking](./images/task1/oracle-console-networking.png)
-
-3. Select your Region and Compartment assigned by the instructor. Click **Start VCN Wizard**.
-
-    ![Oracle Console Networking Start Wizard](./images/task1/oracle-console-networking-start-wizard.png)
-
-4. Select **Create VCN with Internet Connectivity**. Start **VCN Wizard**.
-
-   ![Create VCN with Internet Connectivity](./images/task1/create-vcn-with-internet-connectivity.png)
-
-5. Provide the following information:
-
-    - VCN Name:**LOLVCN**
+1. From the Oracle Cloud Console, click on **Cloud Shell**.
+  ![Cloud Shell Button](images/cloud-shell-button.png)
+2. As soon as the Cloud Shell is loaded, you can download the assets to run this lab.
     ```
-    <copy>LOLVCN</copy>
+    <copy>git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git</copy>
     ```
-    - Compartment: Be sure you have selected the correct one for this workshop purpose. **Root** is the recommended one
-    - Click **Next**
-
-    ![vcnName & Compartment](./images/task1/vcn-name-compartment.png)
-
-6. Review the information in the 'Review and Create Page' and Click **Create**.
-
-    ![vcn Creation](./images/task1/vcn-creation.png)
-
-7. The Resources have being created on the next page. Click **View Virtual Cloud Network** to access to the vcn.
-
-    ![View vcn Page](./images/task1/view-vcn-page.png)
-    ![DEVCN Detail](./images/task1/lolvcn-detail.png)
-
-
-## Task 2: Provision Compute Node for development
-
-1. From the main menu on the top left corner select **Compute >> Instances**.
-
-  ![OCI Console](./images/task2/compute.png)
-
-2. In the compartment selector on the bottom left corner, select the same compartment where you created the VCN. **Root** is the recommended one. Click on the **Create Instance** blue button to create the compute instance.
-
-  ![Compute Instance Dashboard](./images/task2/create-compute.png)
-
-3. Fill the following information to create the compute instance:
-
-    - Name:**LOL-COMPUTE**. This name will be used also as internal FQDN.
-        ```
-        <copy>LOL-COMPUTE</copy>
-        ```
-
-    - The **Placement** section is the section where you can change Availability Domain. For the scope of this workshop leave it as default.
-
-        ![Compute Instance creation](./images/task2/create-compute-domain.png)
-
-    - The **Image and shape** section is the section where you can change Image to be used, and Shape of resources. For the scope of this workshop leave everything as default.
-
-        ![Compute instance creation](./images/task2/create-compute-shape.png)
-
-    - The **Networking** section, check that your previously created **LOLVCN** is selected, and select your PUBLIC subnet **Public Subnet-LOLVCN(Regional)** from the dropdown menu. For the scope of this workshop leave the rest of options as default.
-
-        ![Compute instance creation](./images/task2/create-compute-networking.png)
-
-    - The **Add SSH Keys** section, make sure you **DOWNLOAD** the proposed private key. You will use it to connect to the compute instance later on. Once done, click **Create**.
-
-        ![Compute instance creation](./images/task2/create-compute-create.png)
-
-
-4. Wait for Compute Instance to finish provisioning, and have status Available (click browser Refresh button). On the Instance Details page, **copy Public IP Address** in your notes.
-
-    ![Compute Provisioning](./images/task2/compute-provisioning.png)
-    ![Compute Running](./images/task2/compute-running.png)
-
-> Note: On the Instance Details page, copy **Public IP Address** in your notes.
-
-
-## Task 3: Create an Autonomous Database
-
-We'll also need to create an autonomous database. We'll use it as our storage for our generated datasets and access points as a whole.
-
-1. **Click** on main menu ≡, then Oracle Database > **Autonomous JSON Database**. **Create Autonomous Database**.
-
-    ![Oracle Console AJD](./images/task3/oracle-console-ajson.png)
-
-2. Click **Create Autonomous Database**.
-
-    ![Create AJD](./images/task3/create-ajson.png)
-
-3. Provide the following information:
-
-    - Comparment: Be sure you have selected the correct one for this workshop purpose. **Root** is the recommended one.
-    - Display name: **LOL**
-        ```
-        <copy>LOL</copy>
-        ```
-    - Database name: **LOL**
-        ```
-        <copy>LOL</copy>
-        ```
-    - Choose a workload type: JSON
-    - Choose a deployment type: Shared Infrastructure
-    - Choose database version: 19c
-    - OCPU count: 1
-    - OCPU auto scaling: On
-    - Storage (TB): 1 or 0.02 if you are using a Trial account
-    - Storage auto scaling: Off
-
-    ![Creation AJD Dashboard](./images/task3/creation-ajson-dashboard.png)
-
-4. Under **Create administrator** credentials:
-
-    - Password: Remember to take a note of this password as it is the one that we will use later on
-    - Confirm Password
-
-5. Under **Choose network access**:
-
-    - Access Type: Secure access from everywhere
-
-    ![Creation AJD Network](./images/task3/creation-ajson-network.png)
-
-6. Under **Choose a license type**:
-
-    - License included
-
-    ![Creation AJD License](./images/task3/creation-ajson-license.png)
-
-7. Click **Create Autonomous Database**.
-
-    ![Creation AJD Create](./images/task3/creation-ajson-create.png)
-
-8. Wait for Lifecycle State to become **Available** from Provisioning (click browser Refresh button).
-
-    ![AJD Provisioning](./images/task3/ajson-provisioning.png)
-    ![AJD Available](./images/task3/ajson-available.png)
-
-9. Next to the big green box, click **DB Connection**.
-
-    ![AJD DB Connection](./images/task3/ajson-db-connection.png)
-
-10. Click **Download wallet**.
-
-    ![Download Wallet](./images/task3/download-wallet.png)
-
-11. Type the following information:
-
-    - Password: Type the password that we created previously
-    - Confirm Password: Confirm the password that we created previously
-    - Click **Download**
-
-    ![Download Wallet Password](./images/task3/download-wallet-password.png)
-
-12. Click **Save file** and **OK**.
-
-13. We will modify a couple of network settings to allow us to connect using TLS instead of m-TLS (mutual TLS). Long story short, using TLS instead of mTLS will make the task of connecting to the database easier (and additionally, it makes it possible to connect and use the __python-oracledb__ thin client if we want to, instead of only using the Thick client).
-
-    > **Note**: Activating TLS as the authentication mechanism doesn't restrict us from connecting using mTLS still, it just expands our possibilities of connecting
-    > mTLS will use port 1522 by default and TLS will use port 1521. If you're in a machine with firewall activated, make sure that in/egress firewall rules are suited for those ports.
-
-14. Go to the Autonomous JSON Home Page, Network section and click **edit** in the **Access Control List: Disabled** menu.
-
-    ![AJD Available](./images/task3/ajson-network.png)
-
-15. Modify the **Access Control List (ACL)** to allow our own IP address to connect to the database (or whichever IP you want). Add the most unrestrictive CIDR block, so that anyone can make a request with the proper username/password/connection string, by adding the CIDR block 0.0.0.0/0 (all IPs):
-    - IP notation type: Select **CIDR Block**
-    - Values: **0.0.0.0/0**
-        ```
-        <copy>0.0.0.0/0</copy>
-        ```
-    - **Save Changes**
-    ![Access Control List Menu](images/task3/access-control-list.png)
-
-16. Disable the parameter that `requires` us to connect through mTLS, and make TLS authentication also possible. Go to the Autonomous JSON Home Page, Network section and click **edit** in the **Mutual TLS (mTLS) Authentication: Required** menu.
-
-    - Require mutual TLS (mTLS) authentication: **Enable**
-    - **Save Changes**
-
-    ![AJD Available](./images/task3/ajson-network-mtls.png)
-    ![Disable mTLS menu](./images/task3/mtls.png)
-
-17. Once the database has finished updating, we can copy the database connection strings. Click **DB Connection** once more.
-
-    ![AJD DB Connection](./images/task3/ajson-db-connection.png)
-
-18. Go to the **Connection Strings** section. You can use any of the connection strings available, just note that the __tpurgent__ connection strings supports parallel calls and many more operations per second compared to all other connection strings. It's reserved for urgent operations, but since we're the only ones who are going to use the database, and just for this use case, let's not worry about prioritizing our tasks for now.
-
-    ![AJD DB Connection](./images/task3/lol-tpurgnet-connection-string.png)
-
-    > Note: We want our TLS connection strings (not mTLS connection strings) as they are different.
-
-19. Take a note of the connection string, we will need to add this to our configuration file later on. An example connection string would be:
-
-    ```bash
-    (description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=XXXXXXXXXXXX))(connect_data=(service_name=XXXXXXXXXXXXXXXX))(security=(ssl_server_dn_match=yes)(ssl_server_cert_dn="CN=XXXXXXXXXXXXX, OU=XXXXX, O=XXXXX XXXXXX, L=Redwood XXXXX, ST=XXXX, C=XXXX")))
+3. The result will look like this
+  ![Git Clone](images/git-clone.png)
+4. Change directory with `cd` to `leagueoflegends-optimizer` directory:
+    ```
+    <copy>cd leagueoflegends-optimizer</copy>
     ```
 
+## Task 2: Deploy with Terraform and Ansible
 
-## Task 4: Install Instant Client and Upload Wallet
-
-As we're going to want to connect to our newly created Autonomous Database, we also need to consider the supporting Oracle packages required to support this connection. This is facilitated by Oracle Instant Client, which we'll need to install. 
-
-1. Depending on the Operating System where you are, you'll need to download your respective binary files from [this link](https://www.oracle.com/database/technologies/instant-client/downloads.html). After installing Instant Client, we'll need to unzip the file into a directory (and remember the directory in which we put the unzipped file, we'll need to use it as a configuration parameter).
-
-2. In the end, your installation should look something like this:
-    ![instant client](images/lab1-instantclient.png)
-
-3. And, in my case, my path to my instant client installation would be:
-    ```bash
-    D:\Programs\instantclient
+1. Change directory with `cd` to `dev` where all the Terraform and Ansible code lives.
+    ```
+    <copy>cd dev</copy>
+    ```
+2. You will extract some data needed to set up Terraform, make sure you take notes of the information.
+3. Copy the output of the following command as the tenancy OCID:
+    ```
+    <copy>echo $OCI_TENANCY</copy>
+    ```
+4. Copy the output of the following command as the compartment OCID:
+    ```
+    <copy>echo $OCI_TENANCY</copy>
     ```
 
-4. Which is what we'll use in our configuration file.
-5. After setting up the Autonomous Database, we need to download the client credentials (required by design for mTLS connections).
-6. After downloading it, we'll copy all the contents that we found inside our Instant Client installation folder.
-7. Recalling the directory:
-    ```bash
-    D:\Programs\instantclient
+    > **Note only for experienced Oracle Cloud users:**<br>
+    > Do you want to deploy the infrastructure on a specific compartment?<br>
+    > You can get the Compartment OCID in different ways.<br>
+    > The coolest one is with OCI CLI from the Cloud Shell.<br>
+    > You have to change _`COMPARTMENT_NAME`_ for the compartment name you are looking for and run the command:
+    ```
+    <copy>oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME</copy>
+    ```
+5. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
+    ```
+    <copy>ssh-keygen -t rsa</copy>
+    ```
+6. We need the public key in our notes, so keep the result of the content of the following command in your notes.
+    ```
+    <copy>cat ~/.ssh/id_rsa.pub</copy>
+    ```
+7. From the previous lab, you should have the Riot Developer API Key. Keep it on your notes as well.
+  ![Riot API Key](images/riot_api_key_gen.png)
+8. Create a copy of the terraform variables file by running the following command.
+    ```
+    <copy>cp terraform/terraform.tfvars.template terraform/terraform.tfvars</copy>
+    ```
+9. Edit the values with `vim` or `nano` with your tenancy, compartment, ssh public key and Riot API key.
+    ```
+    <copy>vim terraform/terraform.tfvars</copy>
+    ```
+    ![Vim TF vars](images/vim-edit-tfvars.png)
+10. After editing the file it should look like this.
+    ![Vim TF vars edited](images/vim-edit-tfvars-edit.png)
+11. Save the file and confirm the values are correct.
+    ```
+    <copy>cat terraform/terraform.tfvars</copy>
     ```
 
-8. So, in my case, I'd paste the contents of the wallet into:
-    ```bash
-    D:\Programs\instantclient\network\admin\
+## Task 3: Start deployment
+
+1. Run the `start.sh` script
     ```
-
-9. Finally, I'll modify the contents of **sqlnet.ora** to make sure that the Python thick client can find the files it needs to connect through mTLS. 
-10. By default, the file has these contents:
-    ```bash
-    WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="?/network/admin")))
-    SSL_SERVER_DN_MATCH=yes
+    <copy>./start.sh</copy>
     ```
+2. The script will run and it looks like this.
+    ![Start SH beginning](images/start-sh-beginning.png)
+3. Terraform will create resources for you, and during the process it will look like this.
+    ![Start SH terraform](images/start-sh-terraform.png)
+4. Ansible will continue the work as part of the `start.sh` script. It looks like this.
+    ![Start SH ansible](images/start-sh-ansible.png)
+5. The final part of the script is to print the output of all the work done.
+    ![Start SH output](images/start-sh-output.png)
+6. Copy the ssh command from the output variable `compute`.
+    ![Start SH output](images/start-sh-ssh.png)
 
-11. I'll replace this with the specified directory where my wallet has been placed, and leave no place for error:
-    ```bash
-    WALLET_LOCATION = (SOURCE = (METHOD = file) (METHOD_DATA = (DIRECTORY="D:/Programs/instantclient/network/admin")))
-    SSL_SERVER_DN_MATCH=yes
+## Task 3: Check deployment
+
+1. Run the `ssh` command from the output of the script. It will look like this.
     ```
-
-
-## Task 5: Create Data Science Session
-
-### 1: Configure prerequisites for the service
-
-This guide shows how to use the Resource Manager to provision the prerequisites for the OCI Data Science service. This includes the configuration network (VCN) and security configuration (groups, dynamic groups and policies).
-
-This process is automated.  However, **if you prefer a manual** approach, to control all the aspects of the provisioning, you can find those instructions here OCI Data Science: [manual provisioning steps](https://docs.cloud.oracle.com/en-us/iaas/data-science/data-science-tutorial/tutorial/get-started.htm#concept_tpd_33q_zkb). In all other cases, please continue with the steps below for automated provisioning.
-
-1. Press this button below to open the Resource Manager.
-
-    [![Deploy to Oracle Cloud](https://oci-resourcemanager-plugin.plugins.oci.oraclecloud.com/latest/deploy-to-oracle-cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/oracle-quickstart/oci-ods-orm/releases/download/v2.0.0/oci-ods-orm-v2.0.0.zip)
-
-    You may have to log in first in case you were not logged into to Oracle Cloud Infrastructure already.
-
-2. Configure the Stack.
-
-   - Check "I have reviewed and accepted the Oracle Terms of Use".
-   - Select the right compartment. If you have just created your Oracle cloud account you may choose the root compartment.
-   - Click Next.
-
-    ![](./images/task5/autostack.png)
-
-3. **Important** In the section "ODS Configuration" *uncheck* "Create a Project and Notebook Session" (we will create them using the console later).
-
-    ![](./images/task5/disable-ods-creation.png)
-
-
-4. In the section "Vault Configuration" uncheck "Enable Vault Support".
-
-    ![](./images/task5/newimage6.png)
-
-5. Click "Next".
-
-    ![](./images/task5/newimage7.png)
-
-6. Make sure that that the "Run Apply" option is _checked_.
-
-    ![](./images/task5/autoapply.png)
-
-7. Click "Create".
-
-    ![](./images/task5/create.png)
-
-   Provisioning should take about 5 minutes after which the status of the Job should become "Succeeded".
-
-   ![](./images/task5/job-succeeded.png)
-
-### 2: Create a Project and Notebook
-
-1. Open the OCI Data Science projects and choose "Create Project".
-
-    ![](./images/task5/open-ods.png)
-
-    ![](./images/task5/create-project-1.png)
-
-    - Select the right compartment. If you have just created your Oracle cloud account you may choose the root compartment.
-    - Choose a name, e.g. "Data Science Project" and press "Create".
-
-    ![](./images/task5/create-project-2.png)
-
-2. The newly created project will now be opened. Within this project, provision an Oracle Data Science notebook by clicking "Create notebook session".
-
-    ![](./images/task5/create-notebook-1.png)
-
-    - Select the right compartment. If you have just created your Oracle cloud account you may choose the root compartment.
-    - Select a name, e.g. "Data Science Notebook"
-    - We recommend you choose VM.Standard2.2 (under Intel SKYLAKE) as the shape.
-    - Set blockstorage to 50 GByte.
-    - Select defaults for VCN and subnet. These should point to the resources that were created earlier by the resource manager.
-
-    ![](./images/task5/create-notebook-3.png)
-
-    Finally click "Create". The process should finish after about 5 minutes and the status of the notebook will change to "Active".
+    <copy>ssh opc@PUBLIC_IP</copy>
+    ```
+2. In the new machine, run the python script `check.py` that makes sure everything is working.
+    ```
+    <copy>python src/check.py</copy>
+    ```
+3. The result will confirm database connection and Riot API works.
+    ![Python Check OK](images/python-check-ok.png)
+4. If you get an error, make sure the `terraform/terraform.tfvars` file from the previous task contains the correct values. In case of any error, just run the `start.sh` script again.
 
 
 You may now [proceed to the next lab](#next).
