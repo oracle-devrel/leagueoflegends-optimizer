@@ -1,5 +1,5 @@
 variable "instance_name" {
-  default = "pythonapp"
+  default = "lol"
 }
 
 variable "instance_shape" {
@@ -15,12 +15,12 @@ variable "instance_shape_config_memory_in_gbs" {
 }
 
 data "oci_core_images" "images" {
-    compartment_id = var.compartment_ocid
-    shape = var.instance_shape
-    operating_system = "Oracle Linux"
-    operating_system_version = "8"
-    sort_by = "TIMECREATED"
-    sort_order = "DESC"
+  compartment_id           = var.compartment_ocid
+  shape                    = var.instance_shape
+  operating_system         = "Oracle Linux"
+  operating_system_version = "8"
+  sort_by                  = "TIMECREATED"
+  sort_order               = "DESC"
 }
 
 data "oci_identity_availability_domain" "ad" {
@@ -32,7 +32,7 @@ resource "oci_core_instance" "compute" {
   count               = 1
   availability_domain = data.oci_identity_availability_domain.ad.name
   compartment_id      = var.compartment_ocid
-  display_name        = "${var.instance_name}_${count.index}"
+  display_name        = "${var.instance_name}-${random_string.deploy_id.result}_${count.index}"
   shape               = var.instance_shape
 
   metadata = {
@@ -46,7 +46,7 @@ resource "oci_core_instance" "compute" {
 
   create_vnic_details {
     subnet_id                 = oci_core_subnet.publicsubnet.id
-    display_name              = "${var.instance_name}"
+    display_name              = var.instance_name
     assign_public_ip          = true
     assign_private_dns_record = true
     hostname_label            = "${var.instance_name}${count.index}"

@@ -7,7 +7,7 @@ locals {
 resource "oci_core_virtual_network" "lolvcn" {
   compartment_id = var.compartment_ocid
   cidr_blocks    = ["10.0.0.0/16"]
-  display_name   = "LoL vcn"
+  display_name   = "LoL vcn-${random_string.deploy_id.result}"
   dns_label      = "lolvcn"
 }
 
@@ -68,21 +68,3 @@ resource "oci_core_subnet" "privatesubnet" {
   route_table_id             = oci_core_route_table.route_table_private.id
   dhcp_options_id            = oci_core_virtual_network.lolvcn.default_dhcp_options_id
 }
-
-# resource "oci_core_security_list" "app_security_list" {
-#   compartment_id = var.compartment_ocid
-#   vcn_id         = oci_core_virtual_network.lolvcn.id
-#   display_name   = "App Security List"
-
-#   ingress_security_rules {
-#     protocol  = local.tcp_protocol
-#     source    = local.anywhere
-#     stateless = false
-
-#     tcp_options {
-#       min = 3000
-#       max = 3000
-#     }
-#   }
-
-# }
