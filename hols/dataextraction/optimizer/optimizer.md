@@ -7,7 +7,7 @@ Estimated Lab Time: xx minutes
 
 ### Prerequisites
 
-* An Oracle Free Tier, Paid or LiveLabs Cloud Account
+* An [Oracle Free Tier](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer&intcmp=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer), Paid, or LiveLabs Cloud Account
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 
 At the time of writing, the following execution modes are available:
@@ -39,7 +39,7 @@ There are two components we need to consider in our flow:
     ```  
 This execution mode will iteratively look for League of Legends leaderboards in every region in the world, and insert these players' information into our database. If the user has already been inserted, it will prevent re-insertion.
 
-    > If a user changes their in-game name, the next time the code runs, their new name will be updated in the database. (This is achieved by using their PUUID - a very long identifier - instead of their in-game name to identify every player).
+    If a user changes their in-game name, the next time the code runs, their new name will be updated in the database. (This is achieved by using their PUUID - a very long identifier - instead of their in-game name to identify every player).
 
 2. To extract previously played matches' IDs from our pool of players in the database, we can do this:
 
@@ -80,9 +80,9 @@ This execution mode will iteratively look for League of Legends leaderboards in 
 
 ## Task 3: Building Data Object for ML
 
-We'll use the execution mode __`process_predictor_liveclient`__. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
+We'll use the __`process_predictor_liveclient`__ execution mode. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
 
-1. [Here you can find the builder object, to check the set of variables that were considered for the model.](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/league.py#L568)
+1. [Find the builder object here](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/league.py#L568). It's with this object that you can check the set of variables that were considered for the model.
 2. Here's how to build the object:
 
     ```bash
