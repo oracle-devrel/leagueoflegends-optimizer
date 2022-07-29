@@ -11,7 +11,7 @@ Estimated Lab Time: xx minutes
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 
 At the time of writing, the following execution modes are available:
-  - **`player_list`**: gets the top players from a region and adds them automatically to our database. This includes players above master's elo in League of Legends (really good players), which is the kind of data we want if we're going to build a reliable ML model.
+  - **`player_list`**: retrieves the top players from a region and adds them automatically to our database. This includes players above master's elo in League of Legends (read: really good players), which is the kind of data we want if we're going to build a reliable ML model.
   - **`match_list`**: from all users already present in the database, extract their last 999 matches, or get as many as there are, with the IDs from each one of the games.
   - **`match_download_standard`**: for every ID in the **`__match__`** collection, get some information about them. This yields data useful to make a 1v1 predictor.
   - **`match_download_detail`**: for every ID in the **`__match__`** collection, get some global information. This yields data useful to make a 5v5 predictor. It inserts the new data into the **`__match_detail__`** collection.
@@ -19,7 +19,7 @@ At the time of writing, the following execution modes are available:
   - **`process_predictor_liveclient`**: similar to **`process_predictor`**, but it has the same column names as the ones we can find in the LiveClient API (what gives us **real-time data**, which means, what we'll be able to use in the end to make real-time predictions)
   - **`process_regressor`**: similar to **`process_predictor`**, but instead of trying to create a classifier model, it attempts to predict winning probability [0,1].
   - **`process_regressor_liveclient`**: similar to **`process_regressor`**, but with LiveClient API-compatible names.
-  - **`Default`** mode, which basically performs: **`player_list`** -> **`match_list`** -> **`match_download_standard`** -> **`match_download_detail`**.
+  - **`Default`**: this mode, which basically performs: **`player_list`** -> **`match_list`** -> **`match_download_standard`** -> **`match_download_detail`**.
 
 ## Task 1: Extracting Data / Generating Dataset
 
@@ -37,10 +37,11 @@ There are two components we need to consider in our flow:
     >>> Region: br1 | Tier: MASTER | Queue: RANKED_SOLO_5x5 | Total Players: 3733 
     >>> ...
     ```  
-2. This execution mode will iteratively look for League of Legends leaderboards in every region in the world, and insert these players' information into our database. If the user has already been inserted, it will prevent re-insertion.
+This execution mode will iteratively look for League of Legends leaderboards in every region in the world, and insert these players' information into our database. If the user has already been inserted, it will prevent re-insertion.
 
     > If a user changes their in-game name, the next time the code runs, their new name will be updated in the database. (This is achieved by using their PUUID - a very long identifier - instead of their in-game name to identify every player).
-3. To extract previously played matches' IDs from our pool of players in the database, we can do this:
+
+2. To extract previously played matches' IDs from our pool of players in the database, we can do this:
 
     ```bash
     λ python league.py --mode="match_list"
@@ -60,7 +61,7 @@ There are two components we need to consider in our flow:
     >>> ...
     ```
 
-    It finds matches played by every player in our database, in every region. This allows us to obtain more matches per player, in case the player travels abroad from their original region, e.g. to compete internationally.
+    Thish command finds matches played by every player in our database, in every region. This allows us to obtain more matches per player, in case the player travels abroad from their original region, e.g. to compete internationally.
 
     > This only extracts Match IDs. Processing these IDs is done in the next section
 
@@ -74,7 +75,8 @@ There are two components we need to consider in our flow:
     # it will then start extracting match information.
     # each match contains a huge amount of information, so I'm not putting any examples here, but you'll see when you execute.
     ```
-2. This gives us timestamped information about what occurred in each game, in thorough detail. From this, we can build an object with all variables that can be useful in our model.
+
+2. This gives us timestamped information about what occurred in each game in thorough detail. From this, we can build an object with all variables that can be useful in our model.
 
 ## Task 3: Building Data Object for ML
 
