@@ -1,8 +1,7 @@
 # Creating the Model
 
-
 ## Introduction
-In this lab, we're going to create a very primitive ML model. This model will use very few variables and will only have one target variable. It'll be useful to us as it'll allow us to make an introduction towards the most basic and fundamental ML concepts.
+In this lab, we're creating a very primitive ML model. This model will use very few variables and will only have one target variable. It'll be useful to us as it introduces the most basic and fundamental ML concepts.
 
 Estimated Lab Time: xx minutes
 
@@ -14,11 +13,11 @@ Estimated Lab Time: xx minutes
 
 ## Task 1: Downloading / Accessing Notebooks
 
-Everything that we're going to talk about, you can find in two files:
+You can find everything covered here in two files:
 
-1. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results): [access this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb)
+1. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results), [access this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb)
 
-2. (Optional) If you're using your own data (generating it by following the workshop), and you have [all the prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out [this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb) that connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
+2. (Optional) If you're using your own data (generating it by following the workshop), and you have [all the prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out [this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb) which connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
 
 3. (Optional) For advanced users, you always have the possibility to download the dataset directly from Kaggle using [Kaggle's API](https://github.com/Kaggle/kaggle-api), and running:
     
@@ -42,7 +41,7 @@ Everything that we're going to talk about, you can find in two files:
 
     ![](./images/notebook.png)
 
-2. Now, we have to load our notebook and datasets into our environment. For that, having the files from [the official repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs) locally, we use the upload button to transfer the files:
+2.We now need to load our notebook and datasets into our environment. For that, using the files from [the official repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs) locally, we use the upload button to transfer the files:
 
     ![](./images/upload.jpg)
 
@@ -171,7 +170,7 @@ This assimilates the structure we want to have:
 | `EUN1_2909987530_bottom` | Ashe | Ezreal | 0 |
 
 
-For this, we create a function that, for each match_id, it finds whether the player won or not, and adds it as a boolean variable (True/False). It will also find the enemy player (in the same match and lane) and pair it against each other in the same row.
+For this, we create a function that, for each `match_id`, finds whether the player won or not, and adds it as a boolean variable (True/False). It will also find the enemy player (in the same match and lane) and pair it against each other in the same row.
 
 Therefore, we'll have one row per lane, per match.
 
@@ -235,7 +234,6 @@ champ_list = df['champ1'].unique().tolist()
 print(type(champ_list), champ_list)
 ```
 
-
 ```bash
 array(['Ezreal', 'Pyke', 'Diana', 'Jayce', 'Pantheon', 'Galio',
        'Mordekaiser', 'Anivia', 'Kalista', 'Brand', 'LeeSin', 'Katarina',
@@ -264,7 +262,7 @@ array(['Ezreal', 'Pyke', 'Diana', 'Jayce', 'Pantheon', 'Galio',
        'Kled', 'Singed', 'Sejuani', 'Illaoi'], dtype=object)
 ```
 
-> The result is exactly name if we do df['champ2'].unique(), as we have enough rows that cause all champions in the game to appear in both __champ1__ and __champ2__ columns.
+> The result is exactly name if we run df['champ2'].unique(), as we have enough rows that cause all champions in the game to appear in both __champ1__ and __champ2__ columns.
 > (Optional) It could be interesting to make an analysis of this data to see which champions were played the most, depending on the patch number (column __GAMEVERSION__).
 
 To make sure we have all desired columns in our dataset, we print the columns:
@@ -276,7 +274,6 @@ print(df.columns) # we have 4 columns, 'win' is what we want to predict
 ```bash
 > Index(['match_id', 'champ1', 'champ2', 'win'], dtype='object')
 ```
-
 
 Finally, we print information about the dataset, to check whether we have any null / empty values in any of the columns:
 
@@ -312,6 +309,7 @@ df.drop(['match_id'], axis=1, inplace=True)
 ## Task 8: Splitting into Train-Test
 
 To perform ML properly, we need to take the dataset we're going to work with, and split it into two:
+
 - A training dataset, from which our ML model will learn to make predictions.
 - A testing dataset, from which our ML model will validate the predictions it makes, and check how accurate it was compared to the truth.
 
@@ -334,9 +332,10 @@ test_labels = test_features.pop('win') # returns column 'win'
 
 ## Task 9: Encoding Data
 
-In order for a ML model to accept "words", or as we call them, "Strings" or categorical variables, we need to make a conversion from a String into a meaningful thing for the model. We have to understand that a ML model is just a result of a computer making millions of operations per second; and all these operations are made with numbers.
+In order for an ML model to accept "words", or as we call them, "Strings" or categorical variables, we need to make a conversion from a String into a meaningful thing for the model. We have to understand that a ML model is just a result of a computer making millions of operations per second; and all these operations are made with numbers.
 
 Therefore, we'll always need to modify our String columns into numerical columns in one way or the other. There are mainly **two** ways to do this:
+
 - Label encoding: each distinct String / word will be represented by a distinct number.
     > So, imagine we have 5 different Strings, we'll end up with an encoded column with values in the range of [0, 4].
 - One-Hot encoding: this technique creates additional features / columns, based on the number of unique values in the column we're trying to convert. In computer terms, it performs a "binary representation" of any String.
@@ -380,7 +379,7 @@ train_features = scaler.fit_transform(train_features)
 test_features = scaler.transform(test_features)
 ```
 
-After scaling the data we can fit our model. We choose a Logistic Regression model as an example:
+After scaling the data, we can fit our model. We choose a Logistic Regression model as an example:
 
 ```python
 from sklearn.linear_model import LogisticRegression
@@ -394,6 +393,7 @@ print(logreg.score(train_features, train_labels))
 > Note: find additional documentation on [possible linear models from sklearn here.](https://scikit-learn.org/stable/modules/linear_model.html)
 
 The accuracies obtained for the logistic regression classifier are 0.51. With so few variables, this is expected. We could be making better assumptions by having a bit of knowledge about the game and champion performances. We need to improve our model in some way. There are different ways to do this:
+
 - Adding meaningful variables to the model
 - Testing new regression / classification algorithms, other than Logistic Regression
 - Having a more specific target variable. This target variable is only a boolean and doesn't allow for fine-grained predictions, it's either 0 or 1.
@@ -403,7 +403,6 @@ The accuracies obtained for the logistic regression classifier are 0.51. With so
 However, we can still make predictions using our model. The code to make a prediction needs to consider new data, encode it and then make a prediction.
 
 First, 
-
 
 ```python
 # we create 5 different matchups, champ1[n] will play against champ2[n]
@@ -422,6 +421,7 @@ new_df.tail(5)
 ```
 
 Let's transform our data.
+
 > Note: the data we create, we also have to apply the same transformations as we did to the original model, otherwise the model wouldn't understand the input!
 
 And we get our label-encoded columns:
@@ -487,7 +487,7 @@ else:
 Team 1 most likely to win with an additional probability of 25.37731035133976
 ```
 
-The results of the prediction indicate the predicted winning team in each case. In this case, it's predicting `champ1` to win in three out of five. Adding this to the ML model actually improves the conclusions we can extract from our model, but not of the model itself: we're simply combining a **51% accuracy** ML model with additional statistics to attempt a better prediction. 
+The results of the prediction indicates the predicted winning team in each case. In this case, it's predicting `champ1` to win in three out of five. Adding this to the ML model actually improves the conclusions we can extract from our model, but not of the model itself: we're simply combining a **51% accuracy** ML model with additional statistics to attempt a better prediction. 
 
 Finally, to see the results in a human-readable way, we need to apply the `inverse_transform()` function to our still-encoded data:
 
@@ -512,7 +512,10 @@ Predicted winner is 0          Jhin
 
 ## Conclusions
 
-Congratulations, you have completed the Workshop! A recap of what we have learned is:
+Congratulations, you have completed the Workshop! 
+
+A recap of what we've learned:
+
 - How to provision resources in OCI for Data Science purposes
 - How to create a datastore architecture for our problems
 - How to data mine League of Legends through an API
@@ -522,7 +525,7 @@ Congratulations, you have completed the Workshop! A recap of what we have learne
 - How to create a model
 - How to deploy this model, and make real-time predictions with it from new data
 
-In the next workshop, we'll learn how to extend and improve the model significantly, where we'll go from having a 51% accuracy to about 83% accuracy after finalizing the whole process.
+In the next workshop, we'll learn how to extend and improve the model significantly. At the end, you'll improve from having a 51% accuracy to about 83% accuracy after finalizing the whole process.
 
 ## Acknowledgements
 
