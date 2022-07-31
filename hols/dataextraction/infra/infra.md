@@ -129,5 +129,5 @@ You may now [proceed to the next lab](#next).
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
-* **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - July 21st, 2022
+* **Contributors** - Victor Martin, Product Strategy Director
+* **Last Updated By/Date** - July 29th, 2022
