@@ -13,7 +13,7 @@ The main four elements that we will be creating are:
 
 We will use Cloud Shell to execute `start.sh` script that will call Terraform and Ansible to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform or Ansible, don't worry, there is no need.
 
-Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get it.
+Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get the resources created.
 
 Ansible is an Open Source tool to provision on top of the created resources. It automates the dependency installation, copy the source code, and config files so everything is ready for you to use.
 
@@ -39,24 +39,35 @@ Estimated Lab Time: xx minutes
   ![Git Clone](images/git-clone.png)
 4. Change directory with `cd` to `leagueoflegends-optimizer` directory:
     ```
-    <copy>cd leagueoflegends-optimizer</copy>
+    <copy>cd leagueoflegends-optimizer/dev</copy>
+    ```
+5. Terraform use a file called `tfvars` that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to copy a template we provide to use your own values. Run on Cloud Shell the following command.
+    ```
+    <copy>cp terraform/terraform.tfvars.template terraform/terraform.tfvars</copy>
     ```
 
 ## Task 2: Deploy with Terraform and Ansible
 
-1. Change directory with `cd` to `dev` where all the Terraform and Ansible code lives.
+1. Click on **Code Editor**. Next to the Cloud Shell one.
+    ![Cloud Code Editor](images/cloud-code-editor.png)
+2. On the **Code Editor**, go to **Go** > **Go To File**.
+    ![Go To File](images/code-editor-go-to-file.png)
+3. Type the file to search by name and click on the first item `terraform.tfvars`. Click on the first item of the search result:
     ```
-    <copy>cd dev</copy>
+    <copy>terraform.tfvars</copy>
     ```
-2. You will extract some data needed to set up Terraform, make sure you take notes of the information.
-3. Copy the output of the following command as the tenancy OCID:
+    ![Search TFvars](images/search-tfvars.png)
+4. The file will open and you can copy values you will get from running commands on Cloud Shell and paste it on the Code Editor.
+5. Copy the output of the following command as the tenancy OCID:
     ```
     <copy>echo $OCI_TENANCY</copy>
     ```
-4. Copy the output of the following command as the compartment OCID:
+    ![Paste Tenancy OCID](images/paste-tenancy-ocid.png)
+6. Copy the output of the same command as the compartment OCID:
     ```
     <copy>echo $OCI_TENANCY</copy>
     ```
+    ![Paste Compartment OCID](images/paste-compartment-ocid.png)
 
     > **Note only for experienced Oracle Cloud users:**<br>
     > Do you want to deploy the infrastructure on a specific compartment?<br>
@@ -66,31 +77,21 @@ Estimated Lab Time: xx minutes
     ```
     <copy>oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME</copy>
     ```
-5. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
+7. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
     ```
     <copy>ssh-keygen -t rsa</copy>
     ```
-6. We need the public key in our notes, so keep the result of the content of the following command in your notes.
+8. We need the public key in our notes, so keep the result of the content of the following command in your notes.
     ```
     <copy>cat ~/.ssh/id_rsa.pub</copy>
     ```
-7. From the previous lab, you should have the Riot Developer API Key. Keep it on your notes as well.
+    ![Paste Public SSH Key](images/paste-public-ssh-key.png)
+9. From the previous lab, you should have the Riot Developer API Key.
   ![Riot API Key](images/riot_api_key_gen.png)
-8. Create a copy of the terraform variables file by running the following command.
-    ```
-    <copy>cp terraform/terraform.tfvars.template terraform/terraform.tfvars</copy>
-    ```
-9. Edit the values with `vim` or `nano` with your tenancy, compartment, ssh public key and Riot API key.
-    ```
-    <copy>vim terraform/terraform.tfvars</copy>
-    ```
-    ![Vim TF vars](images/vim-edit-tfvars.png)
-10. After editing the file it should look like this.
-    ![Vim TF vars edited](images/vim-edit-tfvars-edit.png)
-11. Save the file and confirm the values are correct.
-    ```
-    <copy>cat terraform/terraform.tfvars</copy>
-    ```
+  Paste the Riot API Key on the `riotgames_api_key` entry of the file.
+  ![Paste Riot API Key](images/paste-riot-api-key.png)
+10. Save the file.
+    ![Code Editor Save](images/code-editor-save.png)
 
 ## Task 3: Start deployment
 

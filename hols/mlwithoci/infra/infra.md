@@ -13,7 +13,7 @@ The main four elements that we will be creating are:
 
 We will use Cloud Shell to execute `start.sh` script that will call Terraform and Ansible to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform or Ansible, don't worry, there is no need.
 
-Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get it.
+Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get the resources created.
 
 Ansible is an Open Source tool to provision on top of the created resources. It automates the dependency installation, copy the source code, and config files so everything is ready for you to use.
 

@@ -30,7 +30,7 @@
     mode: 0640
 - name: Copy source code
   copy:
-    src: "files/src/"
+    src: "../../../../../../src/"
     dest: /home/opc/src/
     owner: opc
     group: opc        
