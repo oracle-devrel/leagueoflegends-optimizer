@@ -57,7 +57,7 @@ Estimated Lab Time: xx minutes
 4. Append, at the end, the path to the `terraform.tfvars`
     ![Path to tfvars](images/code-editor-path.png)
     ```
-    <copy>leagueoflegends-optimizer/dev/terraform/terraform.tfvars</copy>
+    <copy>/leagueoflegends-optimizer/dev/terraform/terraform.tfvars</copy>
     ```
 5. Type _[ENTER]_ to select, click on the `terraform.tfvars` file and click Open.
     ![TFVars Open](images/code-editor-open-tfvars.png)
