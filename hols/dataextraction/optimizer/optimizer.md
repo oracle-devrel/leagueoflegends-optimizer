@@ -30,7 +30,7 @@ There are two components we need to consider in our flow:
 1. To extract player data, we can run:
 
     ```bash
-    λ python src/league.py --mode "player_list"
+    λ <copy>python src/league.py --mode "player_list"</copy>
     >>> Connection successful.
     >>> Region: br1 | Tier: CHALLENGER | Queue: RANKED_SOLO_5x5 | Total Players: 200
     >>> Region: br1 | Tier: GRANDMASTER | Queue: RANKED_SOLO_5x5 | Total Players: 500
@@ -44,7 +44,7 @@ This execution mode will iteratively look for League of Legends leaderboards in 
 2. To extract previously played matches' IDs from our pool of players in the database, we can do this:
 
     ```bash
-    λ python src/league.py --mode="match_list"
+    λ <copy>python src/league.py --mode="match_list"</copy>
     >>> Connection successful.
     >>> @get_n_match_ids: obtained 0 matches from region europe
     >>> @get_n_match_ids: obtained 0 matches from region europe
@@ -70,7 +70,7 @@ This execution mode will iteratively look for League of Legends leaderboards in 
 1. In order to download match details given their IDs, we use the collection __match_detail__. We can process all matches in our current database (found in collection __match__) by executing:
 
     ```bash
-    λ python src/league.py --mode="match_download_detail"
+    λ <copy>python src/league.py --mode="match_download_detail"</copy>
     >>> Connection successful.
     # it will then start extracting match information.
     # each match contains a huge amount of information, so I'm not putting any examples here, but you'll see when you execute.
@@ -86,7 +86,7 @@ We'll use the __`process_predictor_liveclient`__ execution mode. This execution 
 2. Here's how to build the object:
 
     ```bash
-    λ python src/league.py --mode="process_predictor_liveclient"
+    λ <copy>python src/league.py --mode="process_predictor_liveclient"</copy>
     >>> Connection successful.
     >>> Total match_detail documents (to process): 106448
     # resilient to errors, deleted match IDs, etc...

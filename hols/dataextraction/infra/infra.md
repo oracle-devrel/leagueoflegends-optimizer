@@ -50,20 +50,24 @@ Estimated Lab Time: xx minutes
 
 1. Click on **Code Editor**. Next to the Cloud Shell one.
     ![Cloud Code Editor](images/cloud-code-editor.png)
-2. On the **Code Editor**, go to **Go** > **Go To File**.
-    ![Go To File](images/code-editor-go-to-file.png)
-3. Type the file to search by name and click on the first item `terraform.tfvars`. Click on the first item of the search result:
+2. On the **Code Editor**, go to _**File** > **Open**_.
+    ![Open menu](images/code-editor-open-menu.png)
+3. On the pop-up, edit the path by clicking the pencil icon:
+    ![Open Pop Up](images/code-editor-open-popup.png)
+4. Append, at the end, the path to the `terraform.tfvars`
+    ![Path to tfvars](images/code-editor-path.png)
     ```
-    <copy>terraform.tfvars</copy>
+    <copy>leagueoflegends-optimizer/dev/terraform/terraform.tfvars</copy>
     ```
-    ![Search TFvars](images/search-tfvars.png)
-4. The file will open and you can copy values you will get from running commands on Cloud Shell and paste it on the Code Editor.
-5. Copy the output of the following command as the tenancy OCID:
+5. Type _[ENTER]_ to select, click on the `terraform.tfvars` file and click Open.
+    ![TFVars Open](images/code-editor-open-tfvars.png)
+6. The file will open and you can copy values you will get from running commands on Cloud Shell and paste it on the Code Editor.
+7. Copy the output of the following command as the tenancy OCID:
     ```
     <copy>echo $OCI_TENANCY</copy>
     ```
     ![Paste Tenancy OCID](images/paste-tenancy-ocid.png)
-6. Copy the output of the same command as the compartment OCID:
+8. Copy the output of the same command as the compartment OCID:
     ```
     <copy>echo $OCI_TENANCY</copy>
     ```
@@ -77,16 +81,17 @@ Estimated Lab Time: xx minutes
     ```
     <copy>oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME</copy>
     ```
-7. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
+9. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
+    It will ask to enter the path, a passphrase and confirm again the passphrase; type _[ENTER]_ to continue all three times.
     ```
     <copy>ssh-keygen -t rsa</copy>
     ```
-8. We need the public key in our notes, so keep the result of the content of the following command in your notes.
+10. We need the public key in our notes, so keep the result of the content of the following command in your notes.
     ```
     <copy>cat ~/.ssh/id_rsa.pub</copy>
     ```
     ![Paste Public SSH Key](images/paste-public-ssh-key.png)
-9. From the previous lab, you should have the Riot Developer API Key.
+11. From the previous lab, you should have the Riot Developer API Key.
   ![Riot API Key](images/riot_api_key_gen.png)
   Paste the Riot API Key on the `riotgames_api_key` entry of the file.
   ![Paste Riot API Key](images/paste-riot-api-key.png)
