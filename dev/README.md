@@ -68,6 +68,12 @@ vim terraform/terraform.tfvars
 ./start.sh
 ```
 
+> If there are permission errors with **start.sh**, make sure to change permissions appropriately before trying to execute again:
+  ```
+  chmod 700 start.sh
+  ```
+
+
 The output will be an `ssh` command to connect with the machine.
 
 > Re-run the `start.sh` in case of failure
