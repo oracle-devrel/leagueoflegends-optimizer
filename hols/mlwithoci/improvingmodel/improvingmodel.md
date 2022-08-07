@@ -105,7 +105,7 @@ After having our fitted model, we can make predictions to incoming data. First, 
 
 ```python
 # We load the model 
-predictor = TabularPredictor.load('./autogluon_trained_models_liveclient_classifier')
+predictor = TabularPredictor.load('./model_file_name')
 
 # Predict test values
 y_pred = predictor.predict(test_data_nolabel)
