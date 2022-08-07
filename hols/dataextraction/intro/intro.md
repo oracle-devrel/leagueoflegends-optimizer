@@ -7,7 +7,7 @@ Access and mobility play an important role in LoL. Your team needs to clear at l
 
 Team composition depends on five positions. Each lane lends itself to certain kinds of champions and roles—try them all or lock in to the lane that calls you. Champions get stronger by earning experience to level up and buy more powerful items as the game progresses. Staying on top of these two factors is crucial to overpowering the enemy team and destroying their base.
 
-In this lab, we'll leverage the power of AI with League of Legends in a unique an innovative way. We'll dive deep into the extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
+In this lab, we'll leverage the power of AI with League of Legends in a unique an innovative way. We'll dive deep into extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
 
 ![Bought Items](images/bought_items.jpg)
 

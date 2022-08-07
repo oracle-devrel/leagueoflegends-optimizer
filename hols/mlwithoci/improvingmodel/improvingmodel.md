@@ -144,9 +144,10 @@ predictor.leaderboard(test, silent=True)
 
 ## The Problem and Next Steps
 
-In short, in the first model, we didn't consider enough variables. The results of this ML model were no better than using simple statistics, and heavily relied on additional statistics support to make a bit more sense.
+In short, in the first model, we didn't consider enough variables. The results of the first ML model were no better than using simple statistics, and heavily relied on additional statistics support to make a bit more sense. After expanding the model further, we saw that the model could make predictions much more accurately (about 83% accuracy).
 
-After expanding the model further, we saw that the model could make predictions much more accurately (about 83% accuracy). However, we needed to ask ourselves if this model is useful. Are we, as players of League of Legends, able to have this amount of data in the middle of a game? The answer is **no**. We're just given simple statistics like the gold from the team and KDA ratio. Only programatically through the API do we have the possibility to access all this data. So, while the model is pretty good, it doesn't have a practical side that we can use and take advantage of. This is what we'll explore in the fourth article in this series: integrating such a model (or a similar one) with data that we can actually use in real-time to make accurate predictions; data aligned with what players have at hand. Stay tuned for article 4!
+While the model is pretty good, it doesn't have a practical side that we can use and take advantage of. This is what we're going to explore in the next workshop's lab.
+
 
 ## How can I get started on OCI?
 

@@ -18,14 +18,14 @@
       "filename": "../../mlwithoci/intro/datasets.md"
     },
     {
-      "title": "Creating a Model with scikit-learn",
-      "description": "In this section, we'll create a simple scikit-learn classifier. We'll go into detail on how to achieve an ML model from scratchch for the Introduction.",
-      "filename": "../../mlwithoci/intro/intro.md"
+      "title": "Model Improvement with AutoGluon",
+      "description": "Improving Baseline Model with AutoGluon.",
+      "filename": "../../mlwithoci/improvingmodel/improvingmodel.md"
     },
     {
-      "title": "Improving a Model with AutoGluon",
-      "description": "The Introduction is always second. The title and contents menu title match for the Introduction.",
-      "filename": "../../mlwithoci/intro/intro.md"
+    "title": "Model Integration",
+    "description": "In this section, we'll create a simple scikit-learn classifier. We'll go into detail on how to achieve an ML model from scratchch for the Introduction.",
+    "filename": "../../mlwithoci/integration/integration.md"
     },
     {
       "title": "Need Help?",
