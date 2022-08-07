@@ -22,11 +22,11 @@ You can also refer to [article 4](https://github.com/oracle-devrel/leagueoflegen
 
 For this article, we'll access the following HTTP endpoint:
 
-    ```bash
-    # GET https://127.0.0.1:2999/liveclientdata/allgamedata
-    # Sample output can be found in the following URL, if interested. https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json
-    # This endpoint encapsulates all other endpoints into one.
-    ```
+```bash
+# GET https://127.0.0.1:2999/liveclientdata/allgamedata
+# Sample output can be found in the following URL, if interested. https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json
+# This endpoint encapsulates all other endpoints into one.
+```
 
 When we join a League of Legends game, the League process automatically opens port 2999. We'll use this to our advantage and we'll make recurring requests to localhost:2999 to extract live match information.
 
