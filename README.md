@@ -365,7 +365,7 @@ Consequently, the predicted winrate spiked to about 70% and stayed that way duri
 ![](./images/bought_items.JPG?raw=true)
 
 
-As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score... aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the tens of millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that since prediction times would increase significantly.
+As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score... aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that since prediction times would increase significantly.
 
 ![](./images/20.JPG?raw=true)
 
