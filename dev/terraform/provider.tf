@@ -13,8 +13,7 @@ provider "oci" {
 }
 
 variable "region" {
-  type    = string
-  default = "eu-frankfurt-1"
+  type = string
 }
 
 variable "tenancy_ocid" {

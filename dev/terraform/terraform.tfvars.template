@@ -1,4 +1,5 @@
 config_file_profile    = "DEFAULT"
+region                 = "XXXXX"
 tenancy_ocid           = "XXXXX"
 compartment_ocid       = "XXXXX"
 ssh_public_key         = "XXXXX"
