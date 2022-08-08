@@ -105,7 +105,7 @@ Estimated Lab Time: xx minutes
   ![Riot API Key](images/riot_api_key_gen.png)
   Paste the Riot API Key on the `riotgames_api_key` entry of the file.
   ![Paste Riot API Key](images/paste-riot-api-key.png)
-10. Save the file.
+13. Save the file.
     ![Code Editor Save](images/code-editor-save.png)
 
 ## Task 3: Start deployment
