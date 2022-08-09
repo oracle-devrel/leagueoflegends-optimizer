@@ -1,9 +1,13 @@
 # Interacting with leagueoflegends-optimizer
 
+Estimated Lab Time: 30 minutes
+
 ## Introduction
 If we want to build an AI/ML model, we need data. For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [league.py](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode. 
 
-Estimated Lab Time: xx minutes
+> Note that all tools mentioned in the optimizer are designed to run **24/7**, meaning that, if you don't stop execution of the optimizer, it will keep collecting data **indefinitely**. You're free to explore with how much data you want to extract using the optimizer. 
+
+> This means that there's no "finish" to the optimizer, it will keep running until you stop it. We recommend going through each task and running each task for **5 minutes** or so if you're getting started; you're free to execute any command at any point afterwards, it won't interfere with already existing data.
 
 ### Prerequisites
 
@@ -61,7 +65,7 @@ This execution mode will iteratively look for League of Legends leaderboards in 
     >>> ...
     ```
 
-    Thish command finds matches played by every player in our database, in every region. This allows us to obtain more matches per player, in case the player travels abroad from their original region, e.g. to compete internationally.
+    This command finds matches played by every player in our database, in every region. This allows us to obtain more matches per player, in case the player travels abroad from their original region, e.g. to compete internationally.
 
     > This only extracts Match IDs. Processing these IDs is done in the next section
 
@@ -107,4 +111,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - July 10th, 2022
+* **Last Updated By/Date** - August 9th, 2022
