@@ -1,5 +1,7 @@
 # Introduction
 
+Estimated Lab Time: 5-10 minutes
+
 ## Overview
 League of Legends is a team-based strategy game in which two teams of five powerful champions face off to destroy the other’s base. As a player, you can choose from over 140 champions to make epic plays, secure kills, and take down towers as you battle your way to victory. To win, you'll need to destroy the enemy’s Nexus—the heart of each team's base.
 
@@ -24,9 +26,6 @@ In this Hands-On Lab (HOL), we'll start with the assumption that users know abou
 5. [Article 5](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article5.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions II
 
 
-Estimated Lab Time: xx minutes
-
-
 ### Prerequisites
 
 * An [Oracle Free Tier, Paid or LiveLabs Cloud Account](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_introduction&intcmp=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_introduction)
@@ -40,6 +39,16 @@ Estimated Lab Time: xx minutes
     ![login to your league account](images/lab1-login.png)
 2. After creating the account, we [access the development website](https://developer.riotgames.com/) to find our development API key. Note that by default, the development API key expires every 24 hours. So, if you're planning to generate a dataset for more than 24 hours at a time, in the end you'll start getting HTTP unauthorized errors. To fix this, just regenerate the API key and use the new one.
     ![get api key](images/lab1-apikey.png)
+
+> Note: if you run into issues while you're obtaining the API key / you're not able to login to [the developer portal](https://developer.riotgames.com):
+
+![error logging in](images/loginfailed.png)
+
+Make sure to sign out of your newly created account, at the top right corner of your screen
+
+![log out](images/logout.jpg)
+
+And login back again.
 
 
 You may now [proceed to the next lab](#next).
