@@ -11,15 +11,27 @@ Estimated Lab Time: xx minutes
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 * [Previously created](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/infra/infra.md) OCI Data Science Environment
 
-## Task 1: Downloading / Accessing Notebooks
+## Task 1: Downloading / Accessing Notebooks and Datasets
 
 You can find everything covered here in two files:
 
-1. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results), [access this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb)
+1. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results?select=matchups.csv), [access **and download** this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb)
+    - To download the notebook, click on __Raw__:
+
+    ![](images/raw.jpg)
+
+    - Then: 
+
+    ![](images/savepage.jpg)
+
+    - Finally, download [`1v1.csv`](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=1v1.csv) and [`matchup.csv`](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=matchups.csv) datasets from Kaggle:
+
+    ![](images/downloadkaggle.jpg)
+
 
 2. (Optional) If you're using your own data (generating it by following the workshop), and you have [all the prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out [this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb) which connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
 
-3. (Optional) For advanced users, you always have the possibility to download the dataset directly from Kaggle using [Kaggle's API](https://github.com/Kaggle/kaggle-api), and running:
+3. (Optional) For advanced users, if you have experience with the Kaggle API, you always have the possibility to download the dataset directly from Kaggle using [Kaggle's API](https://github.com/Kaggle/kaggle-api), and running this command in a terminal where `kaggle-cli` is installed:
     
     ```console
     kaggle datasets download jasperan/league-of-legends-1v1-matchups-results
@@ -31,6 +43,12 @@ You can find everything covered here in two files:
 
 1. We open the notebook that was provisioned:
 
+    ![](./images/select_data_science.jpg)
+
+    > You may find the Data Science section by also searching in the top left bar, if it doesn't appear in "Recently visited" for you.
+
+    Now, we have access to a [list of our Data Science projects launched within OCI.](https://cloud.oracle.com/data-science/projects) We access our project, and inside our project we'll find the notebook.
+
     > The name of the notebook may be different than shown here in the screenshot.
 
     ![](./images/open-notebook.png)
@@ -41,15 +59,19 @@ You can find everything covered here in two files:
 
     ![](./images/notebook.png)
 
-2.We now need to load our notebook and datasets into our environment. For that, using the files from [the official repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs) locally, we use the upload button to transfer the files:
+2. We now need to load our notebook and datasets into our environment. For that, using the files from [the official repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs) locally, we use the upload button to transfer the files:
 
     ![](./images/upload.jpg)
 
-    We need to upload the notebook called [`hol1_offline_analysis.ipynb`](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb), and our datasets from Kaggle ([matchups.csv](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=matchups.csv) and [1v1.csv](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=1v1.csv)).
+    We need to upload the notebook called `hol1_offline_analysis.ipynb` (the one we downloaded in Task 1), and our datasets from Kaggle ([matchups.csv](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=matchups.csv) and [1v1.csv](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=1v1.csv)).
 
-3. We run the first code cell in [the notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb) to install the dependencies.
+3. We run the first code cell in [the notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb) to install the dependencies. In order to run the code cell, you can press the following button:
 
-4. Afterwards, we can run the rest of the notebook in sequence.
+    ![](./images/running.jpg)
+
+    Or simply press SHIFT + Enter for running the selected cells.
+
+4. Afterwards, we can run the rest of the notebook in sequence, in the same way as explained above.
 
 
 ## Task 3: The Data Structure
