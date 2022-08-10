@@ -26,15 +26,15 @@
       "type": "dbcs"
     },
     {
-      "title": "Lab 4: Client",
-      "description": "Client API.",
-      "filename": "../../dataextraction/client/client.md",
+      "title": "Lab 4: Creating a Model",
+      "description": "Creating Model",
+      "filename": "../../dataextraction/creatingmodel/creatingmodel.md",
       "type": "dbcs"
     },
     {
-      "title": "Lab 5: Creating a Model",
-      "description": "Creating Model",
-      "filename": "../../dataextraction/creatingmodel/creatingmodel.md",
+      "title": "Lab 5: Client",
+      "description": "Client API.",
+      "filename": "../../dataextraction/client/client.md",
       "type": "dbcs"
     },
     {

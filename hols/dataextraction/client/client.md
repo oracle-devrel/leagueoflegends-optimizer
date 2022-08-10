@@ -86,11 +86,26 @@ The HTTP endpoint being used to get data while we're in a League of Legends matc
     > We'll use all of this champion information as input in our ML model. To that end, we need to harmonize column names and amount of variables in our pre-trained models, with the information we have available in real-time so that the ML model can make predictions with everything that we have available. This is achieved thanks to the __`process_predictor_liveclient`__ function.
 
 
-You may now [proceed to the next lab](#next).
+## Conclusions
+
+Congratulations, you have completed the Workshop! 
+
+A recap of what we've learned:
+
+- How to provision resources in OCI for Data Science purposes
+- How to create a datastore architecture for our problems
+- How to data mine League of Legends through an API
+- How to build and structure the data
+- How to load data, preprocess it, visualize the dataset
+- How to create a model
+- How to deploy this model, and make real-time predictions with it from new data
+- How to connect to the Live Client API
+
+In the next workshop, we'll learn how to extend and improve the model we've created __significantly__. At the end, we'll improve the accuracy of the model from a mere 51% accuracy to about 83% accuracy after finalizing the whole process.
 
 
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - August 9th, 2022
+* **Last Updated By/Date** - August 10th, 2022
