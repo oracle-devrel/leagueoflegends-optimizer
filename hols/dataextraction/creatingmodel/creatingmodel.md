@@ -208,24 +208,12 @@ After creating this function and invoking it, we will obtain a resulting CSV fil
 
 After doing this initial processing and understanding why variables are included, we load the new CSV file:
 
-```python
-# We read the dataset from the local file, after taking a look at the original dataset.
-df = pd.read_csv('1v1.csv', sep=',', engine='python')
-
-df.head(5)
-```
 
 ![](./images/1v1_output.png)
 
 ## Task 6: Exploring Data
 
 We can check the list of champions in the game:
-
-```python
-champ_list = df['champ1'].unique().tolist()
-
-print(type(champ_list), champ_list)
-```
 
 ![](./images/champ_list_output.png)
 
@@ -236,18 +224,10 @@ print(type(champ_list), champ_list)
 
 To make sure we have all desired columns in our dataset, we print the columns:
 
-```python
-print(df.columns) # we have 4 columns, 'win' is what we want to predict
-```
-
 ![](./images/columns_output.png)
 
 
 Finally, we print information about the dataset, to check whether we have any null / empty values in any of the columns:
-
-```python
-df.info()
-```
 
 ![](./images/info_output.png)
 
