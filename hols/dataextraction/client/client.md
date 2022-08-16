@@ -92,14 +92,15 @@ Congratulations, you have completed the Workshop!
 
 A recap of what we've learned:
 
-- How to provision resources in OCI for Data Science purposes
-- How to create a datastore architecture for our problems
-- How to data mine League of Legends through an API
-- How to build and structure the data
-- How to load data, preprocess it, visualize the dataset
-- How to create a model
-- How to deploy this model, and make real-time predictions with it from new data
-- How to connect to the Live Client API
+- &check; How to provision resources in OCI for Data Science purposes
+- &check; How to create a datastore architecture for our problems
+- &check; How to data mine League of Legends through an API
+- &check; How to build and structure the data
+- &check; How to load data, preprocess it, visualize the dataset
+- &check; How to create a model
+- &check; How to deploy this model, and make real-time predictions with it from new data
+- &check; How to connect to the Live Client API
+- &cross; How to have a **robust** model with higher baseline accuracy -> to be done in the next workshop.
 
 In the next workshop, we'll learn how to extend and improve the model we've created __significantly__. At the end, we'll improve the accuracy of the model from a mere 51% accuracy to about 83% accuracy after finalizing the whole process.
 

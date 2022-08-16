@@ -8,6 +8,12 @@
       "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login-livelabs2.md"
     },
     {
+      "title": "Lab 0: About this Workshop",
+      "description": "What the workshop is about",
+      "filename": "../../aboutworkshop/about.md",
+      "type": "dbcs"
+    },
+    {
       "title": "Lab 1: Introduction",
       "description": "Introduction",
       "filename": "../../dataextraction/intro/intro.md",
