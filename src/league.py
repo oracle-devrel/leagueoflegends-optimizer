@@ -13,6 +13,7 @@ import time
 from pathlib import Path
 import argparse
 import ujson as json
+import time
 
 load_dotenv()
 
@@ -301,11 +302,11 @@ def get_top_players(region, queue, db):
                 except KeyError:
                     pass
         else:
-            print('Request error (@get_top_players). HTTP code {}: {}'.format(
-                response.status_code, response.json()))
+            print('{} Request error (@get_top_players). HTTP code {}: {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"), response.status_code, response.json()))
 
-    print('Total users obtained in region {} and queue {}: {}'.format(
-        region, queue, len(total_users_to_insert)))
+    print('{} Total users obtained in region {} and queue {}: {}'.format(
+        time.strftime("%Y-%m-%d %H:%M"), region, queue, len(total_users_to_insert)))
 
     # Insert into the database.
     collection_summoner = db.get_connection(
@@ -326,10 +327,10 @@ def get_top_players(region, queue, db):
                 print('Inserted new summoner: {} in region {}, queue {}'.format(
                     x['summonerName'], region, queue))
             else:
-                print('Summoner {} already inserted'.format(x['summonerName']))
+                print('{} Summoner {} already inserted'.format(time.strftime("%Y-%m-%d %H:%M"), x['summonerName']))
                 continue
         except exceptions.IntegrityError:
-            print('Summoner {} already inserted'.format(x['summonerName']))
+            print('{} Summoner {} already inserted'.format(time.strftime("%Y-%m-%d %H:%M"), x['summonerName']))
             continue
 
 
@@ -343,8 +344,8 @@ def change_column_value_by_key(db, collection_name, column_name, column_value, k
     # change value of column_name to column_value
     content[column_name] = column_value
     collection.find().key(key).replaceOne(content)  # replace document
-    print('[DBG] UPDATE BIT {}: {}'.format(column_name,
-          collection.find().key(key).getOne().getContent()[column_name]))
+    print('{} [DBG] UPDATE BIT {}: {}'.format(time.strftime("%Y-%m-%d %H:%M"),
+        column_name, collection.find().key(key).getOne().getContent()[column_name]))
     db.close_connection(connection)
 
 
@@ -359,7 +360,7 @@ def extract_matches(region, match_id, db, key):
     response = requests.get(request_url, headers=headers)
     time.sleep(1.5)  # rate limiting purposes
     if response.status_code != 200:
-        print('Request error (@extract_matches). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@extract_matches). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
         return
     # Get participants and teams.objectives objects
     o_version = response.json().get('info').get('gameVersion')
@@ -411,10 +412,12 @@ def extract_matches(region, match_id, db, key):
             try:
                 db.insert('matchups', to_insert_obj)
             except exceptions.IntegrityError:
-                print('Match details {} already inserted'.format(
+                print('{} Match details {} already inserted'.format(
+                    time.strftime("%Y-%m-%d %H:%M"),
                     to_insert_obj.get('p_match_id')))
                 continue
-            print('Inserted new matchup with ID {} in region {}'.format(
+            print('{} Inserted new matchup with ID {} in region {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"),
                 '{}_{}'.format(match_id, x), region))
 
     # Now, set a processed_1v1 bit in the match
@@ -457,8 +460,10 @@ def match_list(db):
                     except exceptions.IntegrityError:
                         print('Match ID {} already inserted'.format(i))
                         continue
-                    print('Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(i['match_id'],
-                                                                                                         current_summoner['summonerName'], y, z))
+                    print('{} Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(
+                        time.strftime("%Y-%m-%d %H:%M"),
+                        i['match_id'],
+                        current_summoner['summonerName'], y, z))
 
 
 def match_download_standard(db):
@@ -470,7 +475,7 @@ def match_download_standard(db):
         # Get the overall region to make the proper request
         overall_region, tagline = determine_overall_region(
             x.getContent().get('match_id').split('_')[0].lower())
-        print('Overall Region {} detected'.format(overall_region))
+        print('{} Overall Region {} detected'.format(time.strftime("%Y-%m-%d %H:%M"), overall_region))
         extract_matches(overall_region, x.getContent().get(
             'match_id'), db, x.key)
 
@@ -483,7 +488,7 @@ def match_download_detail(db):
         # Get the overall region to make the proper request
         overall_region, tagline = determine_overall_region(
             x.getContent().get('match_id').split('_')[0].lower())
-        print('Overall Region {} detected'.format(overall_region))
+        print('{} Overall Region {} detected'.format(time.strftime("%Y-%m-%d %H:%M"), overall_region))
         match_detail = get_match_timeline(
             x.getContent().get('match_id'), overall_region)
         if match_detail:
@@ -499,7 +504,7 @@ def build_final_object(json_object):
     try:
         match_id = json_object.get('metadata').get('matchId')
     except AttributeError:
-        print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.format(json_object))
+        print('{} [DBG] ERR MATCH_ID RETRIEVAL: {}'.format(time.strftime("%Y-%m-%d %H:%M"), json_object))
         return
 
     winner = int()
@@ -628,7 +633,7 @@ def build_final_object_liveclient(json_object):
     try:
         match_id = json_object.get('metadata').get('matchId')
     except AttributeError:
-        print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.format(json_object))
+        print('{} [DBG] ERR MATCH_ID RETRIEVAL: {}'.format(time.strftime("%Y-%m-%d %H:%M"), json_object))
         return
 
     winner = int()
@@ -691,7 +696,7 @@ def build_final_object_liveclient(json_object):
                 frame['identifier'] = '{}_{}'.format(match_id, x.get(
                     'participantFrames').get('{}'.format(y)).get('participantId'))
             except AttributeError as e:
-                print('[DBG] LIVECLIENT BUILDING OBJECT FAILED: {}'.format(e))
+                print('{} [DBG] LIVECLIENT BUILDING OBJECT FAILED: {}'.format(time.strftime("%Y-%m-%d %H:%M"), e))
                 # if there's a problem with a frame, skip this iteration
                 return list()
 
@@ -717,7 +722,8 @@ def process_predictor(db):
     connection = db.get_connection()
     matches = connection.getSodaDatabase().createCollection('match_detail')
     # Total documents left to process:
-    print('Total match_detail documents (to process): {}'.format(
+    print('{} Total match_detail documents (to process): {}'.format(
+        time.strftime("%Y-%m-%d %H:%M"),
         matches.find().filter({'classifier_processed': {"$ne": 1}}).count()))
 
     for doc in matches.find().filter({'classifier_processed': {"$ne": 1}}).getCursor():
@@ -728,7 +734,8 @@ def process_predictor(db):
                 res = db.insert('predictor', x)  # insert in new collection.
                 if res == -1:
                     # Change column value to processed.
-                    print(doc.getContent().get('metadata').get('matchId'))
+                    print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"),
+                        doc.getContent().get('metadata').get('matchId')))
                     # after processing, update processed bit.
                     change_column_value_by_key(
                         db, 'match_detail', 'classifier_processed', 1, doc.key)
@@ -740,7 +747,8 @@ def process_predictor(db):
 def process_predictor_liveclient(db):
     connection = db.get_connection()
     matches = connection.getSodaDatabase().createCollection('match_detail')
-    print('Total match_detail documents (to process): {}'.format(
+    print('{} Total match_detail documents (to process): {}'.format(
+        time.strftime("%Y-%m-%d %H:%M"),
         matches.find().filter({'classifier_processed_liveclient': {"$ne": 1}}).count()))
 
     for doc in matches.find().filter({'classifier_processed_liveclient': {"$ne": 1}}).getCursor():
@@ -761,14 +769,7 @@ def process_predictor_liveclient(db):
     db.close_connection(connection)
 
 
-# TODO
-def process_regressor(db):
-    pass
 
-
-# TODO
-def process_regressor_liveclient(db):
-    pass
 
 
 def data_mine(db):
@@ -784,10 +785,6 @@ def data_mine(db):
         process_predictor(db)
     elif args.mode == 'process_predictor_liveclient':
         process_predictor_liveclient(db)
-    elif args.mode == 'process_regressor':
-        process_regressor(db)
-    elif args.mode == 'process_regressor_liveclient':
-        process_regressor_liveclient(db)
     else:  # we execute everything.
         player_list(db)
         match_list(db)
