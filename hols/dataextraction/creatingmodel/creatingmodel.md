@@ -78,8 +78,6 @@ You can find everything covered here in two files:
 
     ![](./images/firstcell_after_execution.png)
 
-4. Afterwards, we can run the rest of the notebook in sequence, in the same way as explained above.
-
 
 ## Task 3: The Data Structure
 
@@ -208,7 +206,6 @@ After creating this function and invoking it, we will obtain a resulting CSV fil
 
 After doing this initial processing and understanding why variables are included, we load the new CSV file:
 
-
 ![](./images/1v1_output.png)
 
 ## Task 6: Exploring Data
@@ -235,6 +232,8 @@ Finally, we print information about the dataset, to check whether we have any nu
 In this case we don't have any null-values, otherwise we'd drop these null values or replace them with filler values / placeholders. This is especially important to check if the dataset hasn't been curated by anyone else before; checking for **data consistency** is very important if the dataset is produced by ourselves.
 
 ## Task 7: Dropping ID columns
+
+We drop columns that represent identifiers.
 
 ![](./images/task7.png)
 
