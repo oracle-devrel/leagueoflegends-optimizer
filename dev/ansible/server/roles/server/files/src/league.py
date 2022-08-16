@@ -54,13 +54,13 @@ def get_puuid(request_ref, summoner_name, region, db):
     response = requests.get(request_url, headers=headers)
     time.sleep(1)
     if response.status_code == 200:
-        #print('Printing response for user {} - region {}: -----\n{}'.format(summoner_name, region, response.json()))
+        #print('{} Printing response for user {} - region {}: -----\n{}'.format(time.strftime("%Y-%m-%d %H:%M"), summoner_name, region, response.json()))
         pass
     elif response.status_code == 404:
-        print('PUUID not found for summoner {}'.format(summoner_name))
+        print('{} PUUID not found for summoner {}'.format(time.strftime("%Y-%m-%d %H:%M"), summoner_name))
         db.delete('summoner', 'summonerName', summoner_name)
     else:
-        print('Request error (@get_puuid). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_puuid). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
         return
     puuid = response.json().get('puuid')
     return puuid
@@ -76,7 +76,7 @@ def get_summoner_information(summoner_name, request_region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code != 200:
-        print('Request error (@get_summoner_information). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_summoner_information). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
         return None
     return response.json().get('puuid')
 
@@ -89,9 +89,9 @@ def get_champion_mastery(encrypted_summoner_id, request_region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
-        print('Request error (@get_champion_mastery). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_champion_mastery). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
 
     # Get champion IDs
     champion_df = pd.read_csv('../data/champion_ids.csv')
@@ -99,11 +99,12 @@ def get_champion_mastery(encrypted_summoner_id, request_region):
     # Example: get champion name by its id.
     #print(champion_df.loc[champion_df['champion_id'] == 103])
     # Processing of the information
-    print('Total champions played: {}'.format(len(response.json())))
+    print('{} Total champions played: {}'.format(time.strftime("%Y-%m-%d %H:%M"), len(response.json())))
     for i in response.json():
         champion_name = champion_df.loc[champion_df['champion_id'] == i.get(
             'championId')]['champion_name'].to_string().split('    ')[1]  # get the champion name only
-        print('Champion ID {} | Champion Name {} | Mastery level {} | Total mastery points {} | Last time played {} | Points until next mastery level {} | Chest granted {} | Tokens earned {}'.format(
+        print('{} Champion ID {} | Champion Name {} | Mastery level {} | Total mastery points {} | Last time played {} | Points until next mastery level {} | Chest granted {} | Tokens earned {}'.format(
+            time.strftime("%Y-%m-%d %H:%M"),
             i.get('championId'),
             champion_name,
             i.get('championLevel'),
@@ -122,9 +123,9 @@ def get_total_champion_mastery_score(encrypted_summoner_id, request_region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
-        print('Request error (@get_total_champion_mastery_score). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_total_champion_mastery_score). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
 
 
 def get_user_leagues(encrypted_summoner_id, request_region):
@@ -134,14 +135,14 @@ def get_user_leagues(encrypted_summoner_id, request_region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
-        print(
-            'Request error (@get_user_leagues). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_user_leagues). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
 
     for i in response.json():
         if i.get('leaguePoints') != 100:
-            print('Queue type: {} | Rank: {} {} {} LP | Winrate: {}% | Streak {} | >100 games {} | Inactive {}'.format(
+            print('{} Queue type: {} | Rank: {} {} {} LP | Winrate: {}% | Streak {} | >100 games {} | Inactive {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"),
                 i.get('queueType'),
                 i.get('tier'),
                 i.get('rank'),
@@ -151,7 +152,8 @@ def get_user_leagues(encrypted_summoner_id, request_region):
                 i.get('veteran'),
                 i.get('inactive')))
         else:
-            print('Queue type: {} | Rank: {} {} {} LP - Promo standings: {}/{} | Winrate: {}% | Streak {} | >100 games {} | Inactive {}'.format(
+            print('{} Queue type: {} | Rank: {} {} {} LP - Promo standings: {}/{} | Winrate: {}% | Streak {} | >100 games {} | Inactive {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"),
                 i.get('queueType'),
                 i.get('tier'),
                 i.get('rank'),
@@ -184,7 +186,8 @@ def get_n_match_ids(puuid, num_matches, queue_type, region):
         response = requests.get(request_url, headers=headers)
         time.sleep(1)
         if response.status_code != 200:
-            print('Request error (@get_n_match_ids). HTTP code {}: {}'.format(
+            print('{} Request error (@get_n_match_ids). HTTP code {}: {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"),
                 response.status_code, response.json()))
         # Return the list of matches.
         for i in response.json():
@@ -202,7 +205,7 @@ def get_n_match_ids(puuid, num_matches, queue_type, region):
             iterator,
             100
         )
-    print('@get_n_match_ids: obtained {} matches from region {}'.format(len(returning_object), region))
+    print('{} @get_n_match_ids: obtained {} matches from region {}'.format(time.strftime("%Y-%m-%d %H:%M"), len(returning_object), region))
     return returning_object
 
 
@@ -216,10 +219,10 @@ def get_match_timeline(match_id, region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
         print(
-            'Request error (@get_match_timeline). HTTP code {}'.format(response.status_code))
+            '{} Request error (@get_match_timeline). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
         return None
     # Return the list of matches.
     return response.json()
@@ -235,9 +238,9 @@ def get_match_info(match_id, region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
-        print('Request error (@get_match_info). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_match_info). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
     # Return the list of matches.
     return response.json()
 
@@ -289,8 +292,8 @@ def get_top_players(region, queue, db):
         response = requests.get(x, headers=headers)
         if response.status_code == 200:
             try:
-                print('Region: {} | Tier: {} | Queue: {} | Total Players: {}'.format(region, response.json()['tier'],
-                                                                                     response.json()['queue'], len(response.json()['entries'])))
+                print('{} Region: {} | Tier: {} | Queue: {} | Total Players: {}'.format(time.strftime("%Y-%m-%d %H:%M"),
+                    region, response.json()['tier'], response.json()['queue'], len(response.json()['entries'])))
             except KeyError:
                 pass
             for y in response.json()['entries']:
@@ -324,7 +327,8 @@ def get_top_players(region, queue, db):
                 x['puuid'] = get_puuid(
                     overall_region, x['summonerName'], tagline, db)
                 db.insert('summoner', x)
-                print('Inserted new summoner: {} in region {}, queue {}'.format(
+                print('{} Inserted new summoner: {} in region {}, queue {}'.format(
+                    time.strftime("%Y-%m-%d %H:%M"),
                     x['summonerName'], region, queue))
             else:
                 print('{} Summoner {} already inserted'.format(time.strftime("%Y-%m-%d %H:%M"), x['summonerName']))
