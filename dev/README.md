@@ -54,6 +54,11 @@ Get details for the `terraform.tfvars` file:
   ```
   cat ~/.ssh/id_rsa.pub
   ```
+  > If there isn't already a public key created, run the following command:
+  > ```
+  > ssh-keygen
+  > ```
+  > And select all defaults. Then, try running the command again.
 
 Refresh the Riot Developer API key, only valid for 24 hours.
 
