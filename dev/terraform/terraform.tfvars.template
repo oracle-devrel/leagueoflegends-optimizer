@@ -1,7 +1,6 @@
 config_file_profile    = "DEFAULT"
+region                 = "XXXXX"
 tenancy_ocid           = "XXXXX"
 compartment_ocid       = "XXXXX"
 ssh_public_key         = "XXXXX"
-# https://developer.riotgames.com/
-riotgames_api_key      = "XXXXX"
-instant_client_lib_dir = "/usr/lib/oracle/21/client64/lib"
+riotgames_api_key      = "XXXXX" # https://developer.riotgames.com/

@@ -54,6 +54,11 @@ Get details for the `terraform.tfvars` file:
   ```
   cat ~/.ssh/id_rsa.pub
   ```
+  > If there isn't already a public key created, run the following command:
+  > ```
+  > ssh-keygen
+  > ```
+  > And select all defaults. Then, try running the command again.
 
 Refresh the Riot Developer API key, only valid for 24 hours.
 
@@ -67,6 +72,12 @@ vim terraform/terraform.tfvars
 ```
 ./start.sh
 ```
+
+> If there are permission errors with **start.sh**, make sure to change permissions appropriately before trying to execute again:
+  ```
+  chmod 700 start.sh
+  ```
+
 
 The output will be an `ssh` command to connect with the machine.
 
@@ -158,7 +169,7 @@ END;
 >   DBMS_CLOUD.UPDATE_CREDENTIAL(
 >      credential_name => 'LOL_BUCKET_CREDENTIALS',
 >      attribute => 'PASSWORD',
->      value => '3UN-Ot2it$:Ib>cP!6YF'); 
+>      value => 'password'); 
 > END;
 > /
 > ```

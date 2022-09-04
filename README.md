@@ -339,15 +339,15 @@ I chose to play Ezreal and bought a standard hybrid AD-AP build, which is especi
 
 From the producer's POV, we're making requests every 30 seconds and expecting a prediction. This is the kind of data we're storing in, and then consuming from our message queue:
 
-![](../images/producerdebug.JPG?raw=true)
+![](./images/producerdebug.JPG?raw=true)
 
 As we start the game, we get a very average 60/40% winrate probability. This is due to the fact that Ezreal is usually superior in early game compared to Miss Fortune if we keep our distance. As training data comes from real Masters+ players, usually games are very quiet at the beginning and players perform very safely until mid game. Therefore, it makes sense that Ezreal starts with a bigger win percentage probability.
 
-![](../images/started_game.JPG?raw=true)
+![](./images/started_game.JPG?raw=true)
 
 After starting the game, since we're in the practice tool, I chose to go full-build and buy all items from the shop (the standard AD-AP build).
 
-![](../images/game1.JPG?raw=true)
+![](./images/game1.JPG?raw=true)
 
 Immediately after the next request, the HTTP request fed the model my current stats, which were severely overpowered for the beginning of the game. If we review the statistics that are taken into account by our model, they are:
 
@@ -362,12 +362,12 @@ Therefore, any statistic that's considered an outlier from the interquartile ran
 
 Consequently, the predicted winrate spiked to about 70% and stayed that way during the rest of the match:
 
-![](../images/bought_items.JPG?raw=true)
+![](./images/bought_items.JPG?raw=true)
 
 
-As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score... aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the tens of millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that since prediction times would increase significantly.
+As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score... aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that since prediction times would increase significantly.
 
-![](../images/20.JPG?raw=true)
+![](./images/20.JPG?raw=true)
 
 
 Currently, the information which can be extracted from the Live Client Data API contains:

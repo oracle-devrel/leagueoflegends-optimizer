@@ -13,6 +13,7 @@ import time
 from pathlib import Path
 import argparse
 import ujson as json
+import time
 
 load_dotenv()
 
@@ -53,13 +54,13 @@ def get_puuid(request_ref, summoner_name, region, db):
     response = requests.get(request_url, headers=headers)
     time.sleep(1)
     if response.status_code == 200:
-        #print('Printing response for user {} - region {}: -----\n{}'.format(summoner_name, region, response.json()))
+        #print('{} Printing response for user {} - region {}: -----\n{}'.format(time.strftime("%Y-%m-%d %H:%M"), summoner_name, region, response.json()))
         pass
     elif response.status_code == 404:
-        print('PUUID not found for summoner {}'.format(summoner_name))
+        print('{} PUUID not found for summoner {}'.format(time.strftime("%Y-%m-%d %H:%M"), summoner_name))
         db.delete('summoner', 'summonerName', summoner_name)
     else:
-        print('Request error (@get_puuid). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_puuid). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
         return
     puuid = response.json().get('puuid')
     return puuid
@@ -75,7 +76,7 @@ def get_summoner_information(summoner_name, request_region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code != 200:
-        print('Request error (@get_summoner_information). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_summoner_information). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
         return None
     return response.json().get('puuid')
 
@@ -88,9 +89,9 @@ def get_champion_mastery(encrypted_summoner_id, request_region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
-        print('Request error (@get_champion_mastery). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_champion_mastery). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
 
     # Get champion IDs
     champion_df = pd.read_csv('../data/champion_ids.csv')
@@ -98,11 +99,12 @@ def get_champion_mastery(encrypted_summoner_id, request_region):
     # Example: get champion name by its id.
     #print(champion_df.loc[champion_df['champion_id'] == 103])
     # Processing of the information
-    print('Total champions played: {}'.format(len(response.json())))
+    print('{} Total champions played: {}'.format(time.strftime("%Y-%m-%d %H:%M"), len(response.json())))
     for i in response.json():
         champion_name = champion_df.loc[champion_df['champion_id'] == i.get(
             'championId')]['champion_name'].to_string().split('    ')[1]  # get the champion name only
-        print('Champion ID {} | Champion Name {} | Mastery level {} | Total mastery points {} | Last time played {} | Points until next mastery level {} | Chest granted {} | Tokens earned {}'.format(
+        print('{} Champion ID {} | Champion Name {} | Mastery level {} | Total mastery points {} | Last time played {} | Points until next mastery level {} | Chest granted {} | Tokens earned {}'.format(
+            time.strftime("%Y-%m-%d %H:%M"),
             i.get('championId'),
             champion_name,
             i.get('championLevel'),
@@ -121,9 +123,9 @@ def get_total_champion_mastery_score(encrypted_summoner_id, request_region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
-        print('Request error (@get_total_champion_mastery_score). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_total_champion_mastery_score). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
 
 
 def get_user_leagues(encrypted_summoner_id, request_region):
@@ -133,14 +135,14 @@ def get_user_leagues(encrypted_summoner_id, request_region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
-        print(
-            'Request error (@get_user_leagues). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_user_leagues). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
 
     for i in response.json():
         if i.get('leaguePoints') != 100:
-            print('Queue type: {} | Rank: {} {} {} LP | Winrate: {}% | Streak {} | >100 games {} | Inactive {}'.format(
+            print('{} Queue type: {} | Rank: {} {} {} LP | Winrate: {}% | Streak {} | >100 games {} | Inactive {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"),
                 i.get('queueType'),
                 i.get('tier'),
                 i.get('rank'),
@@ -150,7 +152,8 @@ def get_user_leagues(encrypted_summoner_id, request_region):
                 i.get('veteran'),
                 i.get('inactive')))
         else:
-            print('Queue type: {} | Rank: {} {} {} LP - Promo standings: {}/{} | Winrate: {}% | Streak {} | >100 games {} | Inactive {}'.format(
+            print('{} Queue type: {} | Rank: {} {} {} LP - Promo standings: {}/{} | Winrate: {}% | Streak {} | >100 games {} | Inactive {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"),
                 i.get('queueType'),
                 i.get('tier'),
                 i.get('rank'),
@@ -183,7 +186,8 @@ def get_n_match_ids(puuid, num_matches, queue_type, region):
         response = requests.get(request_url, headers=headers)
         time.sleep(1)
         if response.status_code != 200:
-            print('Request error (@get_n_match_ids). HTTP code {}: {}'.format(
+            print('{} Request error (@get_n_match_ids). HTTP code {}: {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"),
                 response.status_code, response.json()))
         # Return the list of matches.
         for i in response.json():
@@ -201,7 +205,7 @@ def get_n_match_ids(puuid, num_matches, queue_type, region):
             iterator,
             100
         )
-    print('@get_n_match_ids: obtained {} matches from region {}'.format(len(returning_object), region))
+    print('{} @get_n_match_ids: obtained {} matches from region {}'.format(time.strftime("%Y-%m-%d %H:%M"), len(returning_object), region))
     return returning_object
 
 
@@ -215,10 +219,10 @@ def get_match_timeline(match_id, region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
         print(
-            'Request error (@get_match_timeline). HTTP code {}'.format(response.status_code))
+            '{} Request error (@get_match_timeline). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
         return None
     # Return the list of matches.
     return response.json()
@@ -234,9 +238,9 @@ def get_match_info(match_id, region):
 
     response = requests.get(request_url, headers=headers)
     if response.status_code == 200:
-        print('{}'.format(response.json()))
+        print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.json()))
     else:
-        print('Request error (@get_match_info). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@get_match_info). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
     # Return the list of matches.
     return response.json()
 
@@ -288,8 +292,8 @@ def get_top_players(region, queue, db):
         response = requests.get(x, headers=headers)
         if response.status_code == 200:
             try:
-                print('Region: {} | Tier: {} | Queue: {} | Total Players: {}'.format(region, response.json()['tier'],
-                                                                                     response.json()['queue'], len(response.json()['entries'])))
+                print('{} Region: {} | Tier: {} | Queue: {} | Total Players: {}'.format(time.strftime("%Y-%m-%d %H:%M"),
+                    region, response.json()['tier'], response.json()['queue'], len(response.json()['entries'])))
             except KeyError:
                 pass
             for y in response.json()['entries']:
@@ -301,11 +305,11 @@ def get_top_players(region, queue, db):
                 except KeyError:
                     pass
         else:
-            print('Request error (@get_top_players). HTTP code {}: {}'.format(
-                response.status_code, response.json()))
+            print('{} Request error (@get_top_players). HTTP code {}: {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"), response.status_code, response.json()))
 
-    print('Total users obtained in region {} and queue {}: {}'.format(
-        region, queue, len(total_users_to_insert)))
+    print('{} Total users obtained in region {} and queue {}: {}'.format(
+        time.strftime("%Y-%m-%d %H:%M"), region, queue, len(total_users_to_insert)))
 
     # Insert into the database.
     collection_summoner = db.get_connection(
@@ -323,13 +327,14 @@ def get_top_players(region, queue, db):
                 x['puuid'] = get_puuid(
                     overall_region, x['summonerName'], tagline, db)
                 db.insert('summoner', x)
-                print('Inserted new summoner: {} in region {}, queue {}'.format(
+                print('{} Inserted new summoner: {} in region {}, queue {}'.format(
+                    time.strftime("%Y-%m-%d %H:%M"),
                     x['summonerName'], region, queue))
             else:
-                print('Summoner {} already inserted'.format(x['summonerName']))
+                print('{} Summoner {} already inserted'.format(time.strftime("%Y-%m-%d %H:%M"), x['summonerName']))
                 continue
         except exceptions.IntegrityError:
-            print('Summoner {} already inserted'.format(x['summonerName']))
+            print('{} Summoner {} already inserted'.format(time.strftime("%Y-%m-%d %H:%M"), x['summonerName']))
             continue
 
 
@@ -343,8 +348,8 @@ def change_column_value_by_key(db, collection_name, column_name, column_value, k
     # change value of column_name to column_value
     content[column_name] = column_value
     collection.find().key(key).replaceOne(content)  # replace document
-    print('[DBG] UPDATE BIT {}: {}'.format(column_name,
-          collection.find().key(key).getOne().getContent()[column_name]))
+    print('{} [DBG] UPDATE BIT {}: {}'.format(time.strftime("%Y-%m-%d %H:%M"),
+        column_name, collection.find().key(key).getOne().getContent()[column_name]))
     db.close_connection(connection)
 
 
@@ -359,7 +364,7 @@ def extract_matches(region, match_id, db, key):
     response = requests.get(request_url, headers=headers)
     time.sleep(1.5)  # rate limiting purposes
     if response.status_code != 200:
-        print('Request error (@extract_matches). HTTP code {}'.format(response.status_code))
+        print('{} Request error (@extract_matches). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
         return
     # Get participants and teams.objectives objects
     o_version = response.json().get('info').get('gameVersion')
@@ -411,10 +416,12 @@ def extract_matches(region, match_id, db, key):
             try:
                 db.insert('matchups', to_insert_obj)
             except exceptions.IntegrityError:
-                print('Match details {} already inserted'.format(
+                print('{} Match details {} already inserted'.format(
+                    time.strftime("%Y-%m-%d %H:%M"),
                     to_insert_obj.get('p_match_id')))
                 continue
-            print('Inserted new matchup with ID {} in region {}'.format(
+            print('{} Inserted new matchup with ID {} in region {}'.format(
+                time.strftime("%Y-%m-%d %H:%M"),
                 '{}_{}'.format(match_id, x), region))
 
     # Now, set a processed_1v1 bit in the match
@@ -457,8 +464,10 @@ def match_list(db):
                     except exceptions.IntegrityError:
                         print('Match ID {} already inserted'.format(i))
                         continue
-                    print('Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(i['match_id'],
-                                                                                                         current_summoner['summonerName'], y, z))
+                    print('{} Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(
+                        time.strftime("%Y-%m-%d %H:%M"),
+                        i['match_id'],
+                        current_summoner['summonerName'], y, z))
 
 
 def match_download_standard(db):
@@ -470,7 +479,7 @@ def match_download_standard(db):
         # Get the overall region to make the proper request
         overall_region, tagline = determine_overall_region(
             x.getContent().get('match_id').split('_')[0].lower())
-        print('Overall Region {} detected'.format(overall_region))
+        print('{} Overall Region {} detected'.format(time.strftime("%Y-%m-%d %H:%M"), overall_region))
         extract_matches(overall_region, x.getContent().get(
             'match_id'), db, x.key)
 
@@ -483,7 +492,7 @@ def match_download_detail(db):
         # Get the overall region to make the proper request
         overall_region, tagline = determine_overall_region(
             x.getContent().get('match_id').split('_')[0].lower())
-        print('Overall Region {} detected'.format(overall_region))
+        print('{} Overall Region {} detected'.format(time.strftime("%Y-%m-%d %H:%M"), overall_region))
         match_detail = get_match_timeline(
             x.getContent().get('match_id'), overall_region)
         if match_detail:
@@ -499,7 +508,7 @@ def build_final_object(json_object):
     try:
         match_id = json_object.get('metadata').get('matchId')
     except AttributeError:
-        print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.format(json_object))
+        print('{} [DBG] ERR MATCH_ID RETRIEVAL: {}'.format(time.strftime("%Y-%m-%d %H:%M"), json_object))
         return
 
     winner = int()
@@ -628,7 +637,7 @@ def build_final_object_liveclient(json_object):
     try:
         match_id = json_object.get('metadata').get('matchId')
     except AttributeError:
-        print('[DBG] ERR MATCH_ID RETRIEVAL: {}'.format(json_object))
+        print('{} [DBG] ERR MATCH_ID RETRIEVAL: {}'.format(time.strftime("%Y-%m-%d %H:%M"), json_object))
         return
 
     winner = int()
@@ -691,7 +700,7 @@ def build_final_object_liveclient(json_object):
                 frame['identifier'] = '{}_{}'.format(match_id, x.get(
                     'participantFrames').get('{}'.format(y)).get('participantId'))
             except AttributeError as e:
-                print('[DBG] LIVECLIENT BUILDING OBJECT FAILED: {}'.format(e))
+                print('{} [DBG] LIVECLIENT BUILDING OBJECT FAILED: {}'.format(time.strftime("%Y-%m-%d %H:%M"), e))
                 # if there's a problem with a frame, skip this iteration
                 return list()
 
@@ -717,7 +726,8 @@ def process_predictor(db):
     connection = db.get_connection()
     matches = connection.getSodaDatabase().createCollection('match_detail')
     # Total documents left to process:
-    print('Total match_detail documents (to process): {}'.format(
+    print('{} Total match_detail documents (to process): {}'.format(
+        time.strftime("%Y-%m-%d %H:%M"),
         matches.find().filter({'classifier_processed': {"$ne": 1}}).count()))
 
     for doc in matches.find().filter({'classifier_processed': {"$ne": 1}}).getCursor():
@@ -728,7 +738,8 @@ def process_predictor(db):
                 res = db.insert('predictor', x)  # insert in new collection.
                 if res == -1:
                     # Change column value to processed.
-                    print(doc.getContent().get('metadata').get('matchId'))
+                    print('{} {}'.format(time.strftime("%Y-%m-%d %H:%M"),
+                        doc.getContent().get('metadata').get('matchId')))
                     # after processing, update processed bit.
                     change_column_value_by_key(
                         db, 'match_detail', 'classifier_processed', 1, doc.key)
@@ -740,7 +751,8 @@ def process_predictor(db):
 def process_predictor_liveclient(db):
     connection = db.get_connection()
     matches = connection.getSodaDatabase().createCollection('match_detail')
-    print('Total match_detail documents (to process): {}'.format(
+    print('{} Total match_detail documents (to process): {}'.format(
+        time.strftime("%Y-%m-%d %H:%M"),
         matches.find().filter({'classifier_processed_liveclient': {"$ne": 1}}).count()))
 
     for doc in matches.find().filter({'classifier_processed_liveclient': {"$ne": 1}}).getCursor():
@@ -761,14 +773,7 @@ def process_predictor_liveclient(db):
     db.close_connection(connection)
 
 
-# TODO
-def process_regressor(db):
-    pass
 
-
-# TODO
-def process_regressor_liveclient(db):
-    pass
 
 
 def data_mine(db):
@@ -784,10 +789,6 @@ def data_mine(db):
         process_predictor(db)
     elif args.mode == 'process_predictor_liveclient':
         process_predictor_liveclient(db)
-    elif args.mode == 'process_regressor':
-        process_regressor(db)
-    elif args.mode == 'process_regressor_liveclient':
-        process_regressor_liveclient(db)
     else:  # we execute everything.
         player_list(db)
         match_list(db)

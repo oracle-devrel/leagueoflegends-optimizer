@@ -13,8 +13,7 @@ provider "oci" {
 }
 
 variable "region" {
-  type    = string
-  default = "eu-frankfurt-1"
+  type = string
 }
 
 variable "tenancy_ocid" {
@@ -38,5 +37,6 @@ variable "riotgames_api_key" {
 }
 
 variable "instant_client_lib_dir" {
-  type = string
+  type    = string
+  default = "/usr/lib/oracle/21/client64/lib"
 }

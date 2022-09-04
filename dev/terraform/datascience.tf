@@ -2,7 +2,7 @@ resource "oci_datascience_project" "lol_project" {
   compartment_id = var.compartment_ocid
 
   description  = "League of Legends Project"
-  display_name = "LoL Project"
+  display_name = "LoL Project ${random_string.deploy_id.result}"
 
   depends_on = [
     oci_core_subnet.privatesubnet
