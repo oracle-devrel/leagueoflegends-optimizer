@@ -9,7 +9,7 @@ Access and mobility play an important role in LoL. Your team needs to clear at l
 
 Team composition depends on five positions. Each lane lends itself to certain kinds of champions and roles—try them all or lock in to the lane that calls you. Champions get stronger by earning experience to level up and buy more powerful items as the game progresses. Staying on top of these two factors is crucial to overpowering the enemy team and destroying their base.
 
-In this lab, we'll leverage the power of AI with League of Legends in a unique an innovative way. We'll dive deep into extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
+In this lab, we'll leverage the power of AI with League of Legends in a unique and innovative way. We'll dive deep into extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
 
 ![Bought Items](images/bought_items.jpg)
 
@@ -17,7 +17,7 @@ This image represents the final functionality of this workshop, where we're able
 
 We'll also need to create an autonomous database, which will serve as storage for our generated datasets and access points as a whole.
 
-In this Hands-On Lab (HOL), we'll start with the assumption that users know about how League of Legends' matchmaking system works. If you have time and don't know a lot about League of Legends, I recommended reading these lists of articles (included in the repository as well) to get a feel for what we'll cover in the HOL:
+In this Hands-On Lab (HOL), we'll start with the assumption that users know about how League of Legends' matchmaking system works. If you have time and don't know a lot about League of Legends, we recommend reading these lists of articles (included in the repository as well) to get a feel for what we'll cover in the HOL:
 
 1. [Article 1](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article1.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Data Extraction & Processing
 2. [Article 2](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article2.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Data Extraction & Processing II

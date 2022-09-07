@@ -4,7 +4,7 @@ Estimated Lab Time: 5 minutes
 
 ## Introduction
 
-League of Legends is one of the most played videogames in the entire world. In this workshop, we'll leverage the power of AI with League of Legends in a unique an innovative way. We'll dive deep into extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
+League of Legends is one of the most played videogames in the entire world. In this workshop, we'll leverage the power of AI with League of Legends in a unique and innovative way. We'll dive deep into extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
 
 Are you interested in learning machine learning (ML)? How about doing this in the context of the exciting world of gaming?! Get your ML skills bootstrapped here!
 

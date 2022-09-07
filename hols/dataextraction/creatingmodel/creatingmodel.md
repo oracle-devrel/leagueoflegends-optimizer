@@ -215,7 +215,7 @@ We can check the list of champions in the game:
 ![](./images/champ_list_output.png)
 
 
-> The result is exactly name if we run df['champ2'].unique(), as we have enough rows that cause all champions in the game to appear in both __champ1__ and __champ2__ columns.
+> The result is exactly the same if we run _`df['champ2'].unique()`_ instead, as we have enough rows that cause all champions in the game to appear in both __champ1__ and __champ2__ columns.
 
 > (Optional) It could be interesting to make an analysis of this data to see which champions were played the most, depending on the patch number (column __GAMEVERSION__).
 
