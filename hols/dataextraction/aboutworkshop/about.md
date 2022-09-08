@@ -10,8 +10,7 @@ Are you interested in learning machine learning (ML)? How about doing this in th
 
 Here's a short 3-minute introductory video into League of Legends:
 
-[![Watch the video](https://img.youtube.com/vi/OfYU4gbk13w/hqdefault.jpg)](https://www.youtube.com/watch?v=OfYU4gbk13w)
-
+[Watch the video](youtube:OfYU4gbk13w)
 
 ### About Product/Technology
 
