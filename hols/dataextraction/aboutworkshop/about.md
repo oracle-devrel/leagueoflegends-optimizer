@@ -24,7 +24,7 @@ The Data Science Service:
 
 ### Objectives
 
-In this lab, you will to complete the following steps:
+In this lab, you will complete the following steps:
 
 &check; Data Collection - Download datasets
 
