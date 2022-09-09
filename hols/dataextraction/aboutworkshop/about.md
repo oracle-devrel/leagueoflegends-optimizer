@@ -48,7 +48,9 @@ This solution is designed to work with several OCI services, allowing you to qui
 
 ### Data Sets
 
-We'll access datasets uploaded to [this Kaggle repository](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results). This repository contains several files, make sure you check all available datasets if you're interested and give a thumbs up if you find them useful.
+We'll access datasets uploaded to OCI Object Storage. You don't need to download any datasets by yourself, everything will be **automated**.
+
+They are optionally also uploaded to [this Kaggle repository](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results). This repository contains several files, make sure you check all available datasets if you're interested and give a thumbs up if you find them useful.
 
 ### Useful Sources
 
@@ -62,4 +64,4 @@ You may now [proceed to the next lab](#next).
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Editor** - Erin Dawson, DevRel Communications Manager
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - August 30th, 2022
+* **Last Updated By/Date** - September 9th, 2022

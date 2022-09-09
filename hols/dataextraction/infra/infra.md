@@ -32,6 +32,7 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
 
 1. From the Oracle Cloud Console, click on **Cloud Shell**.
   ![Cloud Shell Button](images/cloud-shell-button.png)
+
 2. As soon as the Cloud Shell is loaded, you can download the assets to run this lab.
     ```
     <copy>git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git</copy>
@@ -39,6 +40,8 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
 
 3. The result will look like this
   ![Git Clone](images/git-clone.png)
+
+
 4. Change directory with `cd` to `leagueoflegends-optimizer` directory:
     ```
     <copy>cd leagueoflegends-optimizer/dev</copy>
@@ -58,10 +61,13 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
     > First, it is not the recommended browser for OCI. Firefox or Chrome are fully tested and are recommended.<br>
     > With Safari, if you get a message _Cannot Start Code Editor_, go to _**Settings** > **Privacy**_ and disable _**Prevent cross-site tracking**_.<br>
     > Then open Code Editor again.
+
 2. On the **Code Editor**, go to _**File** > **Open**_.
     ![Open menu](images/code-editor-open-menu.png)
+
 3. On the pop-up, edit the path by clicking the pencil icon:
     ![Open Pop Up](images/code-editor-open-popup.png)
+
 4. Append, at the end, the path to the `terraform.tfvars`
     ![Path to tfvars](images/code-editor-path.png)
 
@@ -74,6 +80,7 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
     ![TFVars Open](images/code-editor-open-tfvars.png)
 
 6. The file will open and you can copy values you will get from running commands on Cloud Shell and paste it on the Code Editor.
+
 7. Copy the output of the following command as the region:
 
     ```
@@ -89,6 +96,7 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
     ```
 
     ![Paste Tenancy OCID](images/paste-tenancy-ocid.png)
+
 9. Copy the output of the same command as the compartment OCID:
 
     ```
@@ -195,4 +203,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - September 4th, 2022
+* **Last Updated By/Date** - September 9th, 2022

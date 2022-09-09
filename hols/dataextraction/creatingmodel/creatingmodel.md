@@ -11,36 +11,8 @@ Estimated Lab Time: 45 minutes
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 * [Previously created](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/infra/infra.md) OCI Data Science Environment
 
-## Task 1: Downloading / Accessing Notebooks and Datasets
 
-You can find everything covered here in two files:
-
-1. (Recommended) If you're using the data found in the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results), go ahead and [**and download** this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb)
-    - To download the notebook, click on __Raw__:
-
-    ![](images/raw.jpg)
-
-    - Then: 
-
-    ![](images/savepage.jpg)
-
-    - Finally, download [`1v1.csv`](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=1v1.csv) and [`matchup.csv`](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=matchups.csv) datasets from Kaggle:
-
-    ![](images/downloadkaggle.jpg)
-
-    > Note that the files you download directly from Kaggle, will most likely be in .zip format. You will have to **unzip** the files once you have them locally:
-
-    ![](images/unzip.png)
-
-2. (Optional) If you're using your own data (generating it by following the workshop), and you have [all the prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out [this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb) which connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
-
-3. (Optional) For advanced users, if you have experience with the Kaggle API, you always have the possibility to download the dataset directly from Kaggle using [Kaggle's API](https://github.com/Kaggle/kaggle-api), and running this command in a terminal where `kaggle-cli` is installed:
-    
-    ```console
-    kaggle datasets download jasperan/league-of-legends-1v1-matchups-results
-    ```
-
-## Task 2: Setting up OCI Data Science Environment
+## Task 1: Setting up OCI Data Science Environment
 
 [Having previously created our OCI Data Science environment](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/infra/infra.md), we need to install the necessary Python dependencies to execute our code. For that, we'll access our environment.
 
@@ -64,11 +36,21 @@ You can find everything covered here in two files:
 
     ![](./images/notebook.png)
 
-2. We now need to load our notebook and datasets into our environment. For that, using the files from [the official repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs) locally, we use the upload button to transfer the files:
+2. We now need to load our notebook and datasets into our environment. For that, we open a new terminal inside our environment:
 
-    ![](./images/upload.jpg)
+    ![](./images/new_terminal.png)
 
-    We need to upload the notebook called `hol1_offline_analysis.ipynb` (the one we downloaded in Task 1), and our datasets from Kaggle ([matchups.csv](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=matchups.csv) and [1v1.csv](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results?select=1v1.csv)).
+    Then, we execute the following command, which will download all necessary datasets and notebooks:
+
+    ```
+    <copy>
+    wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/Va9g94bf5GQgMsquZqnSc_lEkpGow4-UteUwlEbU1MS3cjTZNQwiVE63EL2ft3ow/n/axywji1aljc2/b/league-hol-1/o/archive.zip && unzip archive.zip -d /home/datascience/.
+    </copy>
+    ```
+
+    This process should take about a minute.
+
+    ![](./images/unzip_result.png)
 
 3. We run the first code cell in [the notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb) to install the dependencies. In order to run the code cell, you can press the following button:
 
@@ -79,9 +61,9 @@ You can find everything covered here in two files:
     ![](./images/firstcell_after_execution.png)
 
 
-## Task 3: The Data Structure
+## Task 2: The Data Structure
 
-From the [Kaggle dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results), we see an example of the data structure we're going to use to build our model:
+From our dataset, we can observe an example of the data structure we're going to use to build our model:
 
 ![](./images/example_data_structure.png)
 
@@ -104,7 +86,7 @@ For our first model, we're going to simplify the present data structure even mor
 
 Where `win` is a boolean variable that represents whether `champ1` won or not. So, in this example, Velkoz won the game.
 
-## Task 4: Loading Data / Generating Dataset
+## Task 3: Loading Data / Generating Dataset
 
 We begin with simple data exploration of our initial dataset.
 
@@ -202,13 +184,13 @@ def process_1v1_model():
 
 After creating this function and invoking it, we will obtain a resulting CSV file or dataframe object. We'll use this new object to create our model.
 
-## Task 5: Loading Processed Dataset
+## Task 4: Loading Processed Dataset
 
 After doing this initial processing and understanding why variables are included, we load the new CSV file:
 
 ![](./images/1v1_output.png)
 
-## Task 6: Exploring Data
+## Task 5: Exploring Data
 
 We can check the list of champions in the game:
 
@@ -231,7 +213,7 @@ Finally, we print information about the dataset, to check whether we have any nu
 
 In this case we don't have any null-values, otherwise we'd drop these null values or replace them with filler values / placeholders. This is especially important to check if the dataset hasn't been curated by anyone else before; checking for **data consistency** is very important if the dataset is produced by ourselves.
 
-## Task 7: Dropping ID columns
+## Task 6: Dropping ID columns
 
 We drop columns that represent identifiers.
 
@@ -240,7 +222,7 @@ We drop columns that represent identifiers.
 
 > Note: the inplace=True option persists the __drop__ operation in the __df__ object. This basically means that we don't need to assign this operation back to the dataframe, as the operation is performed directly on the same dataframe.
 
-## Task 8: Splitting into Train-Test
+## Task 7: Splitting into Train-Test
 
 To perform ML properly, we need to take the dataset we're going to work with, and split it into two:
 
@@ -254,7 +236,7 @@ We split our data into train-test sets:
 
 ![](./images/task8.png)
 
-## Task 9: Encoding Data
+## Task 8: Encoding Data
 
 In order for an ML model to accept "words", or as we call them, "Strings" or categorical variables, we need to make a conversion from a String into a meaningful thing for the model. We have to understand that a ML model is just a result of a computer making millions of operations per second; and all these operations are made with numbers.
 
@@ -272,7 +254,7 @@ So, that's what we do here. We encode the data following the Data Science proces
 
 ![](./images/task9.png)
 
-## Task 10: Scaling Data
+## Task 9: Scaling Data
 
 Now that we have our categorical variables properly encoded into numerical variables, we need to apply **scaling** to all variables.
 Why is this important? Because, depending on which ML model to train, each of them will behave differently; and some of these models may consider "bigger" values as more important; this isn't what we want.
@@ -302,7 +284,7 @@ The accuracies obtained for the logistic regression classifier are 0.51. With so
 - Testing new regression / classification algorithms, other than Logistic Regression
 - Having a more specific target variable. This target variable is only a boolean and doesn't allow for fine-grained predictions, it's either 0 or 1.
 
-## Task 11: Making New Predictions
+## Task 10: Making New Predictions
 
 However, we can still make predictions using our model. The code to make a prediction needs to consider new data, encode it and then make a prediction.
 
@@ -349,8 +331,13 @@ We can see which champions are from each team, and return human-readable results
 You may now [proceed to the next lab](#next).
 
 
+## Annex: Using your Own DataSets
+
+If you're using your own data instead of the datasets provided by default (having generated them by following the workshop), and you have [all the aforementioned prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out [this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb) which connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
+
+
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - August 16th, 2022
+* **Last Updated By/Date** - September 9th, 2022
