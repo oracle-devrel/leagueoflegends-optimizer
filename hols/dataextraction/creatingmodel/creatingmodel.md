@@ -333,7 +333,9 @@ You may now [proceed to the next lab](#next).
 
 ## Annex: Using your Own DataSets
 
-If you're using your own data instead of the datasets provided by default (having generated them by following the workshop), and you have [all the aforementioned prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out [this notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb) which connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
+If you're using your own data instead of the datasets provided by default (having generated them by following the workshop), and you have [all the aforementioned prerequisites](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/intro/intro.md) installed, you can check out the notebook called _`notebooks/hol1_online_analysis.ipynb`_ which connects directly to the Autonomous DB through Instant Client and the database's wallet and creates a model from scratch.
+
+> Note: this notebook is already downloaded to your Data Science environment if you've followed all steps. The path is _`/home/datascience/leagueoflegends-optimizer/notebooks/hol1_online_analysis.ipynb`_.
 
 
 ## Acknowledgements

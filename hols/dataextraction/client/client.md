@@ -108,5 +108,5 @@ In the next workshop, we'll learn how to extend and improve the model we've crea
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
-* **Contributors** -  Victor Martin, Product Strategy Director
+* **Contributors** - Victor Martin, Product Strategy Director
 * **Last Updated By/Date** - August 10th, 2022
