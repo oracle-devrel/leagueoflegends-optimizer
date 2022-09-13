@@ -13,7 +13,7 @@ In this lab, we'll leverage the power of AI with League of Legends in a unique a
 
 ![Bought Items](images/bought_items.jpg)
 
-This image represents the final functionality of this workshop, where we're able to use our already-trained ML model to make real-time predictions about our in-game performances. 
+This image represents the final functionality of this workshop series, where we're able to use our already-trained ML model to make real-time predictions about our in-game performances. 
 
 We'll also need to create an autonomous database, which will serve as storage for our generated datasets and access points as a whole.
 
