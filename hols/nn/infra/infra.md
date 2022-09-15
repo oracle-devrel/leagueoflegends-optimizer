@@ -157,7 +157,7 @@ We now need to load our notebook into our environment.
 
     ```
     <copy>
-    conda install python=3.8
+    conda install -y python=3.8
     pip install -r leagueoflegends-optimizer/requirements_nn.txt
     </copy>
     ```
@@ -171,13 +171,11 @@ We should now see the repository / files in our file explorer:
 
 ![](./images/file_explorer.png)
 
-We navigate to the _`redbull-pit-strategy/notebooks/`_ directory and open each one of the notebooks. This is the list of notebooks we will review:
-- [_`00 pull data.ipynb`_](https://github.com/oracle-devrel/redbull-pit-strategy/blob/dev/notebooks/00%20pull%20data.ipynb)
-- [_`01 data exploration.ipynb`_](https://github.com/oracle-devrel/redbull-pit-strategy/blob/dev/notebooks/01%20data%20exploration.ipynb)
-- [_`02 merge data.ipynb`_](https://github.com/oracle-devrel/redbull-pit-strategy/blob/dev/notebooks/02%20merge%20data.ipynb)
-- [_`03 Model Training.ipynb`_](https://github.com/oracle-devrel/redbull-pit-strategy/blob/dev/notebooks/03%20Model%20Training.ipynb)
--  [_`04 deploy model.ipynb`_](https://github.com/oracle-devrel/redbull-pit-strategy/blob/dev/notebooks/04%20deploy%20model.ipynb)
+![](./images/file_explorer_2.png)
 
+We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and open each one of the notebooks. These two notebooks are the ones we will review during this workshop:
+- [_`nn_offline_model.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_offline_model.ipynb)
+- [_`nn_live_model.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb)
 
 You may now [proceed to the next lab](#next).
 
@@ -185,5 +183,5 @@ You may now [proceed to the next lab](#next).
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
-* **Contributors** - Victor Martin - Product Strategy Director, Alireza Dibazar - Principal Data Scientist, Vesselin Diev - Senior Director of Data Science, ML Innovation Team
+* **Contributors** - Victor Martin - Product Strategy Director
 * **Last Updated By/Date** - September 16th, 2022
