@@ -9,8 +9,33 @@
     },
     {
       "title": "Introduction",
-      "description": "The Introduction is always second. The title and contents menu title match for the Introduction.",
+      "description": "Introduction",
       "filename": "../../nn/intro/intro.md"
+    },
+    {
+      "title": "Infrastructure",
+      "description": "Infrastructure",
+      "filename": "../../nn/infra/infra.md"
+    },
+    {
+      "title": "Connecting Data Points",
+      "description": "Connecting Data Points to ML",
+      "filename": "../../nn/connecting_data_points/connecting_data_points.md"
+    },
+    {
+      "title": "Neural Network Fundamentals",
+      "description": "NN Fundamentals",
+      "filename": "../../nn/nn_fundamentals/nn_fundamentals.md"
+    },
+    {
+      "title": "Model Building with fastai",
+      "description": "Model Building",
+      "filename": "../../nn/model_building/model_building.md"
+    },
+    {
+      "title": "Demo",
+      "description": "Demo",
+      "filename": "../../nn/demo/demo.md"
     },
     {
       "title": "Need Help?",
