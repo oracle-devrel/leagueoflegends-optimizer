@@ -150,7 +150,10 @@ We now need to load our notebook into our environment.
 2. Then, we re-clone the repository using this command:
 
     ```
-    <copy>git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git</copy>
+    <copy>
+    git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
+
+    </copy>
     ```
 
 3. Finally, execute these commands to install required Python dependencies:
@@ -159,10 +162,49 @@ We now need to load our notebook into our environment.
     <copy>
     conda install -y python=3.8
     pip install -r leagueoflegends-optimizer/requirements_nn.txt
+
     </copy>
     ```
 
 After this command, all requirements will be fulfilled and we're ready to execute our notebooks with our newly created conda environment.
+
+## Task 6: Downloading DataSets
+
+We now need to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
+
+![](./images/open_terminal.png)
+
+Then, we execute the following command, which will download all necessary datasets:
+
+
+```
+<copy>
+wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/wPITlcIlqhE3VuDjIxeXyqwWTUa8o96q5jy-6gBXSNhO4OKha1A1JetWozNFZIAZ/n/axywji1aljc2/b/league-hol-ocw-datasets/o/ocw_datasets.zip && unzip ocw_datasets.zip -d /home/datascience/.
+
+</copy>
+```
+
+
+
+----------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> This process should take about a minute.
+
+![](./images/unzip_result.png)
 
 
 ## Task 6: Accessing our Notebooks
@@ -178,6 +220,8 @@ We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and open e
 - [_`nn_live_model.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb)
 
 You may now [proceed to the next lab](#next).
+
+
 
 
 ## Acknowledgements
