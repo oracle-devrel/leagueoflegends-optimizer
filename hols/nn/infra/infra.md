@@ -139,7 +139,6 @@ Having just created our OCI Data Science environment, we need to install the nec
 
 
 
-
 ## Task 5: Setting up Data Science Environment
 
 We now need to load our notebook into our environment.
@@ -147,26 +146,17 @@ We now need to load our notebook into our environment.
 
     ![](./images/open_terminal.png)
 
-2. Then, we re-clone the repository using this command:
+2. Then, we re-clone the repository and install required Python dependencies:
 
     ```
     <copy>
     git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
-
-    </copy>
-    ```
-
-3. Finally, execute these commands to install required Python dependencies:
-
-    ```
-    <copy>
     conda install -y python=3.8
     pip install -r leagueoflegends-optimizer/requirements_nn.txt
-
     </copy>
     ```
 
-After this command, all requirements will be fulfilled and we're ready to execute our notebooks with our newly created conda environment.
+After these commands, all requirements will be fulfilled and we're ready to execute our notebooks with our newly created conda environment.
 
 ## Task 6: Downloading DataSets
 
@@ -184,26 +174,6 @@ wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/wPITlcIlqhE3VuDjIxeX
 </copy>
 ```
 
-
-
-----------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-> This process should take about a minute.
-
 ![](./images/unzip_result.png)
 
 
@@ -219,13 +189,13 @@ We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and open e
 - [_`nn_offline_model.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_offline_model.ipynb)
 - [_`nn_live_model.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb)
 
+Let's open both of them and get to work. 
+
 You may now [proceed to the next lab](#next).
-
-
 
 
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin - Product Strategy Director
-* **Last Updated By/Date** - September 16th, 2022
+* **Last Updated By/Date** - September 19th, 2022
