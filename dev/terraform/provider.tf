@@ -36,6 +36,11 @@ variable "riotgames_api_key" {
   type = string
 }
 
+variable "create_iam_policy" {
+  type    = bool
+  default = true
+}
+
 variable "instant_client_lib_dir" {
   type    = string
   default = "/usr/lib/oracle/21/client64/lib"
