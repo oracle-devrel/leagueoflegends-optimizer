@@ -4,12 +4,42 @@
 
 The output of `./start.sh` is not the expected and in red says:
 ```
+oci_datascience_notebook_session.lol_notebook_session: Creation completed after 4m06s [id=ocid1.datasciencenotebooksession....]
+
+
+```
+
+### Solution:
+
+By default, we create an IAM policy. The requirements of the workshop is to be an administrator. But if you are not, you can ask your administrator of OCI account to add the following policy:
+
+```
+allow service datascience to use virtual-network-family in compartment id [YOUR_COMPARTMENT_OCID]
+╷
+│ Error: 500-NotAuthorizedOrNotFound, Authorization failed or requested resource not found
+│ Suggestion: Neither the resource has been deleted or service Identity Policy need policy to access this resource.
+```
+
+Then, you can indicate to not create the policy. Put a new variable on the `terraform.tfvars`. Just like this:
+```
+create_iam_policy              = false
+```
+
+Run again the start script again
+```
+./start.sh
+```
+
+---
+
+## Lab 2, Task 3: Start Deployment
+
+The output of `./start.sh` is not the expected and in red says:
+```
 oci_core_instance.compute[0]: Creating...
 ╷
 │ Error: 500-InternalError, Out of host capacity.
 │ Suggestion: The service for this resource encountered an error. Please contact support for help with service: Core Instance
-│ Documentation: https://registry.terraform.io/providers/oracle/oci/latest/docs/resources/core_instance 
-│ API Reference: https://docs.oracle.com/iaas/api/#/en/iaas/20160918/Instance/LaunchInstance
 ```
 
 ### Solution:
