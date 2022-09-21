@@ -3,19 +3,19 @@
   "help": "livelabs-help-db_us@oracle.com",
   "tutorials": [
     {
-      "title": "Get Started",
-      "description": "Prerequisites for LiveLabs (Oracle-owned tenancies). The title of the lab and the Contents Menu title (the title above) match for Prerequisite lab. This lab is always first.",
-      "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login-livelabs2.md"
-    },
-    {
-      "title": "Lab 0: About this Workshop",
+      "title": "Introduction",
       "description": "What the workshop is about",
       "filename": "../../dataextraction/aboutworkshop/about.md",
       "type": "dbcs"
     },
     {
-      "title": "Lab 1: Introduction",
-      "description": "Introduction",
+      "title": "Get Started",
+      "description": "Prerequisites for LiveLabs (Oracle-owned tenancies). The title of the lab and the Contents Menu title (the title above) match for Prerequisite lab. This lab is always first.",
+      "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login.md"
+    },
+    {
+      "title": "Lab 1: Understand and Sign Up for League of Legends",
+      "description": "Understand and Sign Up for League of Legends",
       "filename": "../../dataextraction/intro/intro.md",
       "type": "dbcs"
     },
@@ -27,13 +27,13 @@
     },
     {
       "title": "Lab 3: Optimizer",
-      "description": "Interacting with the optimizer.",
+      "description": "Interact with the optimizer.",
       "filename": "../../dataextraction/optimizer/optimizer.md",
       "type": "dbcs"
     },
     {
-      "title": "Lab 4: Creating a Model",
-      "description": "Creating Model",
+      "title": "Lab 4: Create a Model",
+      "description": "Creat Model",
       "filename": "../../dataextraction/creatingmodel/creatingmodel.md",
       "type": "dbcs"
     },
@@ -46,7 +46,7 @@
     {
       "title": "Need Help?",
       "description": "Solutions to Common Problems and Directions for Receiving Live Help",
-      "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/need-help/need-help-livelabs.md"
+      "filename": "https://oracle-livelabs.github.io/common/labs/need-help/need-help-freetier.md"
     }
   ]
 }

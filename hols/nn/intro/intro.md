@@ -11,7 +11,7 @@ Long story short, after some months developing my own League of Legends API wrap
 This is what this workshop is going to teach you.
 
 We're going to create two models:
-- -Offline Model_: we'll obtain after-match data, and compare how well we did to pàst professional games. This will be a good model to **theorize** about which characters are good / bad in the long run.
+- _Offline Model_: we'll obtain after-match data, and compare how well we did to pàst professional games. This will be a good model to **theorize** about which characters are good / bad in the long run.
 - _Live Client Model_: we'll obtain **real-time** data from a match, run it through our model, and return a winning probability (0-100)%.
 
 ## Introduction to League of Legends

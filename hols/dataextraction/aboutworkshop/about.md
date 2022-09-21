@@ -1,4 +1,4 @@
-# About this Workshop
+# About This Workshop
 
 Estimated Lab Time: 5 minutes
 
@@ -12,7 +12,7 @@ Here's a short 3-minute introductory video into League of Legends:
 
 [Watch the video](youtube:OfYU4gbk13w)
 
-### About Product/Technology
+## About Product/Technology
 
 OCI Data Science is a fully managed and serverless platform for data science teams to build, train, and manage machine learning models using Oracle Cloud Infrastructure.
 
@@ -22,7 +22,7 @@ The Data Science Service:
 - Enables self-service, serverless access to infrastructure for data science workloads.
 - Helps data scientists concentrate on methodology and domain expertise to deliver models to production.
 
-### Objectives
+## Objectives
 
 In this lab, you will complete the following steps:
 
@@ -37,7 +37,7 @@ In this lab, you will complete the following steps:
 &check; Data Integration - Connecting to real-time data sources
 
 
-### OCI Elements
+## OCI Elements
 
 This solution is designed to work with several OCI services, allowing you to quickly be up-and-running. You can read more about the services used in the lab here:
 
@@ -46,13 +46,13 @@ This solution is designed to work with several OCI services, allowing you to qui
 - [OCI Compute](https://www.oracle.com/cloud/compute/)
 - [OCI Autonomous JSON Database](https://www.oracle.com/autonomous-database/autonomous-json-database/)
 
-### Data Sets
+## Data Sets
 
 We'll access datasets uploaded to OCI Object Storage. You don't need to download any datasets by yourself, everything will be **automated**.
 
 They are optionally also uploaded to [this Kaggle repository](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results). This repository contains several files, make sure you check all available datasets if you're interested and give a thumbs up if you find them useful.
 
-### Useful Sources
+## Useful Sources
 
 - Data Integration with leagueoflegends-optimizer: [YouTube video](https://www.youtube.com/watch?v=SlG0q4oWGsk)
 
@@ -64,4 +64,4 @@ You may now [proceed to the next lab](#next).
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Editor** - Erin Dawson, DevRel Communications Manager
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - September 9th, 2022
+* **Last Updated By/Date** - September 21st, 2022

@@ -5,9 +5,9 @@ Estimated Lab Time: 30 minutes
 ## Introduction
 If we want to build an AI/ML model, we need data. For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [league.py](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode. 
 
-> Note that all tools mentioned in the optimizer are designed to run **24/7**, meaning that, if you don't stop execution of the optimizer, it will keep collecting data **indefinitely**. You're free to explore with how much data you want to extract using the optimizer. 
-
-> This means that there's no "finish" to the optimizer, it will keep running until you stop it. We recommend going through each task and running each task for **5 minutes** or so if you're getting started; you're free to execute any command at any point afterwards, it won't interfere with already existing data.
+> **Note**: all tools mentioned in the optimizer are designed to run **24/7**, meaning that, if you don't stop execution of the optimizer, it will keep collecting data **indefinitely**. You're free to explore with how much data you want to extract using the optimizer. 
+<br>
+> This means that there's no "end" to the optimizer, it will keep running until you stop it. We recommend going through each task and running each task for **5 minutes** or so if you're getting started; you're free to execute any command at any point afterwards, it won't interfere with already existing data.
 
 ### Prerequisites
 
@@ -25,7 +25,7 @@ At the time of writing, the following execution modes are available:
   - **`process_regressor_liveclient`**: similar to **`process_regressor`**, but with LiveClient API-compatible names.
   - **`Default`**: this mode, which basically performs: **`player_list`** -> **`match_list`** -> **`match_download_standard`** -> **`match_download_detail`**.
 
-## Task 1: Extracting Data / Generating Dataset
+## Task 1: Extract Data / Generate Dataset
 
 There are two components we need to consider in our flow:
 - Training process: for this, we need to access historical data, and train a model based on this data.
@@ -67,7 +67,7 @@ This execution mode will iteratively look for League of Legends leaderboards in 
 
     This command finds matches played by every player in our database, in every region. This allows us to obtain more matches per player, in case the player travels abroad from their original region, e.g. to compete internationally.
 
-    > This only extracts Match IDs. Processing these IDs is done in the next section
+    > **Note**: This only extracts Match IDs. Processing these IDs is done in the next section
 
 ## Task 2: Download Match Details by ID
 
@@ -82,7 +82,7 @@ This execution mode will iteratively look for League of Legends leaderboards in 
 
 2. This gives us timestamped information about what occurred in each game in thorough detail. From this, we can build an object with all variables that can be useful in our model.
 
-## Task 3: Building Data Object for ML
+## Task 3: Build Data Object for ML
 
 We'll use the __`process_predictor_liveclient`__ execution mode. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
 
@@ -111,4 +111,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - September 16th, 2022
+* **Last Updated By/Date** - September 21st, 2022

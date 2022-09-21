@@ -57,7 +57,7 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
 1. Click on **Code Editor**. Next to the Cloud Shell one.
     ![Cloud Code Editor](images/cloud-code-editor.png)
 
-    > Note for **Safari** users:<br>
+    > **Note**: for **Safari** users:<br>
     > First, it is not the recommended browser for OCI. Firefox or Chrome are fully tested and are recommended.<br>
     > With Safari, if you get a message _Cannot Start Code Editor_, go to _**Settings** > **Privacy**_ and disable _**Prevent cross-site tracking**_.<br>
     > Then open Code Editor again.
@@ -105,7 +105,7 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
 
     ![Paste Compartment OCID](images/paste-compartment-ocid.png)
 
-    > **Note only for experienced Oracle Cloud users:**<br>
+    > **Note**: for experienced Oracle Cloud users:<br>
     > Do you want to deploy the infrastructure on a specific compartment?<br>
     > You can get the Compartment OCID in different ways.<br>
     > The coolest one is with OCI CLI from the Cloud Shell.<br>
@@ -122,7 +122,7 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
     <copy>ssh-keygen -t rsa</copy>
     ```
 
-    > If there isn't a public key already created, run the following command to create one:
+    > **Note**: If there isn't a public key already created, run the following command to create one:
     > ```
     > <copy>ssh-keygen</copy>
     > ```
@@ -203,4 +203,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - September 16th, 2022
+* **Last Updated By/Date** - September 21st, 2022

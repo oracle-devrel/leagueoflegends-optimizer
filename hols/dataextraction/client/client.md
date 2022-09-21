@@ -25,7 +25,7 @@ Communication between the CEF and C++ libraries **happens automatically when we 
 > (Optional) You can also refer to [article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.md), where we dive into the most interesting endpoints in the Live Client Data API.
 
 
-## Task 2: Testing the Live Client API
+## Task 2: Test the Live Client API
 
 Check out this video where we explain how to connect to the Live Client API:
 
@@ -52,8 +52,7 @@ The HTTP endpoint being used to get data while we're in a League of Legends matc
     ![in game](images/lab1-league4.png)
 5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc. [To make the requests automatically, you can use this code](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/livelabs/making_requests.py).
 
-    > Note that you should run this code (`making_requests.py`) in your local machine, as we need to make HTTP requests through **localhost**. This means that, in the computer where you're playing, you must have a Python environment configured and be able to run the abovementioned code.
-
+    > **Note**: you should run this code (`making_requests.py`) in your local machine, as we need to make HTTP requests through **localhost**. This means that, in the computer where you're playing, you must have a Python environment configured and be able to run the abovementioned code.<br>
     > If you'd rather just see an example of the data returned, [check the contents of this file](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json). You can observe the kind of information we can access from a player. Attached is a sample JSON returned by the game [in this file](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/aux_files/example_live_client.txt).
 
     ```json

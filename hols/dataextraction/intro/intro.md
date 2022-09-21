@@ -1,4 +1,4 @@
-# Introduction
+# Lab 1: Understand and Sign Up for League of Legends 
 
 Estimated Lab Time: 5-10 minutes
 
@@ -40,7 +40,7 @@ In this Hands-On Lab (HOL), we'll start with the assumption that users know abou
 2. After creating the account, we [access the development website](https://developer.riotgames.com/) to find our development API key. Note that by default, the development API key expires every 24 hours. So, if you're planning to generate a dataset for more than 24 hours at a time, in the end you'll start getting HTTP unauthorized errors. To fix this, just regenerate the API key and use the new one.
     ![get api key](images/lab1-apikey.png)
 
-> Note: if you run into issues while you're obtaining the API key / you're not able to login to [the developer portal](https://developer.riotgames.com):
+> **Note**: if you run into issues while you're obtaining the API key / you're not able to login to [the developer portal](https://developer.riotgames.com):
 
 ![error logging in](images/loginfailed.png)
 
@@ -59,4 +59,4 @@ You may now [proceed to the next lab](#next).
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Editor** - Erin Dawson, DevRel Communications Manager
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - July 21st, 2022
+* **Last Updated By/Date** - September 21st, 2022
