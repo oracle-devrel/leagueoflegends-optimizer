@@ -3,33 +3,28 @@
   "help": "livelabs-help-db_us@oracle.com",
   "tutorials": [
     {
-      "title": "Getting Started",
-      "description": "Prerequisites for LiveLabs (Oracle-owned tenancies). The title of the lab and the Contents Menu title (the title above) match for Prerequisite lab. This lab is always first.",
-      "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login-livelabs2.md"
-    },
-    {
       "title": "Introduction",
       "description": "Introduction",
       "filename": "../../nn/intro/intro.md"
     },
     {
-      "title": "Infrastructure",
+      "title": "Getting Started",
+      "description": "Prerequisites for LiveLabs (Oracle-owned tenancies). The title of the lab and the Contents Menu title (the title above) match for Prerequisite lab. This lab is always first.",
+      "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login.md"
+    },
+    {
+      "title": "Lab 1: Infrastructure",
       "description": "Infrastructure",
       "filename": "../../nn/infra/infra.md"
     },
     {
-      "title": "Connecting Data Points",
-      "description": "Connecting Data Points to ML",
-      "filename": "../../nn/connecting_data_points/connecting_data_points.md"
+      "title": "Lab 2: Understand Neural Networks",
+      "description": "Understand Neural Networks",
+      "filename": "../../nn/understand_nn/understand_nns.md"
     },
     {
-      "title": "Neural Network Fundamentals",
-      "description": "NN Fundamentals",
-      "filename": "../../nn/nn_fundamentals/nn_fundamentals.md"
-    },
-    {
-      "title": "Model Building with fastai",
-      "description": "Model Building",
+      "title": "Lab 3: Build a Neural Network with fastai",
+      "description": "Build a Neural Network with fastai",
       "filename": "../../nn/model_building/model_building.md"
     },
     {
