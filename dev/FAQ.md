@@ -2,11 +2,31 @@
 
 ## Lab 2, Task 3: Start Deployment
 
+The output of `./start.sh` is not the expected and instead it says:
+```
+│ Error: 400-LimitExceeded, Nat gateway limit per VCN reached
+│ Suggestion: Request a service limit increase for this resource Core Nat Gateway
+```
+
+### Solution:
+
+You might have other VCNs created on your tenancy and you have reached the limit.
+
+Delete any unused VCN to make some capacity for the VCN we create on this workshop.
+
+Then, run again the start script:
+```
+./start.sh
+```
+
+---
+
+## Lab 2, Task 3: Start Deployment
+
 The output of `./start.sh` is not the expected and in red says:
 ```
-oci_datascience_notebook_session.lol_notebook_session: Creation completed after 4m06s [id=ocid1.datasciencenotebooksession....]
-
-
+│ Error: 500-NotAuthorizedOrNotFound, Authorization failed or requested resource not found
+│ Suggestion: Neither the resource has been deleted or service Identity Policy need policy to access this resource.
 ```
 
 ### Solution:
@@ -15,9 +35,6 @@ By default, we create an IAM policy. The requirements of the workshop is to be a
 
 ```
 allow service datascience to use virtual-network-family in compartment id [YOUR_COMPARTMENT_OCID]
-╷
-│ Error: 500-NotAuthorizedOrNotFound, Authorization failed or requested resource not found
-│ Suggestion: Neither the resource has been deleted or service Identity Policy need policy to access this resource.
 ```
 
 Then, you can indicate to not create the policy. Put a new variable on the `terraform.tfvars`. Just like this:
