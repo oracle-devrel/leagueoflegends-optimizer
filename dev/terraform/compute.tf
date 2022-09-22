@@ -10,7 +10,7 @@ data "oci_core_shapes" "core_shapes" {
 locals {
   shape_names = [
     for each in data.oci_core_shapes.core_shapes.shapes :
-    each.name if each.ocpus == 1 && each.memory_in_gbs <= 16 && each.is_flexible == true
+    each.name if each.ocpus <= var.instance_ocpus && each.memory_in_gbs <= var.instance_shape_config_memory_in_gbs && each.is_flexible == true
   ]
 }
 
@@ -27,7 +27,7 @@ variable "instance_ocpus" {
 }
 
 variable "instance_shape_config_memory_in_gbs" {
-  default = 8
+  default = 16
 }
 
 data "oci_core_images" "images" {
