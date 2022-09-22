@@ -1,5 +1,29 @@
 # FAQ Automation
 
+## General questions
+
+- What is your Region?
+- What is the output of the `.start.sh` command?
+
+## Lab 2, Task 3: Start Deployment
+
+The output of `./start.sh` is not the expected and instead it says:
+```
+│ Error: 403-NotAllowed, Please go to your home region FRA to execute CREATE, UPDATE and DELETE operations.
+│ Suggestion: Please retry or contact support for help with service: Identity Policy
+```
+
+### Solution:
+
+Make sure you are in the home region to run the workshop. If it is a trial, you will be on the home region.
+
+Move to your home region and try again.
+```
+./start.sh
+```
+
+---
+
 ## Lab 2, Task 3: Start Deployment
 
 The output of `./start.sh` is not the expected and instead it says:
@@ -13,6 +37,38 @@ The output of `./start.sh` is not the expected and instead it says:
 You might have other VCNs created on your tenancy and you have reached the limit.
 
 Delete any unused VCN to make some capacity for the VCN we create on this workshop.
+
+Then, run again the start script:
+```
+./start.sh
+```
+
+---
+
+## Lab 2, Task 3: Start Deployment
+
+The output of `./start.sh` is not the expected and instead it says:
+```
+│ Error: Iteration over null value
+│ 
+│   on compute.tf line 12, in locals:
+│   11:   shape_names = [
+│   12:     for each in data.oci_core_shapes.core_shapes.shapes :
+│   13:     each.name if each.ocpus == 1 && each.memory_in_gbs <= 16 && each.is_flexible == true
+│   14:   ]
+│     ├────────────────
+│     │ data.oci_core_shapes.core_shapes.shapes is null
+```
+
+### Solution:
+
+You might have other VCNs created on your tenancy and you have reached the limit.
+
+Then, you can request different amounts of OCPU and memory. Try with different values. Put a new variable on the `terraform.tfvars`. Just like this:
+```
+instance_ocpus                       = 4
+instance_shape_config_memory_in_gbs  = 32
+```
 
 Then, run again the start script:
 ```
