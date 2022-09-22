@@ -12,7 +12,7 @@ We will use Cloud Shell to execute _`start.sh`_ script that will call Terraform 
 
 Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get the resources created.
 
-> Note: in the figure above, there's also a compute instance and autonomous database deployed automatically by Terraform. These resources are completely optional and you can run the workshop without them. However, if you're interested in integrating everything that we'll talk about in the workshop with **your own datasets**, this is the way to do it. You can check out more information on this [in this workshop](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/dataextraction/index.html).
+> **Note**: in the figure above, there's also a compute instance and autonomous database deployed automatically by Terraform. These resources are completely optional and you can run the workshop without them. However, if you're interested in integrating everything that we'll talk about in the workshop with **your own datasets**, this is the way to do it. You can check out more information on this [in this workshop](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/dataextraction/index.html).
 
 Do you want to learn more? Feel free to check [Terraform's code in this repository](../../../dev/terraform/) after the workshop.
 
@@ -185,9 +185,7 @@ We should now see the repository / files in our file explorer:
 
 ![](./images/file_explorer_2.png)
 
-We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and open each one of the notebooks. These two notebooks are the ones we will review during this workshop:
-- [_`nn_offline_model.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_offline_model.ipynb)
-- [_`nn_live_model.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb)
+We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`neural_networks_lol.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb) is the one we will review during this workshop.
 
 Let's open both of them and get to work. 
 

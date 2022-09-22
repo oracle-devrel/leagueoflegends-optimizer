@@ -84,4 +84,4 @@ If you have extra time after this workshop and want to get to know more about Le
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - 
+* **Last Updated By/Date** - September 22nd, 2022
