@@ -24,7 +24,7 @@ Team composition depends on five positions. Each lane lends itself to certain ki
 
 ![Bought Items](images/bought_items.jpg)
 
-This image represents the final functionality of the _live client model_, where we're able to use our already-trained ML model to make real-time predictions about our in-game performances. 
+This image represents the final functionality of one of the two models we'll explore in this workshop, where we use our already-trained ML model to make __real-time__ predictions about our in-game performances. 
 
 Here's a short 3-minute introductory video into League of Legends:
 

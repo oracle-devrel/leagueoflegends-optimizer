@@ -113,29 +113,29 @@ Having just created our OCI Data Science environment, we need to install the nec
 
 - The easiest way is to access into the notebook **through the URL** that we previously copied from Terraform's output.
 
-    ![Start SH output](images/start-sh-ssh.png)
+    ![terraform output](images/start-sh-ssh.png)
 
     If you have done it this way, make sure to **skip through to the next task**.
 
 - (Optionally) We can also access to the notebook via the OCI console, on the top left hamburger menu:
 
-    ![](./images/select_data_science.png)
+    ![select data science](./images/select_data_science.png)
 
     > You may find the Data Science section by also searching in the top left bar, or in the Analytics & AI tab, if it doesn't appear in "Recently visited" for you:
 
-    ![](images/analyticstab.png)
+    ![analytics tab within OCI](images/analyticstab.png)
 
     Now, we have access to a [list of our Data Science projects launched within OCI.](https://cloud.oracle.com/data-science/projects) We access our project, and inside our project we'll find the notebook.
 
     > The name of the notebook may be different than shown here in the screenshot.
 
-    ![](./images/open-notebook.png)
+    ![open notebook - 1](./images/open-notebook.png)
 
-    ![](./images/open-notebook2.png)
+    ![open notebook - 2](./images/open-notebook2.png)
 
     You should now see the Jupyter environment
 
-    ![](./images/notebook.png)
+    ![jupyter environment](./images/notebook.png)
 
 
 
@@ -144,7 +144,7 @@ Having just created our OCI Data Science environment, we need to install the nec
 We now need to load our notebook into our environment.
 1. Opening a **Terminal** inside the _'Other'_ section the console and re-downloading the repository again:
 
-    ![](./images/open_terminal.png)
+    ![open terminal](./images/open_terminal.png)
 
 2. Then, we re-clone the repository and install required Python dependencies:
 
@@ -162,7 +162,7 @@ After these commands, all requirements will be fulfilled and we're ready to exec
 
 We now need to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
 
-![](./images/open_terminal.png)
+![open terminal](./images/open_terminal.png)
 
 Then, we execute the following command, which will download all necessary datasets:
 
@@ -174,16 +174,16 @@ wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/wPITlcIlqhE3VuDjIxeX
 </copy>
 ```
 
-![](./images/unzip_result.png)
+![unzip result](./images/unzip_result.png)
 
 
 ## Task 6: Accessing our Notebooks
 
 We should now see the repository / files in our file explorer:
 
-![](./images/file_explorer.png)
+![file explorer - 1](./images/file_explorer.png)
 
-![](./images/file_explorer_2.png)
+![file explorer - 2](./images/file_explorer_2.png)
 
 We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`neural_networks_lol.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb) is the one we will review during this workshop.
 

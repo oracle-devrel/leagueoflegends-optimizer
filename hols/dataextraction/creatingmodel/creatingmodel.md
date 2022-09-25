@@ -52,6 +52,8 @@ Estimated Lab Time: 45 minutes
 
     ![unzipping](./images/unzip_result.png)
 
+    After this, we will open the notebook called _`hol1_offline_analysis.ipynb`_ located in _`leagueoflegends-optimizer/notebooks`_ by double clicking it.
+
 3. We run the first code cell in [the notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb) to install the dependencies. In order to run the code cell, you can press the following button:
 
     ![first code cell run](./images/firstcell.png)
