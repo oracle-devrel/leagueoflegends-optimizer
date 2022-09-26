@@ -112,7 +112,9 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
     > You have to change _`COMPARTMENT_NAME`_ for the compartment name you are looking for and run the command:
 
     > ```
-    > <copy>oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME</copy>
+    ><copy>
+    oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME
+    </copy>
     > ```
 
 10. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
