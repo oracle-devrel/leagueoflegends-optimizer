@@ -32,7 +32,7 @@ banner "Terraform Apply"
 terraform apply -auto-approve
 checkpoint
 
-sleep 2
+sleep 30
 
 banner "Ansible Provisioning"
 export ANSIBLE_HOST_KEY_CHECKING=False
