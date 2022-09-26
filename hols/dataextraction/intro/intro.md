@@ -35,6 +35,9 @@ In this Hands-On Lab (HOL), we'll start with the assumption that users know abou
 
 ## Task 1: Get Started
 
+This instructional video explains what needs to be done to get an API key necessary to what we will explain in the next lab. 
+[Watch the video](youtube:HUJgYfrHhYI)
+
 1. First, you'll need to obtain a Riot Games API key [from the official Riot Games Developer website.](https://developer.riotgames.com/) For that, you need to create a League of Legends account (if you don't have one already) and request a development API key. Note that if you're planning to develop a League of Legends project out of this repository, you can also apply for a production API key which has a longer expiration date, as well as more requests per minute.
     ![login to your league account](images/lab1-login.png)
 2. After creating the account, we [access the development website](https://developer.riotgames.com/) to find our development API key. Note that by default, the development API key expires every 24 hours. So, if you're planning to generate a dataset for more than 24 hours at a time, in the end you'll start getting HTTP unauthorized errors. To fix this, just regenerate the API key and use the new one.
@@ -44,11 +47,13 @@ In this Hands-On Lab (HOL), we'll start with the assumption that users know abou
 
 ![error logging in](images/loginfailed.png)
 
-Make sure to sign out of your newly created account, at the top right corner of your screen
+Make sure to sign out of your newly created account, at the top right corner of your screen:
 
 ![log out](images/logout.jpg)
 
 And login back again.
+
+> **Note**: if you still get the error message, waiting for email confirmation, wait a couple of minutes and try again.
 
 
 You may now [proceed to the next lab](#next).
@@ -59,4 +64,4 @@ You may now [proceed to the next lab](#next).
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Editor** - Erin Dawson, DevRel Communications Manager
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - September 21st, 2022
+* **Last Updated By/Date** - September 26th, 2022
