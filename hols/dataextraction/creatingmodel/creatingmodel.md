@@ -40,7 +40,7 @@ Estimated Lab Time: 45 minutes
 
     ![new terminal](./images/new_terminal.png)
 
-    Then, we execute the following command, which will download all necessary datasets and notebooks:
+    Then, we execute the following command, which will download all necessary datasets:
 
     ```
     <copy>
@@ -51,6 +51,14 @@ Estimated Lab Time: 45 minutes
     This process should take about a minute.
 
     ![unzipping](./images/unzip_result.png)
+
+    Now, we'll download the repository:
+
+    ```
+    <copy>
+    git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
+    </copy>
+    ```
 
     After this, we will open the notebook called _`hol1_offline_analysis.ipynb`_ located in _`leagueoflegends-optimizer/notebooks`_ by double clicking it.
 
@@ -181,8 +189,11 @@ In order for an ML model to accept "words", or as we call them, "Strings" or cat
 Therefore, we'll always need to modify our String columns into numerical columns in one way or the other. There are mainly **two** ways to do this:
 
 - Label encoding: each distinct String / word will be represented by a distinct number.
+
     > So, imagine we have 5 different Strings, we'll end up with an encoded column with values in the range of [0, 4].
+
 - One-Hot encoding: this technique creates additional features / columns, based on the number of unique values in the column we're trying to convert. In computer terms, it performs a "binary representation" of any String.
+
     > Therefore, for the previous example where we have 5 different Strings, we'd end up with 3 additional columns (2^2=4 (not enough), 2^3=8 (enough)), and every String would be represented in its binary form. E.g. String 1 would be 000 (0 in decimal), the last String would be 101 (4 in decimal).
 
 One-hot encoding is typically more complex and requires some knowledge about binary calculus, if you want to fully understand it. It's much easier to use **label encoding**. 
