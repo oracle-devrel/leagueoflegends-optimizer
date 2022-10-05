@@ -177,7 +177,7 @@ wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/wPITlcIlqhE3VuDjIxeX
 ![unzip result](./images/unzip_result.png)
 
 
-## Task 6: Accessing our Notebooks
+## Task 7: Accessing our Notebooks
 
 We should now see the repository / files in our file explorer:
 
