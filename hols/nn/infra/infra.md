@@ -184,12 +184,14 @@ We now need to load our notebook into our environment.
     git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
     </copy>
     ```
+
 3. Install the conda environment
     ```
     <copy>
     conda install -y python=3.8
     </copy>
     ```
+    
 4. Install the dependencies
     ```
     <copy>
