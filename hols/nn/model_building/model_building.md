@@ -311,4 +311,4 @@ If you’re curious about the goings-on of Oracle Developers in their natural ha
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - October 4th, 2022
+* **Last Updated By/Date** - October 6th, 2022

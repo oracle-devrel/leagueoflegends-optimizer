@@ -237,4 +237,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin - Product Strategy Director
-* **Last Updated By/Date** - September 19th, 2022
+* **Last Updated By/Date** - October 6th, 2022
