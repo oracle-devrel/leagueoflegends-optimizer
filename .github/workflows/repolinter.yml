@@ -1,7 +1,6 @@
 name: Repolinter
 on:
   pull_request_target:
-  
 jobs:
   run_repolinter:
     name: Run Repolinter on pull request
@@ -25,7 +24,7 @@ jobs:
           echo $(cat repolinter_results.json)
           exit 0
       - name: Analyze the Repolinter results
-        uses: oracle-devrel/action-repolinter-audit@v0.1-alpha1
+        uses: oracle-devrel/action-repolinter-audit@v0.1-alpha2
         id: analysis
         with:
           json_results_file: '/github/workspace/repolinter_results.json'
@@ -33,6 +32,19 @@ jobs:
         run: |
           echo "Passed: ${{ steps.analysis.outputs.passed }}"
           echo "Errored: ${{ steps.analysis.outputs.errored }}"
+      - name: Comment if analysis finds missing disclaimer
+        if: steps.analysis.outputs.disclaimer_found == 'false'
+        uses: mshick/add-pr-comment@v1
+        with:
+          message: |
+            :no_entry: **FAILURE: Missing Disclaimer**
+            The standard Oracle Disclaimer seems to be missing from the readme.  Please add it:
+
+            ORACLE AND ITS AFFILIATES DO NOT PROVIDE ANY WARRANTY WHATSOEVER, EXPRESS OR IMPLIED, FOR ANY SOFTWARE, MATERIAL OR CONTENT OF ANY KIND CONTAINED OR PRODUCED WITHIN THIS REPOSITORY, AND IN PARTICULAR SPECIFICALLY DISCLAIM ANY AND ALL IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.  FURTHERMORE, ORACLE AND ITS AFFILIATES DO NOT REPRESENT THAT ANY CUSTOMARY SECURITY REVIEW HAS BEEN PERFORMED WITH RESPECT TO ANY SOFTWARE, MATERIAL OR CONTENT CONTAINED OR PRODUCED WITHIN THIS REPOSITORY. IN ADDITION, AND WITHOUT LIMITING THE FOREGOING, THIRD PARTIES MAY HAVE POSTED SOFTWARE, MATERIAL OR CONTENT TO THIS REPOSITORY WITHOUT ANY REVIEW. USE AT YOUR OWN RISK.
+
+            Details:
+            ${{ steps.analysis.outputs.disclaimer_details }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Comment if analysis finds missing readme
         if: steps.analysis.outputs.readme_file_found == 'false'
         uses: mshick/add-pr-comment@v1
@@ -72,4 +84,6 @@ jobs:
       - name: Halt pipeline if LICENSE is missing
         if: steps.analysis.outputs.license_file_found == 'false'
         run: exit 1
-      
+      - name: Halt pipeline if disclaimer is missing
+        if: steps.analysis.outputs.disclaimer_found == 'false'
+        run: exit 1
