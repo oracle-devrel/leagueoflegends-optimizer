@@ -12,6 +12,18 @@
         }
       }
     },
+    "disclaimer-present" : {
+      "level": "error",
+      "rule": {
+        "type": "file-contents",
+        "options": {
+          "globsAll": ["README*"],
+          "noCase": true,
+          "fail-on-non-existent": true,
+          "content": "ORACLE AND ITS AFFILIATES DO NOT PROVIDE ANY WARRANTY WHATSOEVER, EXPRESS OR IMPLIED, FOR ANY SOFTWARE, MATERIAL OR CONTENT OF ANY KIND"
+        }
+      }
+    },
     "license-file-exists" : {
       "level": "error",
       "rule": {
