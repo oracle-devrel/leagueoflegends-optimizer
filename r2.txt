@@ -1,0 +1,12 @@
+pip
+ujson
+pandas
+setuptools
+wheel
+pandas_profiling
+autogluon
+torch
+torchvision
+torchtext
+torchaudio
+ipywidgets

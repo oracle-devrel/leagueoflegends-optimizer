@@ -169,7 +169,6 @@ Having just created our OCI Data Science environment, we need to install the nec
     ![jupyter environment](./images/notebook.png)
 
 
-
 ## Task 5: Setting up Data Science Environment
 
 We now need to load our notebook into our environment.
@@ -185,21 +184,45 @@ We now need to load our notebook into our environment.
     </copy>
     ```
 
+
+
 3. Install the conda environment
+
+    ```
+    <copy>odsc conda create -n myconda</copy>
+    ```
+
+    ![proceed](./images/proceed.png)
+
+4. Activate the newly-created conda environment:
+
+    ```
+    <copy>
+    conda activate /home/datascience/conda/mycondav1_0
+    </copy>
+    ```
+
+5. Install Python 3.8 within the conda environment:
+
     ```
     <copy>
     conda install -y python=3.8
     </copy>
     ```
-    
-4. Install the dependencies
+
+6. Install Python dependencies:
+
     ```
     <copy>
     pip install -r leagueoflegends-optimizer/requirements_nn.txt
     </copy>
     ```
 
+> Note: make sure to accept prompts by typing 'y' as in 'Yes' when asked.
+
 After these commands, all requirements will be fulfilled and we're ready to execute our notebooks with our newly created conda environment.
+
+
 
 ## Task 6: Downloading DataSets
 

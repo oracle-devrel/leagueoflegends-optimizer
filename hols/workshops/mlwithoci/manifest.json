@@ -1,6 +1,6 @@
 {
   "workshoptitle": "League of Legends Machine Learning with OCI - Model Building with scikit-learn and AutoGluon",
-  "help": "livelabs-help-db_us@oracle.com",
+  "help": "ignacio.m.martinez@oracle.com",
   "tutorials": [
     {
       "title": "Getting Started",
@@ -8,29 +8,34 @@
       "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login.md"
     },
     {
-      "title": "Introduction",
-      "description": "The Introduction is always second. The title and contents menu title match for the Introduction.",
+      "title": "Lab 1: Introduction",
+      "description": "Introduction",
       "filename": "../../mlwithoci/intro/intro.md"
     },
     {
-      "title": "Data Sets",
+      "title": "Lab 2: Infrastructure",
       "description": "In this section, we're going to observe the different types of datasets available to us and how to get access to them.",
-      "filename": "../../mlwithoci/intro/datasets.md"
+      "filename": "../../mlwithoci/infra/infra.md"
     },
     {
-      "title": "Model Improvement with AutoGluon",
+      "title": "Lab 3: Datasets",
+      "description": "In this section, we're going to observe the different types of datasets available to us and how to get access to them.",
+      "filename": "../../mlwithoci/datasets/datasets.md"
+    },    
+    {
+      "title": "Lab 4: Model Improvement with AutoGluon",
       "description": "Improving Baseline Model with AutoGluon.",
       "filename": "../../mlwithoci/improvingmodel/improvingmodel.md"
     },
     {
-    "title": "Model Integration",
+    "title": "Lab 5: Model Integration",
     "description": "In this section, we'll create a simple scikit-learn classifier. We'll go into detail on how to achieve an ML model from scratchch for the Introduction.",
     "filename": "../../mlwithoci/integration/integration.md"
     },
     {
       "title": "Need Help?",
       "description": "Solutions to Common Problems and Directions for Receiving Live Help",
-      "filename": "https://oracle-devrel.github.io/redbull-pit-strategy/hols/workshops/pitstrategy/index.html"
+      "filename": "https://oracle-livelabs.github.io/common/labs/need-help/need-help-freetier.md"
     }
   ]
 }
