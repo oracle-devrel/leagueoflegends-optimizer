@@ -16,19 +16,14 @@
       "title": "Lab 2: Infrastructure",
       "description": "In this section, we're going to observe the different types of datasets available to us and how to get access to them.",
       "filename": "../../mlwithoci/infra/infra.md"
-    },
+    }, 
     {
-      "title": "Lab 3: Datasets",
-      "description": "In this section, we're going to observe the different types of datasets available to us and how to get access to them.",
-      "filename": "../../mlwithoci/datasets/datasets.md"
-    },    
-    {
-      "title": "Lab 4: Model Improvement with AutoGluon",
+      "title": "Lab 3: Model Improvement with AutoGluon",
       "description": "Improving Baseline Model with AutoGluon.",
       "filename": "../../mlwithoci/improvingmodel/improvingmodel.md"
     },
     {
-    "title": "Lab 5: Model Integration",
+    "title": "Lab 4: Model Integration",
     "description": "In this section, we'll create a simple scikit-learn classifier. We'll go into detail on how to achieve an ML model from scratchch for the Introduction.",
     "filename": "../../mlwithoci/integration/integration.md"
     },

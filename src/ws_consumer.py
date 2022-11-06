@@ -5,7 +5,7 @@ import asyncio
 from websockets import connect
 
 import sys, os
-from autogluon.tabular import TabularPredictor, TabularDataset
+from autogluon.tabular import TabularPredictor
 import argparse
 import pandas as pd
 import json
@@ -49,7 +49,7 @@ def process_and_predict(input):
     team_color = str()
     try:
         json_obj['allPlayers']
-    except KeyError:
+    except (KeyError, TypeError):
         return
     for x in json_obj['allPlayers']:
         if x['team'] == 'ORDER':

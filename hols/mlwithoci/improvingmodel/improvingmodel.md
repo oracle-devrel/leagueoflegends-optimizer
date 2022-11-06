@@ -1,6 +1,6 @@
-# Improving the model
+# Lab 3: Model Improvement with AutoGluon
 
-In the past workshop, we created [a very simple model](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/creatingmodel/creatingmodel.md) with an accuracy of 51%. There are several ways in which we could improve the accuracy of the model: by adding more variables to our model, changing the approach to the model, hyperparametrization... However, having such a low accuracy from the start makes hyperparametrization not an option at this point, it's usually used when the baseline accuracy of a model is usually higher (generally speaking).
+In the past workshop, we created [a very simple model](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/creatingmodel/creatingmodel.md) with an accuracy of 51%. There are several ways in which we could improve the accuracy of the model: by adding more variables to our model, changing the approach to the model, hyper-parametrization... However, having such a low accuracy from the start makes hyper-parametrization not an option at this point, it's usually used when the baseline accuracy of a model is usually higher (generally speaking).
 
 
 We're going to create a model that considers all variables in our **matchup** data structure, and reduce the complexity of our ML code by using AutoML open-source tools for data exploration and model training.
@@ -21,7 +21,7 @@ report.to_notebook_iframe()
 
 This simple code generates a dynamic report that shows the data types, missing values, and other information about the data. We explore the Pearson's r correlation coefficient between the variables:
 
-![Visualization of Pearson's r data](https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/blob/main/images/a3-pearson.PNG?raw=true)
+![Visualization of Pearson's r data](../../../images/a3_pearson.PNG)
 
 
 ```python
@@ -29,12 +29,12 @@ This simple code generates a dynamic report that shows the data types, missing v
 df.head(2)
 ```
 
-| P_MATCH_ID | 	GOLDEARNED | 	TOTALMINIONSKILLED | 	WIN | 	KILLS | 	ASSISTS | 	DEATHS | 	CHAMPION | 	VISIONSCORE | 	PUUID | 	TOTALDAMAGEDEALTTOCHAMPIONS | 	SUMMONERNAME | 	GAMEVERSION |
+| _`P_MATCH_ID`_ | 	_GOLDEARNED_ | 	_TOTALMINIONSKILLED_ | 	_WIN_ | 	_KILLS_ | 	_ASSISTS_ | 	_DEATHS_ | 	_CHAMPION_ | 	_VISIONSCORE_ | 	_PUUID_ | 	_TOTALDAMAGEDEALTTOCHAMPIONS_ | 	_SUMMONERNAME_ | 	_GAMEVERSION_ |
 | :--------: | :----------: | :---------------------: | :----: | :-----: | :------: | :------: | :--------: | :---------: | :--------: | :--------: | :--------: | :--------: |
-| BR1_2309470512_jungle | 7670 | 37 | False | 4 | 2 | 7 | Graves | 23 | b1ZVlTG630NWh8Hgc7H-_-SErq3E3OkV50XSBuz_uzkIuA... |11215 | tired blessed | 	11.14.385.9967 |
-| EUN1_2809958230_top | 11108 | 202 | False | 1 | 9 | 8 | Gwen | 28 | 19ii6j4OOWmkUaw_yAXhMOhcgUvZaK8M1yVT0I3HwBYQka... | 17617 | ozzyDD 	| 11.8.370.4668 |
+| `BR1_2309470512_jungle` | 7670 | 37 | False | 4 | 2 | 7 | Graves | 23 | `b1ZVlTG630NWh8Hgc7H-_-SErq3E3OkV50XSBuz_uzkIuA...` |11215 | tired blessed | 	11.14.385.9967 |
+| `EUN1_2809958230_top` | 11108 | 202 | False | 1 | 9 | 8 | Gwen | 28 | `19ii6j4OOWmkUaw_yAXhMOhcgUvZaK8M1yVT0I3HwBYQka...` | 17617 | ozzyDD 	| 11.8.370.4668 |
 
-## Choosing the right Variables
+## Choosing the Right Variables
 
 Hopefully, by using more variables, we'll give the underlying ML models more choices to predict from. However, not all variables are automatically interesting just by being in a dataset. We have to make this distinction. 
 
@@ -42,7 +42,7 @@ By exploring the data with `pandas_profiling`, we can easily observe which varia
 
 ![Observing Alerts](./images/alerts.jpg)
 
-In this case, we have the columns  `summonername`, `p_match_id` and `puuid` with more than 400.000 values each, ranging up to 1.2 million distinct values). Considering that our dataset consists of 2.4 million rows, having a high cardinality probably means that the information stored in the column has many distinct values, and will not add value to our model.
+In this case, we have the columns `summonername`, `p_match_id` and `puuid` with more than 400.000 values each, ranging up to 1.2 million distinct values). Considering that our dataset consists of 2.4 million rows, having a high cardinality probably means that the information stored in the column has many distinct values, and will not add value to our model.
 > We know for a fact that these variables represent identifiers (either from a match or a player), so we can safely remove them. If we didn't remove them, AutoML tools would perform an encoding for the variables (probably one-hot encoding or label encoding) and conclude in the end that the variables were uselss.
 
 ```python
@@ -57,7 +57,7 @@ df = df.drop(columns=['summonername', 'p_match_id',
 
 ## Creating + Fitting AutoML Model
 
-We proceed to train our model with all variables, taking into consideration that most of the variables in our model are highly correlated. This is especially true for the amount of gold earned with respect to the number of kills and minions killed (which makes sense, as these are two of the actions that give out the most gold in-game). We also see that the vision score highly correlates with the amount of assists a player makes in a game.
+We proceed to train our model with all variables, taking into consideration that most of the variables in our model are highly correlated. This is especially true for the amount of gold earned with respect to the number of kills and minions killed (which makes sense, as these are two of the actions that give out the most gold in-game). We also see that the vision score highly correlates with the number of assists a player makes in a game.
 
 ```python
 from autogluon.tabular import TabularPredictor, TabularDataset

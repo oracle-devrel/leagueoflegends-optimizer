@@ -7,7 +7,6 @@ import datetime
 import argparse
 import json 
 import websockets
-from websockets import connect
 import asyncio
 from rich import print
 
@@ -17,6 +16,12 @@ cli_parser.add_argument('-i', '--ip', type=str, help='IP address to make request
 args = cli_parser.parse_args()
 
 def build_object(content):
+    #print(type(content))
+    try:
+        assert type(content) == type(str())
+    except AssertionError:
+        #print('{} | Did not receive a valid JSON object')
+        return '{}'
     try:
         response = requests.get('https://127.0.0.1:2999/liveclientdata/allgamedata', verify=False)
     except requests.exceptions.ConnectionError:
@@ -36,6 +41,7 @@ def build_object(content):
     #content = content.replace("'", "\"")
     print('Content: {}'.format(content))
     return content
+
 
 
 async def handler(websocket):
@@ -60,4 +66,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-

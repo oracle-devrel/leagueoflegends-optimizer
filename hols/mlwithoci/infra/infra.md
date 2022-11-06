@@ -1,16 +1,16 @@
-# Infrastructure
+# Lab 2: Infrastructure
 
 ## Introduction
 
-In this lab we will build the infrastructure that we will use to run the rest of the workshop.
+In this lab, we will build the infrastructure that we will use to run the rest of the workshop.
 
 The main element that we will be creating is a **Data Science** session and notebook, to experiment with the newly-generated data using notebooks.
 
 ![Infrastructure](images/lol_infra.png)
 
-We will use Cloud Shell to execute _`start.sh`_ script that will call Terraform to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform, don't worry, there is no need. Also, there are no installation requirements: we will use Cloud Shell (which has Terraform installed by default) to deploy our infrastructure. 
+We will use Cloud Shell to execute _`start.sh`_ script that will call Terraform to deploy all the infrastructure required and set up the configuration. If you don't know about Terraform, don't worry, there is no need. Also, there are no installation requirements: we will use Cloud Shell (which has Terraform installed by default) to deploy our infrastructure. 
 
-Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get the resources created.
+Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform and make sure you get the resources created.
 
 > **Note**: in the figure above, there's also a compute instance and autonomous database deployed automatically by Terraform. These resources are completely optional and you can run the workshop without them. However, if you're interested in integrating everything that we'll talk about in the workshop with **your own datasets**, this is the way to do it. You can check out more information on this [in this workshop](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/dataextraction/index.html).
 
@@ -54,10 +54,10 @@ Estimated Lab Time: 15 minutes
 1. Click on **Code Editor**. Next to the Cloud Shell one.
     ![Cloud Code Editor](images/cloud-code-editor.png)
 
-2. On the **Code Editor**, inside the Explorer section on the left panel, expand your username and navigate onto _`dev/terraform`_. You should see the file **`terraform.tfvars`**. Click on it: 
+2. On the **Code Editor**, inside the Explorer section on the left panel, expand your username and navigate to _`dev/terraform`_. You should see the file **`terraform.tfvars`**. Click on it: 
     ![Go To File](images/code-editor-go-to-file.png)
 
-3. The file will open and you can copy values you will get from running commands on Cloud Shell and paste it on the Code Editor.
+3. The file will open and you can copy the values you will get from running commands on Cloud Shell and paste them into the Code Editor.
 
 4. Copy the output of the following command as the region:
 
@@ -91,8 +91,8 @@ Estimated Lab Time: 15 minutes
     > <copy>oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME</copy>
     > ```
 
-7. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
-    It will ask to enter the path, a passphrase and confirm again the passphrase; type _[ENTER]_ to continue all three times.
+7. Generate an SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
+    It will ask you to enter the path and a passphrase, and type _ENTER_ to continue all three times.
 
     ```
     <copy>ssh-keygen -t rsa</copy>
@@ -128,7 +128,7 @@ Estimated Lab Time: 15 minutes
 2. The script will run and it looks like this.
     ![Start SH beginning](images/start-sh-beginning.png)
 
-3. Terraform will create resources for you, and during the process it will look like this.
+3. Terraform will create resources for you, and during the process, it will look like this.
     ![Start SH terraform](images/start-sh-terraform.png)
 
 4. The final part of the script is to print the output of all the work done.
@@ -144,13 +144,13 @@ Estimated Lab Time: 15 minutes
 
 Having just created our OCI Data Science environment, we need to install the necessary Python dependencies to execute our code. For that, we'll access our environment.
 
-- The easiest way is to access into the notebook **through the URL** that we previously copied from Terraform's output.
+- The easiest way is to access the notebook **through the URL** that we previously copied from Terraform's output.
 
     ![terraform output](images/start-sh-ssh.png)
 
     If you have done it this way, make sure to **skip through to the next task**.
 
-- (Optionally) We can also access to the notebook via the OCI console, on the top left hamburger menu:
+- (Optionally) We can also access the notebook via the OCI console, on the top left hamburger menu:
 
     ![select data science](./images/select_data_science.png)
 
@@ -174,8 +174,8 @@ Having just created our OCI Data Science environment, we need to install the nec
 
 ## Task 5: Setting up Data Science Environment
 
-We now need to load our notebook into our environment.
-1. Opening a **Terminal** inside the _'Other'_ section the console and re-downloading the repository again:
+We now need to load our notebooks into our environment.
+1. Opening a **Terminal** inside the _`Other`_ section of the console and re-downloading the repository again:
 
     ![open terminal](./images/open_terminal.png)
 
@@ -228,11 +228,15 @@ After these commands, all requirements will be fulfilled and we're ready to exec
 
 ## Task 6: Downloading DataSets
 
-We now need to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
+We'll access datasets uploaded to OCI Object Storage. You don't need to download any datasets by yourself, everything will be automated.
+
+They are optionally also uploaded to [this Kaggle repository](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results). This repository contains several files, make sure you check all available datasets if you're interested and give a thumbs up if you find them useful.
+
+We're now going to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
 
 ![open terminal](./images/open_terminal.png)
 
-Then, we execute the following command, which will download all necessary datasets:
+Then, we execute the following command, which will download all datasets uploaded to Object Storage:
 
 
 ```
@@ -246,21 +250,20 @@ wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/gtH_kHRJXJUKRqJBlhMD
 
 ## Task 7: Accessing our Notebooks
 
-We should now see the repository / files in our file explorer:
+We should now see the repository/files in our file explorer:
 
 ![file explorer - 1](./images/file_explorer.png)
 
 ![file explorer - 2](./images/file_explorer_2.png)
 
-We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`neural_networks_lol.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb) is the one we will review during this workshop.
+We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`applied_automl.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb) is the one we will review during this workshop.
 
 Let's open both of them and get to work. 
 
-You may now [proceed to the next lab](#next).
+You may now [proceed to the next lab](#next)
 
-
-## Acknowledgements
+## Acknowledgments
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin - Product Strategy Director
-* **Last Updated By/Date** - November 2nd, 2022
+* **Last Updated By/Date** - November 4th, 2022
