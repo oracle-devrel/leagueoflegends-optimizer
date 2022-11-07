@@ -24,7 +24,7 @@
     },
     {
     "title": "Lab 4: Model Integration",
-    "description": "In this section, we'll create a simple scikit-learn classifier. We'll go into detail on how to achieve an ML model from scratchch for the Introduction.",
+    "description": "Model Integration with a Producer-Consumer Architecture",
     "filename": "../../mlwithoci/integration/integration.md"
     },
     {

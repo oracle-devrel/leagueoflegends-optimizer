@@ -108,6 +108,10 @@ And now, we can evaluate prediction performances by displaying a list of the bes
 
 > **Note**: apart from the usual accuracy (found in the _`score_test`_ column), we need to consider some other data found here. Whenever I'm thinking of reusing my models in the future, I take long consideration on trying to find a model that has a consistent metric that I like to call **prediction efficiency**, which measures the ratio between *accuracy* and *prediction time*. Meaning that, I want a good model with high accuracy, but I wouldn't want to wait 10 minutes for the next prediction; so I also look at the _`pred_time_test_` and _`pred_time_val`_ columns when deciding which of all these models I'm going to use. In this case, the best-performing model is also the most time-efficient one, so the decision wasn't hard.
 
+We extract the feature importances and see which variables are considered more important from our model's perspective, and which ones are more useless:
+
+![feature importance](./images/13_feature_importance.png)
+
 It's also convenient to look at the prediction probabilities returned for each class:
 
 ![prediction probabilities](./images/14_probas.png)
@@ -126,7 +130,6 @@ In this second part of the lab, we're going to focus on data that can be obtaine
 This dataset (_`live_client_dataset.csv`_) uses [this function](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/league.py#L487) to download previous professional matches' timelines, with all kinds of events, and extracts. The Riot Games API endpoint used is _`https://MATCHID.api.riotgames.com/lol/match/v5/matches/REGION/timeline`_.
 
 The process that we'll follow is very similar to the one that we followed in the first part of this lab: we'll reuse much of the code and adapt it to the new dataset.
-
 
 ### Using pandas_profiling
 
@@ -176,7 +179,6 @@ In this case, we have the columns _`BONUSARMORPENETRATIONPERCENT`_, _`BONUSMAGIC
 
 ![dropping unnecessary columns](./images/7_drop_columns_online.png)
 
-### TODO UP UNTIL THE END
 ### Split the Dataset
 
 Now, we perform a very simple 80-20% train-test split to our dataset. 80% will go for training and the remaining 20% will be used to validate the accuracy of the model.
@@ -197,17 +199,11 @@ We specify the new label/target variable name easily with AutoGluon, and then cr
 
 Let's make some predictions to test the model. First, we load our model:
 
-![inference](./images/11_inference.png)
-
-We predict test values:
-
-![test predictions](./images/12_test_predictions.png)
-
-> **Note**: result will be either True or False as we're training a classifier model.
+![inference](./images/11_inference_online.png)
 
 And now, we can evaluate prediction performances by displaying a list of the best-performing models, with descending accuracy:
 
-![leaderboard](./images/13_leaderboard.png)
+![leaderboard](./images/13_leaderboard_online.png)
 
 > **Note**: apart from the usual accuracy (found in the _`score_test`_ column), we need to consider some other data found here. Whenever I'm thinking of reusing my models in the future, I take long consideration on trying to find a model that has a consistent metric that I like to call **prediction efficiency**, which measures the ratio between *accuracy* and *prediction time*. Meaning that, I want a good model with high accuracy, but I wouldn't want to wait 10 minutes for the next prediction; so I also look at the _`pred_time_test_` and _`pred_time_val`_ columns when deciding which of all these models I'm going to use. In this case, the best-performing model is also the most time-efficient one, so the decision wasn't hard.
 
@@ -226,3 +222,9 @@ In short, the first model that we developed in the first workshop of this worksh
 After expanding the model further, we saw that our models can make predictions much more accurately (**80-85% accuracy** with a relatively low maximum fit time).
 
 While the model is pretty good, it doesn't have a practical side that we can use and take advantage of. This is what we're going to explore in the next workshop's lab.
+
+## Acknowledgments
+
+* **Author** - Nacho Martinez, Data Science Advocate @ DevRel
+* **Contributors** -  Victor Martin, Product Strategy Director
+* **Last Updated By/Date** - November 7th, 2022

@@ -16,16 +16,13 @@ cli_parser.add_argument('-i', '--ip', type=str, help='IP address to make request
 args = cli_parser.parse_args()
 
 def build_object(content):
-    #print(type(content))
     try:
         assert type(content) == type(str())
     except AssertionError:
-        #print('{} | Did not receive a valid JSON object')
         return '{}'
     try:
         response = requests.get('https://127.0.0.1:2999/liveclientdata/allgamedata', verify=False)
     except requests.exceptions.ConnectionError:
-        # Try again every 5 seconds
         print('{} | Currently not in game'.format(datetime.datetime.now()))
         return '{}'
     # We convert to JSON format
@@ -33,12 +30,7 @@ def build_object(content):
     print('{} {}'.format('x'*5, content))
     for x in content['allPlayers']:
         del x['items'] # delete items to avoid quotation marks
-    built_obj = {
-        'activePlayer': content['activePlayer'],
-        'allPlayers': content['allPlayers']
-    }
-    #content = json.dumps(content)
-    #content = content.replace("'", "\"")
+
     print('Content: {}'.format(content))
     return content
 

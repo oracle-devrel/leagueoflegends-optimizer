@@ -52,10 +52,12 @@ def process_and_predict(input):
     except (KeyError, TypeError):
         return
     for x in json_obj['allPlayers']:
-        if x['team'] == 'ORDER':
+        if x['team'] == 'ORDER' and x['isBot'] == False:
             team_color = 'blue'
-        else:
+            break
+        elif x['team'] == 'CHAOS' and x['isBot'] == False:
             team_color = 'red'
+            break
         
     # Timestamp given by the Live Client API is in thousands of a second from the starting point.
 
@@ -90,18 +92,6 @@ def process_and_predict(input):
     pred_probs = _PREDICTOR.predict_proba(sample_df)
 
     expected_result = prediction.get(0)
-    '''
-    if expected_result == 0:
-        print('Expected [bold red]LOSS[/bold red], {:.2f}% probable'.format(pred_probs.iloc[0][0] * 100))
-    else:
-        print('Expected [bold green]WIN[/bold green], {:.2f}% probable'.format(pred_probs.iloc[0][1] * 100))
-    '''
-    '''
-    print('Win/loss probability: {:.2f}%/{:.2f}%'.format(
-        pred_probs.iloc[0][1] * 100,
-        pred_probs.iloc[0][0] * 100
-    ))
-    '''
 
 
     if len(_LAST_REQUESTS) > 100:
@@ -122,9 +112,12 @@ def process_and_predict(input):
         '100_average_prediction': list_mode,
         '100_average_probability': '{:.2f}'.format(sum(_LAST_PROBABILITIES)/len(_LAST_PROBABILITIES))
     }
-    #print('{}: {} {}'.format(_LAST_PROBABILITIES, sum(_LAST_PROBABILITIES), len(_LAST_PROBABILITIES))) # debug
-    print('[bold {}]TEAM {}[/bold {}] [{}]: {}'.format(team_color, team_color.upper(), team_color, datetime.datetime.now(), info)) # 1 = WIN, 0 = LOSS
-    #print('[{}] [bold {}]TEAM {}[/bold {}]: {}'.format(datetime.datetime.now(), team_color, team_color.upper(), team_color, x['championName']))
+    print('[bold {}]TEAM {}[/bold {}] [{}]: {}'.format(team_color,
+        team_color.upper(),
+        team_color,
+        datetime.datetime.now(),
+        info)
+    ) # 1 = WIN, 0 = LOSS
 
     return expected_result, pred_probs.iloc[0][1], pred_probs.iloc[0][0] # expected_result(1=win, 0=loss), win %, loss %
 
