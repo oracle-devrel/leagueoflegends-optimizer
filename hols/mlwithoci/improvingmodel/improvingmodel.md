@@ -73,7 +73,6 @@ Now, we perform a very simple 80-20% train-test split to our dataset. 80% will g
 
 ![train test splitting](./images/8_train_test.png)
 
-
 ### Creating + Fitting AutoML Model
 
 We proceed to train our model with all variables but the ones that we've discarded in the previous step, taking into consideration that most of the variables in our model are highly correlated. This is especially true for the amount of gold earned concerning the number of kills and minions killed (which makes sense, as these are two of the actions that give out the most gold in-game). We also see that the vision score highly correlates with the number of assists a player makes in a game.
@@ -177,6 +176,7 @@ In this case, we have the columns _`BONUSARMORPENETRATIONPERCENT`_, _`BONUSMAGIC
 
 ![dropping unnecessary columns](./images/7_drop_columns_online.png)
 
+### TODO UP UNTIL THE END
 ### Split the Dataset
 
 Now, we perform a very simple 80-20% train-test split to our dataset. 80% will go for training and the remaining 20% will be used to validate the accuracy of the model.
@@ -219,44 +219,10 @@ It's also convenient to look at the prediction probabilities returned for each c
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## What Now?
 
 In short, the first model that we developed in the first workshop of this workshop series, didn't consider enough variables. The results of the first ML model were no better than using simple statistics and heavily relied on additional statistics support to make a bit more sense.
 
-After expanding the model further, we saw that the model could make predictions much more accurately (about 81% accuracy with a 60 second ceiling fit time).
+After expanding the model further, we saw that our models can make predictions much more accurately (**80-85% accuracy** with a relatively low maximum fit time).
 
 While the model is pretty good, it doesn't have a practical side that we can use and take advantage of. This is what we're going to explore in the next workshop's lab.
