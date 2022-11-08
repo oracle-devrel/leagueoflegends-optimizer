@@ -8,9 +8,9 @@ Downloading data from professional games, we built the dataset contained within 
     
 For each match, we have 5 matchups (5 players play against each other in different roles and different places on the map), just like this one:
     
-![example offline data](https://github.com/oracle-devrel/leagueoflegends-optimizer/raw/livelabs/hols/nn/model_building/images/matchups.png)
+![example offline data](./images/matchups.png)
 
-## Offline DataSet Analysis
+## Task 1: Offline DataSet Analysis
 
 ### Using pandas_profiling
 
@@ -123,7 +123,7 @@ As we can see, including more variables in the model greatly improved the accura
 
 Also, we don't care how the models are trained on the inside as long as they make good predictions, and the corresponding metrics like *precision, recall, f1-score, and residual analysis_... are all in order. Of course, it's important to know the basics of ML to see how data is structured, but the most important lesson to take away is that the hardest part about data science and data engineering is not coding the ML model, but **understanding the data and the problem**, and **structuring** the data accordingly to satisfy our needs.
 
-## Online DataSet Analysis
+## Task 2: Online DataSet Analysis
 
 In this second part of the lab, we're going to focus on data that can be obtained from League of Legends **in real-time**. Our data structure will be different, but it will help us create a "live companion" integration to help us while we're playing the game.
 
@@ -215,7 +215,7 @@ It's also convenient to look at the prediction probabilities returned for each c
 
 
 
-## What Now?
+## Task 3: What Now?
 
 In short, the first model that we developed in the first workshop of this workshop series, didn't consider enough variables. The results of the first ML model were no better than using simple statistics and heavily relied on additional statistics support to make a bit more sense.
 
@@ -227,4 +227,4 @@ While the model is pretty good, it doesn't have a practical side that we can use
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - November 7th, 2022
+* **Last Updated By/Date** - November 8th, 2022

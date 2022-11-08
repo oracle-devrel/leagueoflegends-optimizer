@@ -22,10 +22,10 @@ The result of this chapter can be seen in this visualization:
 
 Estimated Lab Time: 30 minutes
 
-## Producer
+## Task 1: Producer
 
 The producer will:
-- Create a web socket in port 8001 that can be listened to by the consumer
+- Create a web socket in port 8001, which can be listened to by the consumer
 - Make requests to the League Live Client API in an infinite loop
 - Send the requests' responses through the web socket so that the consumer can read them
 
@@ -41,7 +41,7 @@ Finally, we'll call the _`build_object()`_ function, responsible for making an H
 
 ![producer build object](./images/producer_build_object.png)
 
-## Consumer
+## Task 2: Consumer
 
 On the other hand, we'll have the consumer, which will send _`get_liveclient_data`_ requests through the web socket, and receive the response (which is the JSON object returned by the HTTP endpoint at that moment).
 
@@ -71,7 +71,35 @@ The final result in real-time is this:
 
 > **Note**: we have two metrics returned by the program: _`100_average_prediction`_ (represents the mode prediction for the last 100 requests made, 0 means that the model predicts you're losing) and _`100_average_probability`_, your 100-averaged winning probability (meaning, we take the last 100 requests, get their prediction probabilities like we've done in the past chapter, and return the average)
 
-## Observations and Conclusions
+## Task 3: How can I try this myself?
+
+You need to set up a Python environment and install the dependencies found in [this file.](../../../src/requirements_autogluon.txt)
+
+Afterward, you need to run two components: the producer and the consumer **at the same time**.
+
+### Running the Producer
+
+```bash
+python ws_producer.py --ip="localhost"
+```
+
+### Running the Consumer
+
+```bash
+python ws_consumer.py --p "H:\Downloads\livelabs" --ip="localhost"
+```
+
+The _`--p`_ option determines the AutoGluon model's path. Since you're going to need it, let's download it from OCI Data Science. First, we open a Terminal and zip the directory that contains the model:
+
+![zip the model](./images/zip_model.png)
+
+Then we can simply download it from the explorer into our computer (or wherever you're planning to play League of Legends):
+
+![download zipped model](./images/download_zipped_model.png)
+
+And once we have it locally on our computer, **unzip** it and save the directory's path.
+
+## Task 4: Observations and Conclusions
 
 Having a look at the model and running it against a 'real' scenario is probably the most distressing part of the ML process; you're anxious to know whether your model is working well against **NEW** data (not in the training dataset nor the testing dataset). 
 

@@ -23,13 +23,13 @@ After considering this structure, we can create **two** new ML models:
 
     For each match, we have 5 matchups (5 players play against each other in different roles and different places on the map).
     
-    ![offline matchups](https://github.com/oracle-devrel/leagueoflegends-optimizer/raw/livelabs/hols/nn/model_building/images/matchups.png)
+    ![offline matchups](./images/matchups.png)
 
     > **Note**: This model needs to have a greater accuracy than 51% (making random predictions).
 
 2. **Online Model**: this model will reproduce the data structure accessible from the Live Client API, and the idea is to connect the data streams to our model whilst we're playing, and return live predictions about how we're performing in the game. We will work with this kind of data structure:
 
-![live client matchups](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/nn/model_building/images/liveclient.png?raw=True)
+![live client matchups](./images/liveclient.png)
 
 ### Prerequisites
 
@@ -58,8 +58,8 @@ If you have extra time after this workshop and want to get to know more about Le
 4. [Article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions
 5. [Article 5](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article5.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions II
 
-## Acknowledgments
+## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - November 4th, 2022
+* **Last Updated By/Date** - November 8th, 2022
