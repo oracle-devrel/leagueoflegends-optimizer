@@ -79,14 +79,18 @@ Afterward, you need to run two components: the producer and the consumer **at th
 
 ### Running the Producer
 
-```bash
+```
+<copy>
 python ws_producer.py --ip="localhost"
+</copy>
 ```
 
 ### Running the Consumer
 
-```bash
+```
+<copy>
 python ws_consumer.py --p "H:\Downloads\livelabs" --ip="localhost"
+</copy>
 ```
 
 The _`--p`_ option determines the AutoGluon model's path. Since you're going to need it, let's download it from OCI Data Science. First, we open a Terminal and zip the directory that contains the model:

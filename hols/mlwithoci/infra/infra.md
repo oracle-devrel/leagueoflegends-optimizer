@@ -262,7 +262,7 @@ Let's open both of them and get to work.
 
 You may now [proceed to the next lab](#next)
 
-## Acknowledgements
+## Acknowledgments
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin - Product Strategy Director
