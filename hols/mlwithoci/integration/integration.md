@@ -16,7 +16,7 @@ This code will use two components:
 - Producer: the producer will obtain real-time data from the League Live Client API, and send it to the consumer. This code needs to be executed on the same machine as the one where we play League. Find the code [in this file.](../../../src/ws_producer.py)
 - Consumer: the consumer will make requests to the producer for real-time data, feed it to our previously-trained ML model, and return prediction results. Find the code [in this file.](../../../src/ws_consumer.py)
 
-The result of this chapter can be seen in this visualization:
+The result of this chapter can be seen in this GIF:
 
 ![consumer running data against the model](./images/realtime.gif)
 
@@ -71,7 +71,7 @@ The final result in real-time is this:
 
 > **Note**: we have two metrics returned by the program: _`100_average_prediction`_ (represents the mode prediction for the last 100 requests made, 0 means that the model predicts you're losing) and _`100_average_probability`_, your 100-averaged winning probability (meaning, we take the last 100 requests, get their prediction probabilities like we've done in the past chapter, and return the average)
 
-## Task 3: How can I try this myself?
+## Task 3 (Optional): Try this Hands-On
 
 You need to set up a Python environment and install the dependencies found in [this file.](../../../src/requirements_autogluon.txt)
 

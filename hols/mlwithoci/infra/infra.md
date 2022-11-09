@@ -79,7 +79,7 @@ Estimated Lab Time: 15 minutes
     <copy>echo $OCI_TENANCY</copy>
     ```
     
-    > Note: we can paste the same OCID here in both tenancy and compartment because the root compartment in a tenancy is equal to the tenancy's OCID.
+    > **Note**: we can paste the same OCID here in both tenancy and compartment because the root compartment in a tenancy is equal to the tenancy's OCID.
 
     ![Paste Compartment OCID](images/paste-compartment-ocid.png)
 
@@ -221,7 +221,7 @@ We now need to load our notebooks into our environment.
     </copy>
     ```
 
-> Note: make sure to accept prompts by typing 'y' as in 'Yes' when asked.
+> **Note**: make sure to accept prompts by typing 'y' as in 'Yes' when asked.
 
 After these commands, all requirements will be fulfilled and we're ready to execute our notebooks with our newly created conda environment.
 
@@ -256,7 +256,7 @@ We should now see the repository/files in our file explorer:
 
 ![file explorer - 2](./images/file_explorer_2.png)
 
-We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`applied_automl.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb) is the one we will review during this workshop.
+We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`applied_automl.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/applied_automl.ipynb) is the one we will review during this workshop.
 
 Let's open both of them and get to work. 
 

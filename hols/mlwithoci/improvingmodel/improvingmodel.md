@@ -203,16 +203,21 @@ Let's make some predictions to test the model. First, we load our model:
 
 And now, we can evaluate prediction performances by displaying a list of the best-performing models, with descending accuracy:
 
-![leaderboard](./images/13_leaderboard_online.png)
+| _`model`_ | _`score_test`_ | _`score_val`_ | _`pred_time_test`_ | _`pred_time_val`_ | _`fit_time`_ | _`pred_time_test_marginal`_ | _`pred_time_val_marginal`_ | _`fit_time_marginal`_ | _`stack_level`_ | _`can_infer`_ | _`fit_order`_ |
+| :----: | :---------: | :---------: | :-------------: | :-------------: | :--------: | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: | :----------: |
+| 0 |  WeightedEnsemble_L2 |    0.654190 |   0.660375 |       24.157087 |       1.045460 |  133.281287 |                 0.205917 |                0.011569 |           1.601757 |            2 |       True |          9 |
+| 1 |     RandomForestGini |    0.652915 |  0.655500 |        5.636409 |       0.319412 |   41.471444 |                 5.636409 |                0.319412 |          41.471444 |            1 |       True |          5 |
+| 2 |     RandomForestEntr |    0.652505 |   0.653125 |        6.867869 |       0.319005 |   46.061942 |                 6.867869 |                0.319005 |          46.061942 |            1 |       True |          6 |
+| 3 |       ExtraTreesGini |    0.649865 |   0.650125 |       10.769314 |       0.320502 |   23.003199 |                10.769314 |                0.320502 |          23.003199 |            1 |       True |          8 |
+| 4 |             LightGBM |    0.621760 |   0.627375 |        0.658143 |       0.050014 |   16.291640 |                 0.658143 |                0.050014 |          16.291640 |            1 |       True |          4 |
+| 5 |           LightGBMXT |    0.599970 |   0.601375 |        0.295755 |       0.032918 |    7.066734 |                 0.295755 |                0.032918 |           7.066734 |            1 |       True |          3 |
+| 6 |             CatBoost |    0.580605 |   0.583750 |        0.019436 |       0.024960 |    4.851306 |                 0.019436 |                0.024960 |           4.851306 |            1 |       True |          7 |
+| 7 |       KNeighborsUnif |    0.531445 |   0.535000 |     4558.441928 |     177.424999 |    0.414970 |              4558.441928 |              177.424999 |           0.414970 |            1 |       True |          1 |
+| 8 |       KNeighborsDist |    0.531130 |   0.536250 |     4378.428705 |     174.572771 |    0.410502 |              4378.428705 |              174.572771 |           0.410502 |            1 |       True |          2 |
 
-> **Note**: apart from the usual accuracy (found in the _`score_test`_ column), we need to consider some other data found here. Whenever I'm thinking of reusing my models in the future, I take long consideration on trying to find a model that has a consistent metric that I like to call **prediction efficiency**, which measures the ratio between *accuracy* and *prediction time*. Meaning that, I want a good model with high accuracy, but I wouldn't want to wait 10 minutes for the next prediction; so I also look at the _`pred_time_test_` and _`pred_time_val`_ columns when deciding which of all these models I'm going to use. In this case, the best-performing model is also the most time-efficient one, so the decision wasn't hard.
+> **Note**: apart from the usual accuracy (found in the _`score_test`_ column), we need to consider some other data found here. Whenever I'm thinking of reusing my models in the future, I take long consideration on trying to find a model that has a consistent metric that I like to call **prediction efficiency**, which measures the ratio between *accuracy* and *prediction time*. Meaning that, I want a good model with high accuracy, but I wouldn't want to wait 10 minutes for the next prediction; so I also look at the  and _`pred_time_val`_ column when deciding which of all these models I'm going to use. In this case, the best-performing model is also the most time-efficient one, so the decision wasn't hard.
 
-It's also convenient to look at the prediction probabilities returned for each class:
-
-![prediction probabilities](./images/14_probas.png)
-
-> **Note**: in classification tasks, some _`sklearn`_ or _`sklearn-based`_ estimators also implement the predict_proba method, which returns the class probabilities for each data point. In our case, since we only have two options, we'll only have two probabilities, one for each class.
-
+> **Note**: also note that each model has only been trained for **120 seconds**, and with a dataset of 1.2M rows. It's not a crazy idea to improve the model's accuracy even further (>65%) with a bigger dataset, or other techniques like trying Deep Learning. We will talk about Neural Networks and improving this model in the next workshop, where we'll build a custom Neural Network to get people introduced into Neural Networks as a whole. 
 
 
 ## Task 3: What Now?
