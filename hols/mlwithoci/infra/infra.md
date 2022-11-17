@@ -14,7 +14,7 @@ Terraform is an Open Source tool to deploy resources in the cloud with code. You
 
 > **Note**: in the figure above, there's also a compute instance and autonomous database deployed automatically by Terraform. These resources are completely optional and you can run the workshop without them. However, if you're interested in integrating everything that we'll talk about in the workshop with **your own datasets**, this is the way to do it. You can check out more information on this [in this workshop](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/dataextraction/index.html).
 
-Do you want to learn more? Feel free to check [Terraform's code in this repository](../../../dev/terraform/) after the workshop.
+Do you want to learn more? Feel free to check [Terraform's code in this repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs/dev/terraform) after the workshop.
 
 Estimated Lab Time: 15 minutes
 
@@ -37,13 +37,13 @@ Estimated Lab Time: 15 minutes
 3. The result will look like this:
   ![Git Clone](images/git-clone.png)
 
-4. Change directory with `cd` to `leagueoflegends-optimizer` directory:
+4. Change directory with _`cd`_ to _`leagueoflegends-optimizer`_ directory:
 
     ```
     <copy>cd leagueoflegends-optimizer/dev</copy>
     ```
 
-5. Terraform uses a file called `tfvars` that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to copy a template we provide to use your own values. Run on Cloud Shell the following command.
+5. Terraform uses a file called _`tfvars`_ that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to copy a template we provide to use your own values. Run on Cloud Shell the following command.
 
     ```
     <copy>cp terraform/terraform.tfvars.template terraform/terraform.tfvars</copy>
@@ -54,7 +54,7 @@ Estimated Lab Time: 15 minutes
 1. Click on **Code Editor**. Next to the Cloud Shell one.
     ![Cloud Code Editor](images/cloud-code-editor.png)
 
-2. On the **Code Editor**, inside the Explorer section on the left panel, expand your username and navigate to _`dev/terraform`_. You should see the file **`terraform.tfvars`**. Click on it: 
+2. On the **Code Editor**, inside the Explorer section on the left panel, expand your username and navigate to _`dev/terraform`_. You should see the file _`terraform.tfvars`_. Click on it: 
     ![Go To File](images/code-editor-go-to-file.png)
 
 3. The file will open and you can copy the values you will get from running commands on Cloud Shell and paste them into the Code Editor.
@@ -158,7 +158,7 @@ Having just created our OCI Data Science environment, we need to install the nec
 
     ![analytics tab within OCI](images/analyticstab.png)
 
-    Now, we have access to a [list of our Data Science projects launched within OCI.](https://cloud.oracle.com/data-science/projects) We access our project, and inside our project we'll find the notebook.
+    Now, we have access to a [list of our Data Science projects launched within OCI.](https://cloud.oracle.com/data-science/projects) We access our project, and inside our project, we'll find the notebook.
 
     > The name of the notebook may be different than shown here in the screenshot.
 
@@ -166,7 +166,7 @@ Having just created our OCI Data Science environment, we need to install the nec
 
     ![open notebook - 2](./images/open-notebook2.png)
 
-    You should now see the Jupyter environment
+    You should now see the Jupyter environment:
 
     ![jupyter environment](./images/notebook.png)
 
@@ -266,4 +266,4 @@ You may now [proceed to the next lab](#next)
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin - Product Strategy Director
-* **Last Updated By/Date** - November 8th, 2022
+* **Last Updated By/Date** - November 17th, 2022

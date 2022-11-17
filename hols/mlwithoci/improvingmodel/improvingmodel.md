@@ -232,4 +232,4 @@ While the model is pretty good, it doesn't have a practical side that we can use
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - November 8th, 2022
+* **Last Updated By/Date** - November 17th, 2022
