@@ -13,7 +13,7 @@ After playing a League of Legends match, we're overwhelmed with detailed post-ma
 
 ![post-match statistics](./images/post_match_stats.png)
 
-Through the data extraction techniques we have explained in the previous workshop, we can obtain this information and *transform* it, with the purpose of creating an ML model capable of telling us how well we perform with great precision.
+Through the data extraction techniques we have explained in the previous workshop, we can obtain this information and *transform* it, with the purpose to create an ML model capable of telling us how well we perform with great precision.
 
 With this workshop, we aim to improve a previously-created primitive model in several ways. We will focus on improving the __accuracy__ and __usability__ of the model.
 
@@ -62,4 +62,4 @@ If you have extra time after this workshop and want to get to know more about Le
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - November 8th, 2022
+* **Last Updated By/Date** - November 17th, 2022
