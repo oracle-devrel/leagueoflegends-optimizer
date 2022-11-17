@@ -4,6 +4,8 @@
 
 In this lab, we will build the infrastructure that we will use to run the rest of the workshop.
 
+### Objectives
+
 The main element that we will be creating is a **Data Science** session and notebook, to experiment with the newly-generated data using notebooks.
 
 ![Infrastructure](images/lol_infra.png)
@@ -16,7 +18,7 @@ Terraform is an Open Source tool to deploy resources in the cloud with code. You
 
 Do you want to learn more? Feel free to check [Terraform's code in this repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs/dev/terraform) after the workshop.
 
-Estimated Lab Time: 15 minutes
+Estimated Time: 15 minutes
 
 ### Prerequisites
 
@@ -260,7 +262,7 @@ We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the no
 
 Let's open both of them and get to work. 
 
-You may now [proceed to the next lab](#next)
+You may now proceed to the next lab.
 
 ## Acknowledgments
 

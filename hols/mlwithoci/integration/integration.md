@@ -1,5 +1,7 @@
 # Lab 4: Model Integration
 
+## Introduction
+
 In this workshop's final lab, we're going to explore some things that could be used as examples to put models into production. There's a significant number of Data Scientists and Data practitioners that create models to solve a problem, but don't make use of these models in the end. 
 
 In our case, with this League of Legends project, I wanted to show that it's possible to put into use what we've learned in this workshop (and upcoming ones).
@@ -16,11 +18,20 @@ This code will use two components:
 - Producer: the producer will obtain real-time data from the League Live Client API, and send it to the consumer. This code needs to be executed on the same machine as the one where we play League. Find the code [in this file.](../../../src/ws_producer.py)
 - Consumer: the consumer will make requests to the producer for real-time data, feed it to our previously-trained ML model, and return prediction results. Find the code [in this file.](../../../src/ws_consumer.py)
 
+### Objectives
+
 The result of this chapter can be seen in this GIF:
 
 ![consumer running data against the model](./images/realtime.gif)
 
-Estimated Lab Time: 30 minutes
+Estimated Time: 30 minutes
+
+### Prerequisites
+
+* An Oracle Free Tier, Paid or LiveLabs Cloud Account
+* Active Oracle Cloud Account with available credits to use for Data Science service.
+* (Optional) Having completed [the first workshop](../../workshops/dataextraction/index.html)
+
 
 ## Task 1: Producer
 
@@ -118,7 +129,7 @@ We hope you've been able to learn from this workshop and got you excited about f
 
 Stay tuned for the next events at [developer.oracle.com](https://developer.oracle.com/community/events.html)
 
-You may now [proceed to the next lab](#next).
+You may now proceed to the next lab.
 
 ## Acknowledgments
 

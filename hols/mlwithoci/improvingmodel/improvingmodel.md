@@ -1,14 +1,28 @@
 # Lab 3: Model Improvement with AutoGluon
 
+## Introduction
+
 In the past workshop, we created [a very simple model](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/creatingmodel/creatingmodel.md) with an accuracy of 51%. There are several ways in which we could improve the accuracy of the model: by adding more variables to our model, changing the approach to the model, hyper-parametrization... However, having such a low accuracy from the start makes hyper-parametrization not an option at this point, it's usually used when the baseline accuracy of a model is usually higher (generally speaking).
+
+### Objectives
 
 We're going to create a model that considers all variables in our **matchup** data structure, and reduce the complexity of our ML code by using AutoML open-source tools for data exploration and model training.
 
-Downloading data from professional games, we built the dataset contained within _`matchups.json`_. 
+Downloading data from professional games, we built the dataset contained within `matchups.json`. 
     
 For each match, we have 5 matchups (5 players play against each other in different roles and different places on the map), just like this one:
     
 ![example offline data](./images/matchups.png)
+
+
+Estimated Time: 30 minutes
+
+### Prerequisites
+
+* An Oracle Free Tier, Paid or LiveLabs Cloud Account
+* Active Oracle Cloud Account with available credits to use for Data Science service.
+* (Optional) Having completed [the first workshop](../../workshops/dataextraction/index.html)
+
 
 ## Task 1: Offline DataSet Analysis
 

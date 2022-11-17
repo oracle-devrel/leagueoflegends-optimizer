@@ -1,6 +1,8 @@
 # Lab 1: Introduction
 
-Estimated Lab Time: 10 minutes
+## Introduction
+
+Estimated Time: 10 minutes
 
 In the previous related workshop, we have done the following:
 - Defined and **modeled** our problem, understanding the different steps in the drafting phase of the game
@@ -14,6 +16,8 @@ After playing a League of Legends match, we're overwhelmed with detailed post-ma
 ![post-match statistics](./images/post_match_stats.png)
 
 Through the data extraction techniques we have explained in the previous workshop, we can obtain this information and *transform* it, with the purpose to create an ML model capable of telling us how well we perform with great precision.
+
+### Objectives
 
 With this workshop, we aim to improve a previously-created primitive model in several ways. We will focus on improving the __accuracy__ and __usability__ of the model.
 
@@ -47,7 +51,7 @@ This solution is designed to work with several OCI services, allowing you to qui
 - [OCI Autonomous JSON Database](https://www.oracle.com/autonomous-database/autonomous-json-database/)
 
 
-You may now [proceed to the next lab](#next).
+You may now proceed to the next lab.
 
 ## Annex - Additional Resources
 If you have extra time after this workshop and want to get to know more about League of Legends, we recommend reading these lists of articles to get a feel of everything that can be done in the ML + Gaming space:
