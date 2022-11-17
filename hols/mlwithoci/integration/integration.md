@@ -73,7 +73,7 @@ The final result in real-time is this:
 
 ## Task 3 (Optional): Try this Hands-On
 
-You need to set up a Python environment and install the dependencies found in [this file.](../../../src/requirements_autogluon.txt)
+You need to set up a Python environment and install the dependencies found in [this file.](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/requirements_autogluon.txt)
 
 Afterward, you need to run two components: the producer and the consumer **at the same time**.
 
@@ -124,4 +124,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - November 8th, 2022
+* **Last Updated By/Date** - November 17th, 2022
