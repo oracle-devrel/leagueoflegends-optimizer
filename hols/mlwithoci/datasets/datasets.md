@@ -5,8 +5,8 @@ Estimated Time: 5 minutes
 ## Introduction
 
 There are two ways to proceed with the required datasets:
-1. Basic way: download the datasets from Kaggle to proceed with the workshop. This is especially useful if you don't care about the size of the dataset / have no interest in having your own dataset stored in the Cloud. Also recommended if you haven't completed [the first workshop](../../dataextraction/) before trying this one out.
-2. More extensive way: if you want to expand the basic dataset with your own players / regions, this way is recommended. For that, please refer to [this file](../../../dataextraction/optimizer/optimizer.md) from the previous workshop, where you'll find instructions on how to generate your own dataset.
+1. Basic way: download the datasets from Kaggle to proceed with the workshop. This is especially useful if you don't care about the size of the dataset / have no interest in having your dataset stored in the Cloud. Also recommended if you haven't completed [the first workshop](../../dataextraction/) before trying this one out.
+2. More extensive way: if you want to expand the basic dataset with your players/regions, this way is recommended. For that, please refer to [this file](../../../dataextraction/optimizer/optimizer.md) from the previous workshop, where you'll find instructions on how to generate your dataset.
 
 Whether or not you're deciding which way to proceed, it's recommended to download Kaggle datasets, as these datasets have been processed and expanded for several iterations (weeks or months of execution), which will accelerate your data extraction and ingestion process.
 
