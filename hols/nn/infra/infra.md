@@ -198,7 +198,7 @@ We now need to load our notebook into our environment.
 
     ```
     <copy>
-    conda activate /home/datascience/conda/mycondav1_0
+    conda activate /home/datascience/conda/myconda_v1_0
     </copy>
     ```
 
@@ -251,7 +251,7 @@ We should now see the repository / files in our file explorer:
 
 ![file explorer - 2](./images/file_explorer_2.png)
 
-We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`neural_networks_lol.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/nn_live_model.ipynb) is the one we will review during this workshop.
+We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`neural_networks_lol.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/neural_networks_lol.ipynb) is the one we will review during this workshop.
 
 Let's open both of them and get to work. 
 
