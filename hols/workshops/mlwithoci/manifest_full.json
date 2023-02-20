@@ -3,9 +3,9 @@
   "help": "ignacio.m.martinez@oracle.com",
   "tutorials": [
     {
-      "title": "Introduction",
+      "title": "Lab 1: Introduction",
       "description": "Introduction",
-      "filename": "../../mlwithoci/intro/intro.md"
+      "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/mlwithoci/intro/intro.md"
     },
     {
       "title": "Getting Started",
@@ -13,19 +13,19 @@
       "filename": "https://raw.githubusercontent.com/oracle/learning-library/master/common/labs/cloud-login/cloud-login.md"
     },
     {
-      "title": "Lab 1: Infrastructure",
+      "title": "Lab 2: Infrastructure",
       "description": "In this section, we're going to observe the different types of datasets available to us and how to get access to them.",
-      "filename": "../../mlwithoci/infra/infra.md"
+      "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/mlwithoci/infra/infra.md"
     }, 
     {
-      "title": "Lab 2: Model Improvement with AutoGluon",
+      "title": "Lab 3: Model Improvement with AutoGluon",
       "description": "Improving Baseline Model with AutoGluon.",
-      "filename": "../../mlwithoci/improvingmodel/improvingmodel.md"
+      "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/mlwithoci/improvingmodel/improvingmodel.md"
     },
     {
-    "title": "Lab 3: Model Integration",
+    "title": "Lab 4: Model Integration",
     "description": "Model Integration with a Producer-Consumer Architecture",
-    "filename": "../../mlwithoci/integration/integration.md"
+    "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/mlwithoci/integration/integration.md"
     },
     {
       "title": "Need Help?",

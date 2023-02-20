@@ -131,8 +131,8 @@ Stay tuned for the next events at [developer.oracle.com](https://developer.oracl
 
 You may now proceed to the next lab.
 
-## Acknowledgments
+## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - November 17th, 2022
+* **Last Updated By/Date** - February 21st, 2023

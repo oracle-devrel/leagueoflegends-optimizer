@@ -24,3 +24,9 @@ Here are the official links for the Kaggle datasets:
 ## Objectives
 
 ### Prerequisites
+
+## Acknowledgments
+
+* **Author** - Nacho Martinez, Data Science Advocate @ DevRel
+* **Contributors** -  Victor Martin, Product Strategy Director
+* **Last Updated By/Date** - February 21st, 2023

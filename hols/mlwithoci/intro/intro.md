@@ -1,4 +1,4 @@
-# Lab 1: Introduction
+# Introduction
 
 ## Introduction
 
@@ -62,8 +62,8 @@ If you have extra time after this workshop and want to get to know more about Le
 4. [Article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions
 5. [Article 5](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article5.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions II
 
-## Acknowledgments
+## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - November 17th, 2022
+* **Last Updated By/Date** - February 21st, 2023
