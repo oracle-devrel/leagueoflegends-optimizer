@@ -1,6 +1,6 @@
 # Infrastructure
 
-Estimated Lab Time: 15-20 minutes
+Estimated Time: 15-20 minutes
 
 ## Introduction
 

@@ -1,6 +1,6 @@
 # Lab 1: Understand and Sign Up for League of Legends 
 
-Estimated Lab Time: 5-10 minutes
+Estimated Time: 5-10 minutes
 
 ## Overview
 League of Legends is a team-based strategy game in which two teams of five powerful champions face off to destroy the other’s base. As a player, you can choose from over 140 champions to make epic plays, secure kills, and take down towers as you battle your way to victory. To win, you'll need to destroy the enemy’s Nexus—the heart of each team's base.

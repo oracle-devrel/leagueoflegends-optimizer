@@ -3,7 +3,7 @@
 ## Introduction
 To extract live game information, we need to access the Live Client Data API from Riot Games.
 
-Estimated Lab Time: 15 minutes
+Estimated Time: 15 minutes
 
 ### Prerequisites
 

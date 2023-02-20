@@ -3,7 +3,7 @@
 ## Introduction
 In this lab, we're creating a very primitive ML model. This model will use very few variables and will only have one target variable. It'll be useful to us as it introduces the most basic and fundamental ML concepts.
 
-Estimated Lab Time: 45 minutes
+Estimated Time: 45 minutes
 
 ### Prerequisites
 

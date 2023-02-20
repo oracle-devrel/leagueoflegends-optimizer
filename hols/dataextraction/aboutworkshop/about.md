@@ -1,6 +1,6 @@
 # About This Workshop
 
-Estimated Lab Time: 5 minutes
+Estimated Time: 5 minutes
 
 ## Introduction
 
