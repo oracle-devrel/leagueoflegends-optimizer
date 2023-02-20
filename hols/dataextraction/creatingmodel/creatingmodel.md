@@ -124,7 +124,7 @@ For this, we create a function that, for each `match_id`, finds whether the play
 
 Therefore, we'll have one row per lane, per match.
 
-> **Note**: the below code and processing must only be done if working with [the online analysis notebook](../../../notebooks/hol1_online_analysis.ipynb), since [the offline analysis notebook](../../../notebooks/hol1_offline_analysis.ipynb) already has this processing implemented into the original dataset.
+> **Note**: the below code and processing must only be done if working with [the online analysis notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_online_analysis.ipynb), since [the offline analysis notebook](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/hol1_offline_analysis.ipynb) already has this processing implemented into the original dataset.
 
 ![optional code execution for online analysis notebook only](./images/task3_optional.png)
 
@@ -291,4 +291,4 @@ If you're using your own data instead of the datasets provided by default (havin
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - September 21st, 2022
+* **Last Updated By/Date** - February 20th, 2023

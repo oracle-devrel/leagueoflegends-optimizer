@@ -18,9 +18,9 @@ As an introduction, here's a sneak peek of what the Live Client API looks like, 
 
 The API features a set of protocols that CEF (Chromium Embedded Framework) uses to communicate between the League of Legends process and a C++ library, as shown in the below figure.
 
-![](https://static.developer.riotgames.com/img/docs/lol/lcu_architecture.png?raw=true)
+![Live Client API Architecture](./images/lcu_architecture.png)
 
-Communication between the CEF and C++ libraries **happens automatically when we run the program**. Since we're running the League client in our computer, the IP being used is localhost (127.0.0.1). If you're interested in seeing how this communication works in more detail, check out [this link](https://developer.riotgames.com/docs/lol).
+Communication between the CEF and C++ libraries **happens automatically when we run the program**. Since we're running the League client in our computer, the IP being used is localhost (127.0.0.1). If you're interested in seeing how this communication works in more detail, check out [this//developer.riotgames.com/docs/lol).
 
 > (Optional) You can also refer to [article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.md), where we dive into the most interesting endpoints in the Live Client Data API.
 
@@ -29,15 +29,17 @@ Communication between the CEF and C++ libraries **happens automatically when we 
 
 Check out this video where we explain how to connect to the Live Client API:
 
-[![Watch the video](https://img.youtube.com/vi/SlG0q4oWGsk/hqdefault.jpg)](https://www.youtube.com/watch?v=SlG0q4oWGsk)
+[![Watch the video](./images/hqdefault.jpg)](https://www.youtube.com/watch?v=SlG0q4oWGsk)
 
 
 When we join a League of Legends game, the League process automatically opens port 2999. We'll use this to our advantage and we'll make recurring requests to localhost:2999 to extract live match information.
 
 The HTTP endpoint being used to get data while we're in a League of Legends match is the following:
 
-```bash
+```
+<copy>
 # GET https://127.0.0.1:2999/liveclientdata/allgamedata
+</copy>
 # Sample output can be found in the following URL, if interested. https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json
 # This endpoint is the most complete one of all.
 ```
@@ -56,6 +58,7 @@ The HTTP endpoint being used to get data while we're in a League of Legends matc
     > If you'd rather just see an example of the data returned, [check the contents of this file](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json). You can observe the kind of information we can access from a player. Attached is a sample JSON returned by the game [in this file](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/aux_files/example_live_client.txt).
 
     ```json
+    <copy>
     {
         "magicResist": 32,
         "healthRegenRate": 0,
@@ -80,6 +83,7 @@ The HTTP endpoint being used to get data while we're in a League of Legends matc
         "resourceMax": 350,
         "resourceRegenRate": 0
     }
+    </copy>
     ```
 
     > We'll use all of this champion information as input in our ML model. To that end, we need to harmonize column names and amount of variables in our pre-trained models, with the information we have available in real-time so that the ML model can make predictions with everything that we have available. This is achieved thanks to the __`process_predictor_liveclient`__ function.
@@ -108,4 +112,4 @@ In the next workshop, we'll learn how to extend and improve the model we've crea
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - September 26th, 2022
+* **Last Updated By/Date** - February 20th, 2023

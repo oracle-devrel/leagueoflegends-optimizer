@@ -47,10 +47,16 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
     <copy>cd leagueoflegends-optimizer/dev</copy>
     ```
 
-5. Terraform uses a file called `tfvars` that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to copy a template we provide to use your own values. Run on Cloud Shell the following command.
+5. Terraform uses a file called `tfvars` that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to copy a template we provide to use your own values. Run on Cloud Shell the following command:
+   
     ```
-    <copy>cp terraform/terraform.tfvars.template terraform/terraform.tfvars</copy>
+    <copy>
+    cp terraform/terraform.tfvars.template terraform/terraform.tfvars
+    </copy>
+
     ```
+
+
 
 ## Task 2: Deploy with Terraform and Ansible
 
@@ -205,4 +211,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - September 21st, 2022
+* **Last Updated By/Date** - February 20th, 2023
