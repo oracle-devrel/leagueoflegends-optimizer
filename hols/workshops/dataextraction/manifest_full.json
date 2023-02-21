@@ -5,7 +5,7 @@
     {
       "title": "Introduction",
       "description": "What the workshop is about",
-      "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/dataextraction/aboutworkshop/about.md",
+      "filename": "https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/dataextraction/aboutworkshop/about.md",
       "type": "dbcs"
     },
     {
@@ -16,31 +16,31 @@
     {
       "title": "Lab 1: Understand and Sign Up for League of Legends",
       "description": "Understand and Sign Up for League of Legends",
-      "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/dataextraction/intro/intro.md",
+      "filename": "https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/dataextraction/intro/intro.md",
       "type": "dbcs"
     },
     {
       "title": "Lab 2: Infrastructure",
       "description": "The Introduction is always second. The title and contents menu title match for the Introduction.",
-      "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/dataextraction/infra/infra.md",
+      "filename": "https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/dataextraction/infra/infra.md",
       "type": "dbcs"
     },
     {
       "title": "Lab 3: Optimizer",
       "description": "Interact with the optimizer.",
-      "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/dataextraction/optimizer/optimizer.md",
+      "filename": "https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/dataextraction/optimizer/optimizer.md",
       "type": "dbcs"
     },
     {
       "title": "Lab 4: Create a Model",
       "description": "Creat Model",
-      "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/dataextraction/creatingmodel/creatingmodel.md",
+      "filename": "https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/dataextraction/creatingmodel/creatingmodel.md",
       "type": "dbcs"
     },
     {
       "title": "Lab 5: Client",
       "description": "Client API.",
-      "filename": "https://raw.githubusercontent.com/oracle-devrel/leagueoflegends-optimizer/livelabs/hols/dataextraction/client/client.md",
+      "filename": "https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/dataextraction/client/client.md",
       "type": "dbcs"
     },
     {

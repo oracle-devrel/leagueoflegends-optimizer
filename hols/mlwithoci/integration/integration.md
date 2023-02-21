@@ -6,7 +6,7 @@ In this workshop's final lab, we're going to explore some things that could be u
 
 In our case, with this League of Legends project, I wanted to show that it's possible to put into use what we've learned in this workshop (and upcoming ones).
 
-I've prepared some code [available in the GitHub repository](../../../src/). The idea is to put our model into use, so we're going to use the *previously-trained online model* and use it while we are in a League of Legends match.
+I've prepared some code [available in the GitHub repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/src). The idea is to put our model into use, so we're going to use the *previously-trained online model* and use it while we are in a League of Legends match.
 
 > **Note**: the League of Legends Live Client API **only allows us to extract information from the same computer in which we are currently playing!** This means that we need to run the code - explained below - in our computer, where we'll play League.
 
@@ -15,8 +15,8 @@ We will use a producer-consumer architecture, combining this architecture with *
 ![producer consumer architecture](./images/producer_consumer_architecture.jpg)
 
 This code will use two components:
-- Producer: the producer will obtain real-time data from the League Live Client API, and send it to the consumer. This code needs to be executed on the same machine as the one where we play League. Find the code [in this file.](../../../src/ws_producer.py)
-- Consumer: the consumer will make requests to the producer for real-time data, feed it to our previously-trained ML model, and return prediction results. Find the code [in this file.](../../../src/ws_consumer.py)
+- Producer: the producer will obtain real-time data from the League Live Client API, and send it to the consumer. This code needs to be executed on the same machine as the one where we play League. Find the code [in this file.](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/ws_producer.py)
+- Consumer: the consumer will make requests to the producer for real-time data, feed it to our previously-trained ML model, and return prediction results. Find the code [in this file.](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/src/ws_consumer.py)
 
 ### Objectives
 
