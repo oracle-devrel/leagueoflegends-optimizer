@@ -2,6 +2,28 @@
 
 [![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_leagueoflegends-optimizer)](https://sonarcloud.io/dashboard?id=oracle-devrel_leagueoflegends-optimizer)
 
+![presentation - slide 0](./images/0.PNG)
+![presentation - slide 1](./images/1.PNG)
+![presentation - slide 2](./images/2.PNG)
+![presentation - slide 3](./images/3.PNG)
+![presentation - slide 4](./images/4.PNG)
+![presentation - slide 5](./images/5.PNG)
+![presentation - slide 6](./images/6.PNG)
+![presentation - slide 7](./images/7.PNG)
+![presentation - slide 8](./images/8.PNG)
+![presentation - slide 9](./images/9.PNG)
+![presentation - slide 10](./images/10.PNG)
+[Connecting to League of Legends Live Client API - leagueoflegends-optimizer - Extracting Data](youtube:SlG0q4oWGsk)
+![presentation - slide 13](./images/12.PNG)
+![real time predictions - examples](./images/realtime.gif)
+![presentation - slide 13](./images/13.PNG)
+![presentation - slide 14](./images/14.PNG)
+![presentation - slide 15](./images/15.PNG)
+![presentation - slide 16](./images/16.PNG)
+![presentation - slide 17](./images/17.PNG)
+![presentation - slide 18](./images/18.PNG)
+
+
 ## Introduction
 
 League of Legends optimizer is a project created for educational purposes that uses Riot Games' API to make real-time predictions in game. The project is able to extract data from professional players, store this information in an Oracle Autonomous JSON Database, and use this data to train ML models to accurately predict the winning probability of a player.
