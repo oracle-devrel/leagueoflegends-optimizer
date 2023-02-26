@@ -13,7 +13,7 @@
 ![presentation - slide 8](./images/8.PNG)
 ![presentation - slide 9](./images/9.PNG)
 ![presentation - slide 10](./images/10.PNG)
-[Connecting to League of Legends Live Client API - leagueoflegends-optimizer - Extracting Data](youtube:SlG0q4oWGsk)
+[![Connecting to League of Legends Live Client API - leagueoflegends-optimizer - Extracting Data](./images/hqdefault.jpg)](https://www.youtube.com/watch?v=SlG0q4oWGsk)
 ![presentation - slide 13](./images/12.PNG)
 ![real time predictions - examples](./images/realtime.gif)
 ![presentation - slide 13](./images/13.PNG)
