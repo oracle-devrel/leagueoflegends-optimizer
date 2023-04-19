@@ -41,7 +41,7 @@ In this lab, you will complete the following steps:
 
 This solution is designed to work with several OCI services, allowing you to quickly be up-and-running. You can read more about the services used in the lab here:
 
-- [OCI Data Science](https://www.oracle.com/artificial-intelligence/data-science/)
+- [OCI Data Science](https://www.oracle.com/artificial-intelligence/)
 - [OCI Cloud Shell](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm)
 - [OCI Compute](https://www.oracle.com/cloud/compute/)
 - [OCI Autonomous JSON Database](https://www.oracle.com/autonomous-database/autonomous-json-database/)
@@ -64,4 +64,4 @@ You may now [proceed to the next lab](#next).
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Editor** - Erin Dawson, DevRel Communications Manager
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - February 20th, 2023
+* **Last Updated By/Date** - April 20th, 2023
