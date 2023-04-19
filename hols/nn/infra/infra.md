@@ -14,9 +14,9 @@ Terraform is an Open Source tool to deploy resources in the cloud with code. You
 
 > **Note**: in the figure above, there's also a compute instance and autonomous database deployed automatically by Terraform. These resources are completely optional and you can run the workshop without them. However, if you're interested in integrating everything that we'll talk about in the workshop with **your own datasets**, this is the way to do it. You can check out more information on this [in this workshop](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/dataextraction/index.html).
 
-Do you want to learn more? Feel free to check [Terraform's code in this repository](../../../dev/terraform/) after the workshop.
+Do you want to learn more? Feel free to check [Terraform's code in this repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/dev/terraform) after the workshop.
 
-Estimated Lab Time: 15 minutes
+Estimated Time: 15 minutes
 
 ### Prerequisites
 
@@ -262,4 +262,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin - Product Strategy Director
-* **Last Updated By/Date** - October 6th, 2022
+* **Last Updated By/Date** - February 24th, 2023

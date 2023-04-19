@@ -4,7 +4,7 @@
 
 In this lab, we're creating a Neural Network with the help of the open-source library called _fastai_. This library simplifies the development of Neural Networks greatly, and we will see why.
 
-Estimated Lab Time: 45 minutes
+Estimated Time: 45 minutes
 
 ### Prerequisites
 
@@ -311,4 +311,4 @@ If you’re curious about the goings-on of Oracle Developers in their natural ha
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - October 6th, 2022
+* **Last Updated By/Date** - February 24th, 2023

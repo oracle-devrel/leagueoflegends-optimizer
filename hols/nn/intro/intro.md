@@ -1,6 +1,6 @@
 # Introduction
 
-Estimated Lab Time: 5-10 minutes
+Estimated Time: 5-10 minutes
 
 ## Overview
 
@@ -62,7 +62,7 @@ In this lab, you will complete the following steps:
 
 This solution is designed to work with several OCI services, allowing you to quickly be up and running. You can read more about the services used in the lab here:
 
-- [OCI Data Science](https://www.oracle.com/artificial-intelligence/data-science/)
+- [OCI Data Science](https://www.oracle.com/artificial-intelligence/)
 - [OCI Cloud Shell](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/cloudshellintro.htm)
 - [OCI Compute](https://www.oracle.com/cloud/compute/)
 - [OCI Autonomous JSON Database](https://www.oracle.com/autonomous-database/autonomous-json-database/)
@@ -84,4 +84,4 @@ If you have extra time after this workshop and want to get to know more about Le
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - October 6th, 2022
+* **Last Updated By/Date** - February 24th, 2023

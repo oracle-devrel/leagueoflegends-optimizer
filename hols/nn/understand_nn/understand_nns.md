@@ -4,7 +4,7 @@
 
 In this lab, we're going to take a look at how neural networks work and their characteristics.
 
-Estimated Lab Time: 20 minutes
+Estimated Time: 20 minutes
 
 ## Task 1: What is a Neural Network
 
@@ -86,4 +86,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin - Product Strategy Director
-* **Last Updated By/Date** - October 6th, 2022
+* **Last Updated By/Date** - February 24th, 2023
