@@ -427,7 +427,7 @@ Remember that you can always sign up for free with OCI! Your Oracle Cloud accoun
 
 ## Join the conversation!
 
-If you’re curious about the goings-on of Oracle Developers in their natural habitat, come join us on our public Slack channel! We don’t mind being your fish bowl 🐠
+If you’re curious about the goings-on of Oracle Developers in their natural habitat, come [join us on our public Slack channel](https://bit.ly/devrel_slack)! We don’t mind being your fish bowl 🐠
 
 ## License
 

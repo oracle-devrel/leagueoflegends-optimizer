@@ -1,0 +1,4 @@
+rich
+ujson
+pandas
+autogluon

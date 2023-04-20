@@ -1,6 +1,6 @@
-# Introduction
+# Lab 1: Understand and Sign Up for League of Legends 
 
-Estimated Lab Time: 5-10 minutes
+Estimated Time: 5-10 minutes
 
 ## Overview
 League of Legends is a team-based strategy game in which two teams of five powerful champions face off to destroy the other’s base. As a player, you can choose from over 140 champions to make epic plays, secure kills, and take down towers as you battle your way to victory. To win, you'll need to destroy the enemy’s Nexus—the heart of each team's base.
@@ -9,15 +9,15 @@ Access and mobility play an important role in LoL. Your team needs to clear at l
 
 Team composition depends on five positions. Each lane lends itself to certain kinds of champions and roles—try them all or lock in to the lane that calls you. Champions get stronger by earning experience to level up and buy more powerful items as the game progresses. Staying on top of these two factors is crucial to overpowering the enemy team and destroying their base.
 
-In this lab, we'll leverage the power of AI with League of Legends in a unique an innovative way. We'll dive deep into extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
+In this lab, we'll leverage the power of AI with League of Legends in a unique and innovative way. We'll dive deep into extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
 
 ![Bought Items](images/bought_items.jpg)
 
-This image represents the final functionality of this workshop, where we're able to use our already-trained ML model to make real-time predictions about our in-game performances. 
+This image represents the final functionality of this workshop series, where we're able to use our already-trained ML model to make real-time predictions about our in-game performances. 
 
 We'll also need to create an autonomous database, which will serve as storage for our generated datasets and access points as a whole.
 
-In this Hands-On Lab (HOL), we'll start with the assumption that users know about how League of Legends' matchmaking system works. If you have time and don't know a lot about League of Legends, I recommended reading these lists of articles (included in the repository as well) to get a feel for what we'll cover in the HOL:
+In this Hands-On Lab (HOL), we'll start with the assumption that users know about how League of Legends' matchmaking system works. If you have time and don't know a lot about League of Legends, we recommend reading these lists of articles (included in the repository as well) to get a feel for what we'll cover in the HOL:
 
 1. [Article 1](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article1.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Data Extraction & Processing
 2. [Article 2](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article2.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Data Extraction & Processing II
@@ -35,20 +35,25 @@ In this Hands-On Lab (HOL), we'll start with the assumption that users know abou
 
 ## Task 1: Get Started
 
+This instructional video explains what needs to be done to get an API key necessary to what we will explain in the next lab. 
+[Watch the video](youtube:HUJgYfrHhYI)
+
 1. First, you'll need to obtain a Riot Games API key [from the official Riot Games Developer website.](https://developer.riotgames.com/) For that, you need to create a League of Legends account (if you don't have one already) and request a development API key. Note that if you're planning to develop a League of Legends project out of this repository, you can also apply for a production API key which has a longer expiration date, as well as more requests per minute.
     ![login to your league account](images/lab1-login.png)
 2. After creating the account, we [access the development website](https://developer.riotgames.com/) to find our development API key. Note that by default, the development API key expires every 24 hours. So, if you're planning to generate a dataset for more than 24 hours at a time, in the end you'll start getting HTTP unauthorized errors. To fix this, just regenerate the API key and use the new one.
     ![get api key](images/lab1-apikey.png)
 
-> Note: if you run into issues while you're obtaining the API key / you're not able to login to [the developer portal](https://developer.riotgames.com):
+> **Note**: if you run into issues while you're obtaining the API key / you're not able to login to [the developer portal](https://developer.riotgames.com):
 
 ![error logging in](images/loginfailed.png)
 
-Make sure to sign out of your newly created account, at the top right corner of your screen
+Make sure to sign out of your newly created account, at the top right corner of your screen:
 
 ![log out](images/logout.jpg)
 
 And login back again.
+
+> **Note**: if you still get the error message, waiting for email confirmation, wait a couple of minutes and try again.
 
 
 You may now [proceed to the next lab](#next).
@@ -59,4 +64,4 @@ You may now [proceed to the next lab](#next).
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Editor** - Erin Dawson, DevRel Communications Manager
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - July 21st, 2022
+* **Last Updated By/Date** - April 20th, 2023

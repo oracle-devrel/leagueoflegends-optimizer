@@ -1,25 +1,24 @@
-# Infrastructure
+# Lab 2: Infrastructure
 
 ## Introduction
 
-In this lab we will build the infrastructure that we will use to run the rest of the workshop.
+In this lab, we will build the infrastructure that we will use to run the rest of the workshop.
 
-The main four elements that we will be creating are:
-- **Compute** instance using a Linux-based image from Oracle Cloud.
-- **Autonomous JSON Database** where we'll allocate the JSON documents.
-- **Data Science** session and notebook, to experiment with the newly-generated data using notebooks.
+### Objectives
+
+The main element that we will be creating is a **Data Science** session and notebook, to experiment with the newly-generated data using notebooks.
 
 ![Infrastructure](images/lol_infra.png)
 
-We will use Cloud Shell to execute `start.sh` script that will call Terraform and Ansible to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform or Ansible, don't worry, there is no need.
+We will use Cloud Shell to execute _`start.sh`_ script that will call Terraform to deploy all the infrastructure required and set up the configuration. If you don't know about Terraform, don't worry, there is no need. Also, there are no installation requirements: we will use Cloud Shell (which has Terraform installed by default) to deploy our infrastructure. 
 
-Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get the resources created.
+Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform and make sure you get the resources created.
 
-Ansible is an Open Source tool to provision on top of the created resources. It automates the dependency installation, copy the source code, and config files so everything is ready for you to use.
+> **Note**: in the figure above, there's also a compute instance and autonomous database deployed automatically by Terraform. These resources are completely optional and you can run the workshop without them. However, if you're interested in integrating everything that we'll talk about in the workshop with **your own datasets**, this is the way to do it. You can check out more information on this [in this workshop](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/dataextraction/index.html).
 
-Do you want to learn more? Fill free to check the code for terraform and ansible after the workshop.
+Do you want to learn more? Feel free to check [Terraform's code in this repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs/dev/terraform) after the workshop.
 
-Estimated Lab Time: xx minutes
+Estimated Time: 15 minutes
 
 ### Prerequisites
 
@@ -31,103 +30,242 @@ Estimated Lab Time: xx minutes
 
 1. From the Oracle Cloud Console, click on **Cloud Shell**.
   ![Cloud Shell Button](images/cloud-shell-button.png)
+
 2. As soon as the Cloud Shell is loaded, you can download the assets to run this lab.
     ```
     <copy>git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git</copy>
     ```
-3. The result will look like this
+
+3. The result will look like this:
   ![Git Clone](images/git-clone.png)
-4. Change directory with `cd` to `leagueoflegends-optimizer` directory:
+
+4. Change directory with _`cd`_ to _`leagueoflegends-optimizer`_ directory:
+
     ```
-    <copy>cd leagueoflegends-optimizer</copy>
+    <copy>cd leagueoflegends-optimizer/dev</copy>
     ```
 
-## Task 2: Deploy with Terraform and Ansible
+5. Terraform uses a file called _`tfvars`_ that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to copy a template we provide to use your own values. Run on Cloud Shell the following command.
 
-1. Change directory with `cd` to `dev` where all the Terraform and Ansible code lives.
-    ```
-    <copy>cd dev</copy>
-    ```
-2. You will extract some data needed to set up Terraform, make sure you take notes of the information.
-3. Copy the output of the following command as the tenancy OCID:
-    ```
-    <copy>echo $OCI_TENANCY</copy>
-    ```
-4. Copy the output of the following command as the compartment OCID:
-    ```
-    <copy>echo $OCI_TENANCY</copy>
-    ```
-
-    > **Note only for experienced Oracle Cloud users:**<br>
-    > Do you want to deploy the infrastructure on a specific compartment?<br>
-    > You can get the Compartment OCID in different ways.<br>
-    > The coolest one is with OCI CLI from the Cloud Shell.<br>
-    > You have to change _`COMPARTMENT_NAME`_ for the compartment name you are looking for and run the command:
-    ```
-    <copy>oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME</copy>
-    ```
-5. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
-    ```
-    <copy>ssh-keygen -t rsa</copy>
-    ```
-6. We need the public key in our notes, so keep the result of the content of the following command in your notes.
-    ```
-    <copy>cat ~/.ssh/id_rsa.pub</copy>
-    ```
-7. From the previous lab, you should have the Riot Developer API Key. Keep it on your notes as well.
-  ![Riot API Key](images/riot_api_key_gen.png)
-8. Create a copy of the terraform variables file by running the following command.
     ```
     <copy>cp terraform/terraform.tfvars.template terraform/terraform.tfvars</copy>
     ```
-9. Edit the values with `vim` or `nano` with your tenancy, compartment, ssh public key and Riot API key.
+
+## Task 2: Deploy with Terraform
+
+1. Click on **Code Editor**. Next to the Cloud Shell one.
+    ![Cloud Code Editor](images/cloud-code-editor.png)
+
+2. On the **Code Editor**, inside the Explorer section on the left panel, expand your username and navigate to _`dev/terraform`_. You should see the file _`terraform.tfvars`_. Click on it: 
+    ![Go To File](images/code-editor-go-to-file.png)
+
+3. The file will open and you can copy the values you will get from running commands on Cloud Shell and paste them into the Code Editor.
+
+4. Copy the output of the following command as the region:
+
     ```
-    <copy>vim terraform/terraform.tfvars</copy>
-    ```
-    ![Vim TF vars](images/vim-edit-tfvars.png)
-10. After editing the file it should look like this.
-    ![Vim TF vars edited](images/vim-edit-tfvars-edit.png)
-11. Save the file and confirm the values are correct.
-    ```
-    <copy>cat terraform/terraform.tfvars</copy>
+    <copy>echo $OCI_REGION</copy>
     ```
 
-## Task 3: Start deployment
+    ![Paste Region](images/paste-region.png)
+
+5. Copy the output of the following command as the tenancy OCID:
+    ```
+    <copy>echo $OCI_TENANCY</copy>
+    ```
+
+    ![Paste Tenancy OCID](images/paste-tenancy-ocid.png)
+
+6. Copy the output of the same command as the compartment OCID:
+    ```
+    <copy>echo $OCI_TENANCY</copy>
+    ```
+    
+    > **Note**: we can paste the same OCID here in both tenancy and compartment because the root compartment in a tenancy is equal to the tenancy's OCID.
+
+    ![Paste Compartment OCID](images/paste-compartment-ocid.png)
+
+    > You can deploy the infrastructure **on a specific compartment**<br>
+    > You can get the Compartment OCID in different ways.<br>
+    > The coolest one is with OCI CLI from the Cloud Shell.<br>
+    > You have to change _`COMPARTMENT_NAME`_ for the actual compartment name you are looking for and run the command:
+    > ```
+    > <copy>oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME</copy>
+    > ```
+
+7. Generate an SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
+    It will ask you to enter the path and a passphrase, and type _ENTER_ to continue all three times.
+
+    ```
+    <copy>ssh-keygen -t rsa</copy>
+    ```
+
+    > **Note**: If there isn't a public key already created, run the following command to create one:
+    > ```
+    > <copy>ssh-keygen</copy>
+    > ```
+    > And select all defaults. Then, try running the command again.
+
+8. We need the public key in our notes, so keep the result of the content of the following command in your notes.
+
+    ```
+    <copy>cat ~/.ssh/id_rsa.pub</copy>
+    ```
+
+    ![Paste Public SSH Key](images/paste-public-ssh-key.png)
+
+9. You can leave `riotgames_api_key` as it is. We are not using the API key for this specific workshop.
+
+10. Save the file in the Code Editor.
+    ![Code Editor Save](images/code-editor-save.png)
+
+
+## Task 3: Start Deployment
 
 1. Run the `start.sh` script
     ```
     <copy>./start.sh</copy>
     ```
+
 2. The script will run and it looks like this.
     ![Start SH beginning](images/start-sh-beginning.png)
-3. Terraform will create resources for you, and during the process it will look like this.
+
+3. Terraform will create resources for you, and during the process, it will look like this.
     ![Start SH terraform](images/start-sh-terraform.png)
-4. Ansible will continue the work as part of the `start.sh` script. It looks like this.
-    ![Start SH ansible](images/start-sh-ansible.png)
-5. The final part of the script is to print the output of all the work done.
+
+4. The final part of the script is to print the output of all the work done.
     ![Start SH output](images/start-sh-output.png)
-6. Copy the ssh command from the output variable `compute`.
+
+5. Copy the Data Science notebook URL from the output variable _`ds_notebook_session`_. This is the URL we will use to connect to our Data Science environment.
     ![Start SH output](images/start-sh-ssh.png)
 
-## Task 3: Check deployment
-
-1. Run the `ssh` command from the output of the script. It will look like this.
-    ```
-    <copy>ssh opc@PUBLIC_IP</copy>
-    ```
-2. In the new machine, run the python script `check.py` that makes sure everything is working.
-    ```
-    <copy>python src/check.py</copy>
-    ```
-3. The result will confirm database connection and Riot API works.
-    ![Python Check OK](images/python-check-ok.png)
-4. If you get an error, make sure the `terraform/terraform.tfvars` file from the previous task contains the correct values. In case of any error, just run the `start.sh` script again.
+    > **Note**: login credentials for the Data Science notebook are the same as the ones used to access Oracle Cloud Infrastructure.
 
 
-You may now [proceed to the next lab](#next).
+## Task 4: Accessing Notebook
+
+Having just created our OCI Data Science environment, we need to install the necessary Python dependencies to execute our code. For that, we'll access our environment.
+
+- The easiest way is to access the notebook **through the URL** that we previously copied from Terraform's output.
+
+    ![terraform output](images/start-sh-ssh.png)
+
+    If you have done it this way, make sure to **skip through to the next task**.
+
+- (Optionally) We can also access the notebook via the OCI console, on the top left hamburger menu:
+
+    ![select data science](./images/select_data_science.png)
+
+    > You may find the Data Science section by also searching in the top left bar, or in the Analytics & AI tab, if it doesn't appear in "Recently visited" for you:
+
+    ![analytics tab within OCI](images/analyticstab.png)
+
+    Now, we have access to a [list of our Data Science projects launched within OCI.](https://cloud.oracle.com/data-science/projects) We access our project, and inside our project, we'll find the notebook.
+
+    > The name of the notebook may be different than shown here in the screenshot.
+
+    ![open notebook - 1](./images/open-notebook.png)
+
+    ![open notebook - 2](./images/open-notebook2.png)
+
+    You should now see the Jupyter environment:
+
+    ![jupyter environment](./images/notebook.png)
+
+
+
+## Task 5: Setting up Data Science Environment
+
+We now need to load our notebooks into our environment.
+1. Opening a **Terminal** inside the _`Other`_ section of the console and re-downloading the repository again:
+
+    ![open terminal](./images/open_terminal.png)
+
+2. Then, we re-clone the repository:
+
+    ```
+    <copy>
+    git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
+    </copy>
+    ```
+
+
+
+3. Install the conda environment
+
+    ```
+    <copy>odsc conda create -n myconda</copy>
+    ```
+
+    ![proceed](./images/proceed.png)
+
+4. Activate the newly-created conda environment:
+
+    ```
+    <copy>
+    conda activate /home/datascience/conda/mycondav1_0
+    </copy>
+    ```
+
+5. Install Python 3.8 within the conda environment:
+
+    ```
+    <copy>
+    conda install -y python=3.8
+    </copy>
+    ```
+
+6. Install Python dependencies:
+
+    ```
+    <copy>
+    pip install -r leagueoflegends-optimizer/r2.txt
+    </copy>
+    ```
+
+> **Note**: make sure to accept prompts by typing 'y' as in 'Yes' when asked.
+
+After these commands, all requirements will be fulfilled and we're ready to execute our notebooks with our newly created conda environment.
+
+
+## Task 6: Downloading DataSets
+
+We'll access datasets uploaded to OCI Object Storage. You don't need to download any datasets by yourself, everything will be automated.
+
+They are optionally also uploaded to [this Kaggle repository](https://www.kaggle.com/datasets/jasperan/league-of-legends-1v1-matchups-results). This repository contains several files, make sure you check all available datasets if you're interested and give a thumbs up if you find them useful.
+
+We're now going to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
+
+![open terminal](./images/open_terminal.png)
+
+Then, we execute the following command, which will download all datasets uploaded to Object Storage:
+
+
+```
+<copy>
+wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/gtH_kHRJXJUKRqJBlhMDnDu0XCeqIvbUmozzlez2YKZMx2x-5Nd-6W1sD6Es28HZ/n/axywji1aljc2/b/league-hol-2/o/leaguehol2.zip && unzip leaguehol2.zip -d /home/datascience/. && mv /home/datascience/leaguehol2 /home/datascience/datasets/
+</copy>
+```
+
+![unzip result](./images/unzip_result.png)
+
+
+## Task 7: Accessing our Notebooks
+
+We should now see the repository/files in our file explorer:
+
+![file explorer - 1](./images/file_explorer.png)
+
+![file explorer - 2](./images/file_explorer_2.png)
+
+We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`applied_automl.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/applied_automl.ipynb) is the one we will review during this workshop.
+
+Let's open both of them and get to work. 
+
+You may now proceed to the next lab.
 
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
-* **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - July 29th, 2022
+* **Contributors** - Victor Martin - Product Strategy Director
+* **Last Updated By/Date** - April 20th, 2023

@@ -2,6 +2,27 @@
 
 [![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_leagueoflegends-optimizer)](https://sonarcloud.io/dashboard?id=oracle-devrel_leagueoflegends-optimizer)
 
+![presentation - slide 0](./images/0.PNG)
+![presentation - slide 1](./images/1.PNG)
+![presentation - slide 2](./images/2.PNG)
+![presentation - slide 3](./images/3.PNG)
+![presentation - slide 4](./images/4.PNG)
+![presentation - slide 5](./images/5.PNG)
+![presentation - slide 6](./images/6.PNG)
+![presentation - slide 7](./images/7.PNG)
+![presentation - slide 8](./images/8.PNG)
+![presentation - slide 9](./images/9.PNG)
+![presentation - slide 10](./images/10.PNG)
+![presentation - slide 13](./images/12.PNG)
+![real time predictions - examples](./images/realtime.gif)
+![presentation - slide 13](./images/13.PNG)
+![presentation - slide 14](./images/14.PNG)
+![presentation - slide 15](./images/15.PNG)
+![presentation - slide 16](./images/16.PNG)
+![presentation - slide 17](./images/17.PNG)
+![presentation - slide 18](./images/18.PNG)
+
+
 ## Introduction
 
 League of Legends optimizer is a project created for educational purposes that uses Riot Games' API to make real-time predictions in game. The project is able to extract data from professional players, store this information in an Oracle Autonomous JSON Database, and use this data to train ML models to accurately predict the winning probability of a player.
@@ -394,17 +415,14 @@ GET https://127.0.0.1:2999/liveclientdata/allgamedata
 [Riot Games API](https://developer.riotgames.com/)
 
 ## Contributing
-This project is open source.  Please submit your contributions by forking this repository and submitting a pull request!  Oracle appreciates any contributions that are made by the open source community.
+This project is open source. Please submit your contributions by forking this repository and submitting a pull request!  Oracle appreciates any contributions that are made by the open source community.
 
 ## License
-Copyright (c) 2021 Oracle and/or its affiliates.
+
+Copyright (c) 2022 Oracle and/or its affiliates.
 
 Licensed under the Universal Permissive License (UPL), Version 1.0.
 
-See [LICENSE](LICENSE) for more details.
+See LICENSE for more details.
 
-
-
-
-
-
+ORACLE AND ITS AFFILIATES DO NOT PROVIDE ANY WARRANTY WHATSOEVER, EXPRESS OR IMPLIED, FOR ANY SOFTWARE, MATERIAL OR CONTENT OF ANY KIND CONTAINED OR PRODUCED WITHIN THIS REPOSITORY, AND IN PARTICULAR SPECIFICALLY DISCLAIM ANY AND ALL IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE. FURTHERMORE, ORACLE AND ITS AFFILIATES DO NOT REPRESENT THAT ANY CUSTOMARY SECURITY REVIEW HAS BEEN PERFORMED WITH RESPECT TO ANY SOFTWARE, MATERIAL OR CONTENT CONTAINED OR PRODUCED WITHIN THIS REPOSITORY. IN ADDITION, AND WITHOUT LIMITING THE FOREGOING, THIRD PARTIES MAY HAVE POSTED SOFTWARE, MATERIAL OR CONTENT TO THIS REPOSITORY WITHOUT ANY REVIEW. USE AT YOUR OWN RISK.

@@ -2,8 +2,24 @@ variable "instance_name" {
   default = "lol"
 }
 
+data "oci_core_shapes" "core_shapes" {
+  compartment_id      = var.tenancy_ocid
+  availability_domain = data.oci_identity_availability_domain.ad.name
+}
+
+locals {
+  shape_names = [
+    for each in data.oci_core_shapes.core_shapes.shapes :
+    each.name if each.ocpus <= var.instance_ocpus && each.memory_in_gbs <= var.instance_shape_config_memory_in_gbs && each.is_flexible == true
+  ]
+}
+
+output "compute_available_shapes" {
+  value = local.shape_names
+}
+
 variable "instance_shape" {
-  default = "VM.Standard.E3.Flex"
+  default = "VM.Standard.E4.Flex"
 }
 
 variable "instance_ocpus" {
@@ -11,7 +27,7 @@ variable "instance_ocpus" {
 }
 
 variable "instance_shape_config_memory_in_gbs" {
-  default = 8
+  default = 16
 }
 
 data "oci_core_images" "images" {
