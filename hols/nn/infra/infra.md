@@ -214,7 +214,7 @@ We now need to load our notebook into our environment.
 
     ```
     <copy>
-    pip install -r leagueoflegends-optimizer/requirements_nn.txt
+    pip install -r leagueoflegends-optimizer/deps/requirements_nn.txt
     </copy>
     ```
 
