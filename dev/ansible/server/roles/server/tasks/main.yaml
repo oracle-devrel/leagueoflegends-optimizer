@@ -35,12 +35,19 @@
     owner: opc
     group: opc        
     mode: 0640
+- name: Copy requirements file
+  copy:
+    src: "../../../../../../deps/cloudshell_requirements.txt"
+    dest: /home/opc/src/
+    owner: opc
+    group: opc        
+    mode: 0640
 - name: python3 -> Python 3.9
   command: update-alternatives --set python3 /usr/bin/python3.9
 - name: Install Setup Tools
   command: python3 -m pip install -U setuptools
 - name: Install dependencies
-  command: python3 -m pip install -r /home/opc/src/requirements.txt
+  command: python3 -m pip install -r /home/opc/src/cloudshell_requirements.txt
 - name: FIXME probably not needed chown opc:opc for pythonapp and venv
   file:
     dest=/home/opc/src
