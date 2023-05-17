@@ -4,7 +4,7 @@ Estimated Time: 15-20 minutes
 
 ## Introduction
 
-In this lab we will build the infrastructure that we will use to run the rest of the workshop.
+In this lab, we will build the infrastructure that we will use to run the rest of the workshop.
 
 The main four elements that we will be creating are:
 - **Compute** instance using a Linux-based image from Oracle Cloud.
@@ -13,13 +13,12 @@ The main four elements that we will be creating are:
 
 ![Infrastructure](images/lol_infra.png)
 
-We will use Cloud Shell to execute `start.sh` script that will call Terraform and Ansible to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform or Ansible, don't worry, there is no need.
+We will use Cloud Shell to execute `start.sh` script, which will call Terraform and Ansible to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform or Ansible, don't worry, there is no need.
 
-Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get the resources created.
+- Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get the resources created.
+- Ansible is an Open Source tool to provision on top of the created resources. It automates the dependency installation, copies the source code, and config files so everything is ready for you to use.
 
-Ansible is an Open Source tool to provision on top of the created resources. It automates the dependency installation, copies the source code, and config files so everything is ready for you to use.
-
-Do you want to learn more? Feel free to check the code for terraform and ansible after the workshop.
+Do you want to learn more? Feel free to check the code for terraform and ansible after the workshop [in our official repository.](https://github.com/oracle-devrel/leagueoflegends-optimizer/)
 
 
 ### Prerequisites
@@ -27,8 +26,18 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 
+### Objectives
+
+In this lab, you will learn how to:
+- Use Oracle Cloud Infrastructure for your Compute needs
+- Deploy resources using Terraform and Ansible
+- Learn about federation, and what's necessary to authenticate a Terraform request
+- Download the datasets we will use
+
 
 ## Task 1: Cloud Shell
+
+First, we need to download the official repository to get access to all the code (Terraform and Ansible code for this step).
 
 1. From the Oracle Cloud Console, click on **Cloud Shell**.
   ![Cloud Shell Button](images/cloud-shell-button.png)
@@ -53,7 +62,6 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
     <copy>
     cp terraform/terraform.tfvars.template terraform/terraform.tfvars
     </copy>
-
     ```
 
 
@@ -64,7 +72,7 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
     ![Cloud Code Editor](images/cloud-code-editor.png)
 
     > **Note**: for **Safari** users:<br>
-    > First, it is not the recommended browser for OCI. Firefox or Chrome are fully tested and are recommended.<br>
+    > First, it isn't the recommended browser for OCI. Firefox or Chrome are fully tested and are recommended.<br>
     > With Safari, if you get a message _Cannot Start Code Editor_, go to _**Settings** > **Privacy**_ and disable _**Prevent cross-site tracking**_.<br>
     > Then open Code Editor again.
 
@@ -115,13 +123,13 @@ Do you want to learn more? Feel free to check the code for terraform and ansible
     > Do you want to deploy the infrastructure on a specific compartment?<br>
     > You can get the Compartment OCID in different ways.<br>
     > The coolest one is with OCI CLI from the Cloud Shell.<br>
-    > You have to change _`COMPARTMENT_NAME`_ for the compartment name you are looking for and run the command:
+    > You have to change _`COMPARTMENT_NAME`_ for the compartment name you are looking for and run the following command:
 
-    > ```
-    ><copy>
+    ```
+    <copy>
     oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME
     </copy>
-    > ```
+    ```
 
 10. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
     It will ask to enter the path, a passphrase and confirm again the passphrase; type _[ENTER]_ to continue all three times.
@@ -211,4 +219,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - April 20th, 2023
+* **Last Updated By/Date** - May 17th, 2023

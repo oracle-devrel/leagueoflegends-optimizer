@@ -52,7 +52,7 @@ The HTTP endpoint being used to get data while we're in a League of Legends matc
     ![creating match 2](images/lab1-league3.png)
 4. Now, we are inside the game after loading.
     ![in game](images/lab1-league4.png)
-5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc. [To make the requests automatically, you can use this code](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/livelabs/making_requests.py).
+5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc. [To make the requests automatically, you can use this code](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/live_client/making_requests.py).
 
     > **Note**: you should run this code (`making_requests.py`) in your local machine, as we need to make HTTP requests through **localhost**. This means that, in the computer where you're playing, you must have a Python environment configured and be able to run the abovementioned code.<br>
     > If you'd rather just see an example of the data returned, [check the contents of this file](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json). You can observe the kind of information we can access from a player. Attached is a sample JSON returned by the game [in this file](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/aux_files/example_live_client.txt).
