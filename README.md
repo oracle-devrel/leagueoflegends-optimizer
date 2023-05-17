@@ -104,7 +104,7 @@ python league.py --mode="process_predictor_liveclient" # builds an affine struct
 
 ### Prerequisites
 
-Requirements file can be found in [this file](./requirements.txt).
+Requirements file can be found in [this file](deps/requirements_readme.txt).
 
 You will need to have installed Oracle Instant Client or other means of connectivity to the Oracle Autonomous JSON Database. [This is the official download site](https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html) for Instant Client, there you also have configuration instructions on how to set this up on your local machine.
 
@@ -170,7 +170,7 @@ When we join a League of Legends game, the League process opens port 2999. We'll
 
 In order to make requests properly, we need to access localhost as the calling endpoint. However, we may not want to access data in a local computer where we are playing (as computer resources should be used to get maximum game performance). For that, I have created an architecture which uses **message queues** and would allow us to make requests from any machine in the Internet.
 
-For this architecture proposal, I've created two files, which you can find in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer): [live_client_producer.py](./src/live_client_producer.py) and [live_client_receiver.py](./src/live_client_receiver.py).
+For this architecture proposal, I've created two files, which you can find in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer): [live_client_producer.py](src/live_client/live_client_producer.py) and [live_client_receiver.py](src/live_client/live_client_receiver.py).
 
 ### Producer
 
