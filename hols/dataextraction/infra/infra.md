@@ -213,10 +213,96 @@ First, we need to download the official repository to get access to all the code
 4. If you get an error, make sure the _`terraform/terraform.tfvars`_ file from the previous task contains the correct values. In case of any error, just run the _`start.sh`_ script again.
 
 
-You may now [proceed to the next lab](#next).
+
+## Task 5: Setting up Data Science Environment
+
+Once we have set up our Cloud shell to extract data, we also need to prepare a Data Science environment to work with the data once it's been collected.
+To achieve this, we need to load this workshop's notebook into our environment through the official repository.
+
+We now need to load our notebook into our environment.
+1. Opening a **Terminal** inside the _'Other'_ section the console and re-downloading the repository again:
+
+    ![open terminal](./images/open_terminal.png)
+
+2. Then, we re-clone the repository:
+
+    ```
+    <copy>
+    git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
+    </copy>
+    ```
+
+
+
+3. Install the conda environment
+
+    ```
+    <copy>odsc conda create -n myconda</copy>
+    ```
+
+    ![proceed](./images/proceed.png)
+
+4. Activate the newly-created conda environment:
+
+    ```
+    <copy>
+    conda activate /home/datascience/conda/myconda_v1_0
+    </copy>
+    ```
+
+5. Install Python 3.9 within the conda environment:
+
+    ```
+    <copy>
+    conda install -y python=3.9
+    </copy>
+    ```
+
+6. Install Python dependencies:
+
+    ```
+    <copy>
+    pip install -r leagueoflegends-optimizer/deps/requirements_2023.txt
+    </copy>
+    ```
+> Note: make sure to accept prompts by typing 'y' as in 'Yes' when asked.
+
+After these commands, all requirements will be fulfilled and we're ready to execute our notebooks with our newly created conda environment.
+
+
+## Task 6: Downloading DataSets
+
+We now need to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
+
+![open terminal](./images/open_terminal.png)
+
+Then, we execute the following command, which will download all necessary datasets:
+
+```
+<copy>
+wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/0weM9Mr0ug3lb651f4E1UkC1uPr4hqYjy9fFblkVSSU4bwPzm5yF9RZPTAPO6_mP/n/axywji1aljc2/b/league-hol-ocw-datasets/o/league_ocw_2023.zip && unzip league_ocw_2023.zip -d /home/datascience/.
+</copy>
+```
+
+![unzip result](./images/unzip_result.png)
+
+
+## Task 7: Accessing our Notebooks
+
+We should now see the repository / files in our file explorer:
+
+![file explorer - 1](./images/file_explorer.png)
+
+
+We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`models_2023.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/models_2023.ipynb) is the one we will review during this workshop.
+
+![file explorer - 2](./images/file_explorer_2.png)
+
+Let's open it. You may now [proceed to the next lab](#next).
+
 
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - May 17th, 2023
+* **Last Updated By/Date** - May 18th, 2023
