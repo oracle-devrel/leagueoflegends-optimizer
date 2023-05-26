@@ -23,7 +23,7 @@ jobs:
           echo "\n\nHere is the licenses.json:\n"
           echo $(cat licenses.json)
       - name: Look for non-approved licenses
-        uses: oracle-devrel/action-license-audit@v0.1-alpha2
+        uses: oracle-devrel/action-license-audit@1.0.2
         id: analysis
         with:
           licenses_file: '/github/workspace/licenses.json'
