@@ -40,10 +40,16 @@ There are some things to consider. In League of Legends, and since there are sev
 The more you repeat this process, the more data your dataset will have. If you want to use my dataset, [check out this Kaggle dataset](https://www.kaggle.com/datasets/jasperan/league-of-legends-optimizer-dataset?select=sqlite_report_performance.csv) or refer to the Infrastructure lab to download it (step 6) if you haven't already.
 
 
+0. Before executing anything, we need to create a local sqlite3 database by running:
+
+    ```bash
+    λ <copy>python src/init_db.py</copy>
+    ```  
+
 1. To extract player data, we can run:
 
     ```bash
-    λ <copy>python src/sqlite_league.py --mode "player_list"</copy>
+    λ <copy>python src/sqlite_league.py</copy>
     ```  
 
     ![player list result](images/result-player-list.png)
@@ -69,38 +75,33 @@ This execution mode will iteratively look for League of Legends leaderboards in 
 
 ## Task 2: Process Player Performance
 
-1. In order to download match details given their IDs, we use the collection __match_detail__. We can process all matches in our current database (found in collection __match__) by executing:
 
-    ```bash
-    λ <copy>python src/league.py --mode="match_download_detail"</copy>
-    >>> Connection successful.
-    # it will then start extracting match information.
-    # each match contains a huge amount of information, so I'm not putting any examples here, but you'll see when you execute.
-    ```
+```bash
+<copy>python src/process_player_performance.py</copy>
 
-2. This gives us timestamped information about what occurred in each game in thorough detail. From this, we can build an object with all variables that can be useful in our model.
+# it will then start extracting individual player matches' info and processing their performance.
+```
 
-## Task 3: Build Data Object for ML
+![process player performance result](images/output_player_performance.gif)
 
-We'll use the __`process_predictor_liveclient`__ execution mode. This execution mode takes an auxiliary function which creates an object that is compatible with data returned by the Live Client API, which is the API we will access to make real-time match requests. This means that, after this processing, data will have a friendly shape that we can use.
 
-1. [Find the builder object here](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/league.py#L568). It's with this object that you can check the set of variables that were considered for the model.
-2. Here's how to build the object:
+## Task 3: Creating Final Dataset
 
-    ```bash
-    λ <copy>python src/league.py --mode="process_predictor_liveclient"</copy>
-    >>> Connection successful.
-    >>> Total match_detail documents (to process): 106448
-    # resilient to errors, deleted match IDs, etc...
-    >>> [DBG] ERR MATCH_ID RETRIEVAL: {'status': {'message': 'Data not found - match file not found', 'status_code': 404}}
-    >>> [DBG] ERR MATCH_ID RETRIEVAL: {'status': {'message': 'Service unavailable', 'status_code': 503}}
-    # will skip invalid matches
-    >>> [DBG] LIVECLIENT BUILDING OBJECT FAILED: 'NoneType' object has no attribute 'get'
-    # and insert the ones who are well-formed.
-    >>> [DBG] INSERT {'timestamp': 0, 'abilityPower': 0, 'armor': 28, 'armorPenetrationFlat': 0, 'armorPenetrationPercent': 0, 'attackDamage': 25, 'attackSpeed': 100, 'bonusArmorPenetrationPercent': 0, 'bonusMagicPenetrationPercent': 0, 'cooldown
-    Reduction': 0, 'currentHealth': 590, 'maxHealth': 590, 'healthRegenRate': 0, 'lifesteal': 0, 'magicPenetrationFlat': 0, 'magicPenetrationPercent': 0, 'magicResist': 32, 'moveSpeed': 335, 'resourceValue': 320, 'resourceMax': 320, 'resource
-    RegenRate': 0, 'spellVamp': 0, 'identifier': 'LA2_1049963085_1', 'winner': 0} OK
-    ```
+Now that we have loads of players' performances calculated, we just have to pass this to a `csv` format.
+
+
+```bash
+<copy>python src/read_data.py</copy>
+
+
+# this script will generate 3 csv files:
+
+#   - performance_report.csv, with the processed data ready for ML
+#   - player_report.csv, with various player information (Masters+)
+#   - match_report.csv, with every player's extracted matches.
+```
+
+From `performance_report.csv`, we'll be able to create our Machine Learning pipeline in the next chapter.
 
 You may now [proceed to the next lab](#next).
 
@@ -109,4 +110,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - May 18th, 2023
+* **Last Updated By/Date** - May 25th, 2023
