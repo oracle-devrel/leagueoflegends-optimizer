@@ -148,7 +148,7 @@ Having just created our OCI Data Science environment, we need to install the nec
 
     If you have done it this way, make sure to **skip through to the next task**.
 
-- (Optionally) We can also access to the notebook via the OCI console, on the top left hamburger menu:
+- (Optionally) We can also access to the notebook via the OCI console, on the top left burger menu:
 
     ![select data science](./images/select_data_science.png)
 
