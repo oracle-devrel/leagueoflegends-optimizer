@@ -4,9 +4,9 @@ Estimated Time: 30 minutes
 
 ## Introduction
 
-In this chapter, I'm going to explain how the thought process of a Data Scientist (me) tried to architect the Machine Learning portion of this workshop before getting into it and start developing code.
+In this chapter, I'm going to explain how the thought process of a Data Scientist (me) tried to architect the Machine Learning portion of this workshop before getting into developing code, focusing on ideating the problem and analyzing available variables and insights.
 
-I recommend you pay special attention to this lab if you are often afraid of starting to solve a problem, or are unsure of how to begin. 
+I recommend you pay special attention to this lab if you are often afraid of starting to solve a problem, or are unsure of how to begin.
 
 ### Prerequisites
 
@@ -16,12 +16,12 @@ I recommend you pay special attention to this lab if you are often afraid of sta
 ### Objectives
 
 In this lab, you will learn how to:
-- Learn how to start working on an ML problem
-- Architect the problem and data structures
-- Find target variables
-- Explore the dataset with AutoML tools
-- Get our code ready to create some ML pipelines that can be reused in the future for other types of problems
-  
+
+* Learn how to start working on an ML problem
+* Architect the problem and data structures
+* Find target variables
+* Explore the dataset with AutoML tools
+* Get our code ready to create some ML pipelines that can be reused in the future for other types of problems
 
 ## Task 1: What Data can I get and how?
 
@@ -75,33 +75,34 @@ At the end of the process, we will have a "real-time companion" that will tell u
 
 Between last year and this year, we have made the following progress:
 
-___Last year___'s models? A bit messy:
-- Used 24 variables
-- Analyzing 50,000 Masters+ players
-- Examining 200,000 Masters+ games
-- Gaining 1,288,773 matchup insights 📊
-- 3 models in total, but we didn't calculate a player's performance
-- **Win Prediction Model** 🏆: struggling at 65% accuracy 🎯
+_**Last year**_'s models? A bit messy:
 
-But ___this year___, we leveled up:
+* Used 24 variables
+* Analyzing 50,000 Masters+ players
+* Examining 200,000 Masters+ games
+* Gaining 1,288,773 matchup insights 📊
+* 3 models in total, but we didn't calculate a player's performance
+* **Win Prediction Model** 🏆: struggling at 65% accuracy 🎯
 
-- Now ⚡ using 107 variables ⚡
-- Analyzing 71,447 Masters+ players 🎮
-- Examining 3,260,537 Masters+ games 🕹️
-- Gaining 3,827,781 performance insights 💡😵
-- 12 model types (**36** models in total) 🚀
-- **Performance Calculator Model**: R^2^ (coefficient of determination) of **99.99%**, RMSE of **0.321** 📈
-- **Win Prediction Model** 🏆: **99.32%** accuracy (with a few hours of training)
+But _**this year**_, we leveled up:
 
+* Now ⚡ using 107 variables ⚡
+* Analyzing 71,447 Masters+ players 🎮
+* Examining 3,260,537 Masters+ games 🕹️
+* Gaining 3,827,781 performance insights 💡😵
+* 12 model types (**36** models in total) 🚀
+* **Performance Calculator Model**: R^2^ (coefficient of determination) of **99.99%**, RMSE of **0.321** 📈
+* **Win Prediction Model** 🏆: **99.32%** accuracy (with a few hours of training)
 
 ### New Issue Detected in Riot Games API
 
 Compared to last year, a new error (and important) was detected: there are some API calls that return different types of data.
 
 For example:
-- Match `LA1_1258959236` returns 107 variables in total
-- Match `EUN1_3292157187` returns 125 variables, from which only 107 are going to be used
-- Some other matches return a different amount of variables, between 107 and 125. I suspect this has to do with when the match was played. I checked that the issue doesn't only happen in some regions, it's global.
+
+* Match `LA1_1258959236` returns 107 variables in total
+* Match `EUN1_3292157187` returns 125 variables, from which only 107 are going to be used
+* Some other matches return a different amount of variables, between 107 and 125. I suspect this has to do with when the match was played. I checked that the issue doesn't only happen in some regions, it's global.
 
 When problems like these arise, we need to work around these incosistencies and harmonize our dataset (in this case, harmonize the data extraction process). You can find out how I've performed harmonization [in these lines of code](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/process_performance.py#L167).
 
@@ -114,11 +115,11 @@ Now that we have a harmonized dataset, we're ready to calculate a player's perfo
 
 This generated a lot of visualizations for me, that gave me an idea of what's necessary to accurately predict the `win` (and `calculated_player_performance`) variable:
 
-- For example, in my generated FastAI Neural Network Model (one of the models with the highest accuracy), I got to see the most important variables:
+* For example, in my generated FastAI Neural Network Model (one of the models with the highest accuracy), I got to see the most important variables:
 
 ![mljar output](./images/nn_importance.png)
 
-- It's also important, if taking decisions to see whether this model's performance is good or not. In our case, 
+* It's also important, if taking decisions to see whether this model's performance is good or not. In our case, 
 
 ![learning curves from nn_model](./images/learning_curves.png)
 
@@ -149,6 +150,7 @@ According to [this Medium post](https://maddcog.medium.com/measure-league-of-leg
 Game Grade = 0.336 — (1.437 x Deaths per min) + (0.000117 x gold per min) + (0.443 x K_A per min) + (0.264 x Level per min) + (0.000013 x TD per min)
 </copy>
 ```
+
 > **Note**: a game grade closer to 1 means the player had a ‘winning’ performance, while a grade closer to 0 equated to a ‘losing performance’.
 
 This can also be updated with our models, by taking the standardized coefficients for each one of these variables' importances, and create our formula.
@@ -156,15 +158,17 @@ This can also be updated with our models, by taking the standardized coefficient
 Adding creep score per minute didn't offer them any improvement to the model so I chose to ignore it as well. However, only using Diamond matches in their training dataset increased the accuracy by 3% in the end. This is good for us as we've only considered Masters+ games in our training dataset with the hopes of reducing variability in our data.
 
 As a conclusion, there is no noticeable improvement by adding variables (eg. creep score) or making the model more specific. Therefore, the simpler, generic model is what we'll aim for. So, we'll take the abovementioned variables (only three out of the five are present in the Live Client API) and build a new model from it:
-- Input variables: deaths/min, kills+assists/min, xp/min.
-- Output variables: model 1 will predict the `win` variable and model 2 will predict `calculated_player_performance` for any given player.
+
+* Input variables: deaths/min, kills+assists/min, xp/min.
+* Output variables: model 1 will predict the `win` variable and model 2 will predict `calculated_player_performance` for any given player.
 
 ## Task 4: Conclusion
 
 Now that we have things clear:
-- How many models we want to build
-- Inputs / outputs of each model
-- Expected RMSE, accuracy for each one of the models
+
+* How many models we want to build
+* Inputs / outputs of each model
+* Expected RMSE, accuracy for each one of the models
 
 And the fact that we have some additional model explainability thanks to `mljar-supervised`, **NOW** we're ready to begin building our models / a pipeline in OCI Data Science. 
 

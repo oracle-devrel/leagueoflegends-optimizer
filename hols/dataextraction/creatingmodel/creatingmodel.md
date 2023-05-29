@@ -1,6 +1,7 @@
 # Creating the Model
 
 ## Introduction
+
 In this lab, we'll be creating all Machine Learning Models. This model will attempt to use as many variables as possible, whilst taking advantage of the power of AutoML (remember, work smart, not hard!). It'll be useful to us as it introduces the most basic and fundamental ML concepts.
 
 Estimated Time: 45 minutes
@@ -10,7 +11,6 @@ Estimated Time: 45 minutes
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 * [Previously created](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/infra/infra.md) OCI Data Science Environment
-
 
 ## Task 1: Set up OCI Data Science Environment
 
@@ -42,7 +42,7 @@ Estimated Time: 45 minutes
 
     Then, we execute the following command, which will download all necessary datasets:
 
-    ```
+    ```bash
     <copy>
     wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/FcwFW-_ycli9z8O_3Jf8gHbc1Fr8HkG9-vnL4I7A07mENI60L8WIMGtG5cc8Qmuu/n/axywji1aljc2/b/league-hol-ocw-datasets/o/league_ocw_2023.zip && unzip league_ocw_2023.zip -d /home/datascience/.
     </copy>
@@ -54,7 +54,7 @@ Estimated Time: 45 minutes
 
     Now, download the repository (if you haven't already):
 
-    ```
+    ```bash
     <copy>
     git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
     </copy>
@@ -83,8 +83,8 @@ First, we load the model and train-test split it.
 
 To perform ML properly, we need to take the dataset we're going to work with, and split it into two:
 
-- A **training** dataset, from which our ML model will learn to make predictions.
-- A **testing** dataset, from which our ML model will validate the predictions it makes, and check how accurate it was compared to the truth.
+* A **training** dataset, from which our ML model will learn to make predictions.
+* A **testing** dataset, from which our ML model will validate the predictions it makes, and check how accurate it was compared to the truth.
 
 In ML, it's very typical to find values around 80% train / 20% test proportions, as it provides enough data for the model to be trained, and enough data to check the accuracy of the model without having too much / too little data in either of the datasets.
 
@@ -133,7 +133,7 @@ First, we display a leaderboard of the best trained models ordered by decreasing
 
 Note that our Level 2 Weighted Ensemble has the lowest RMSE of all: we'll probably want to use this model.
 
-![](./images/example_ensemble.png)
+![example of an ensemble model in computer vision](./images/example_ensemble.png)
 > **Note**: this is an example of an weighted ensemble model, in which decisions are taken using a technique called **bagging**: every model makes a prediction, and the best models will weigh more upon the final decision.
 
 ## Task 5: Model Testing
@@ -223,7 +223,7 @@ If you want to use these models in your computer, while you play League, you wil
 
 In a terminal, you can run the following command to bundle all directories into one file:
 
-```
+```bash
 <copy>
 zip -r all_models.zip /home/datascience/leagueoflegends-optimizer/notebooks/live_model_1/ /home/datascience/leagueoflegends-optimizer/notebooks/player_performance_models /home/datascience/leagueoflegends-optimizer/notebooks/winner_models/
 </copy>

@@ -1,6 +1,7 @@
 # Getting Started
 
 ## Introduction
+
 To extract live game information, we need to access the Live Client Data API from Riot Games.
 
 Estimated Time: 15 minutes
@@ -24,7 +25,6 @@ Communication between the CEF and C++ libraries **happens automatically when we 
 
 > (Optional) You can also refer to [article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.md), where we dive into the most interesting endpoints in the Live Client Data API.
 
-
 ## Task 2: Test the Live Client API
 
 Check out this video where we explain how to connect to the Live Client API:
@@ -36,7 +36,7 @@ When we join a League of Legends game, the League process automatically opens po
 
 The most complete HTTP endpoint you can find in the Live Client API is the following `/allgamedata` endpoint:
 
-```
+```bash
 <copy>
 # GET https://127.0.0.1:2999/liveclientdata/allgamedata
 </copy>
@@ -55,8 +55,9 @@ The most complete HTTP endpoint you can find in the Live Client API is the follo
 5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc.
 
 You can use two Python scripts, depending on what you want to do (testing / production):
-- [Making requests without using your ML model](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/live_client/making_requests.py)
-- [Using your ML model (recommended)](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs/src/live_client/run_new_live_model.py)
+
+* [Making requests without using your ML model](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/live_client/making_requests.py)
+* [Using your ML model (recommended)](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs/src/live_client/run_new_live_model.py)
 
 Remember to run the code you choose in your local machine, as we need to make HTTP requests through **localhost**. This means that, in the computer where you're playing, you must have a Python environment configured and being able to run the abovementioned code.
 
@@ -88,9 +89,8 @@ A recap of what we've learned:
 * How to have a **robust** model with higher baseline accuracy -> to be done in the next workshop.
 * How to use this model in real-time to get some feedback on how well you're playing
 
-
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - May 26th, 2023
+* **Last Updated By/Date** - May 28th, 2023

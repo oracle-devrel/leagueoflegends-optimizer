@@ -30,11 +30,11 @@ The Data Science Service:
 
 In this lab, you will complete the following steps:
 
-&check; Data Collection - Download datasets
-&check; Data Preparation - Preparing datasets
-&check; Data Load - Searching for patterns in datasets
-&check; Implement ML Models - Develop, different ML models, evaluate best model and tune
-&check; Data Integration - Connecting to real-time data sources
+- Data Collection - Download datasets
+- Data Preparation - Preparing datasets
+- Data Load - Searching for patterns in datasets
+- Implement ML Models - Develop, different ML models, evaluate best model and tune
+- Data Integration - Connecting to real-time data sources
 
 ## OCI Elements
 
@@ -69,4 +69,4 @@ You may now [proceed to the next lab](#next).
 - **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 - **Editor** - Erin Dawson, DevRel Communications Manager
 - **Contributors** -  Victor Martin, Product Strategy Director
-- **Last Updated By/Date** - May 28th, 2023
+- **Last Updated By/Date** - May 29th, 2023
