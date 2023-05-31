@@ -43,22 +43,24 @@ First, we need to download the official repository to get access to all the code
   ![Cloud Shell Button](images/cloud-shell-button.png)
 
 2. As soon as the Cloud Shell is loaded, you can download the assets to run this lab.
-    ```
+
+    ```bash
     <copy>git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git</copy>
     ```
 
 3. The result will look like this
   ![Git Clone](images/git-clone.png)
 
-
 4. Change directory with `cd` to `leagueoflegends-optimizer` directory:
-    
+
     ```bash
-    <copy>cd leagueoflegends-optimizer/dev</copy>
+    <copy>
+    cd leagueoflegends-optimizer/dev
+    </copy>
     ```
 
 5. Terraform uses a file called `tfvars` that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to copy a template we provide to use your own values. Run on Cloud Shell the following command:
-   
+
     ```bash
     <copy>
     cp terraform/terraform.tfvars.template terraform/terraform.tfvars
@@ -84,7 +86,7 @@ First, we need to download the official repository to get access to all the code
 4. Append, at the end, the path to the `terraform.tfvars`
     ![Path to tfvars](images/code-editor-path.png)
 
-    ```
+    ```bash
     <copy>/leagueoflegends-optimizer/dev/terraform/terraform.tfvars</copy>
     ```
 
@@ -261,11 +263,12 @@ We now need to load our notebook into our environment.
     pip install -r leagueoflegends-optimizer/deps/requirements_2023.txt
     </copy>
     ```
+
 > Note: make sure to accept prompts by typing 'y' as in 'Yes' when asked.
 
 After these commands, all requirements will be fulfilled and we're ready to execute our notebooks with our newly created conda environment.
 
-Once we execute any notebook in this Data Science environment, remember that we'll need to select the correct conda environment under the *Kernel* dropdown menu.
+Once we execute any notebook in this Data Science environment, remember that we'll need to select the correct conda environment under the _Kernel_ dropdown menu.
 
 ## Task 6: Downloading DataSets
 
@@ -299,4 +302,4 @@ Let's open it. You may now [proceed to the next lab](#next).
 
 - **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 - **Contributors** - Victor Martin, Product Strategy Director
-- **Last Updated By/Date** - May 18th, 2023
+- **Last Updated By/Date** - May 31st, 2023

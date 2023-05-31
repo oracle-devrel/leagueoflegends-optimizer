@@ -1,6 +1,6 @@
 # League of Legends Optimizer
 
-Try these Hands-On Labs yourself!
+Try these Hands-On Labs yourself! Choose the topic you like the most.
 
 - [Data Extraction](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/dataextraction/index.html) - About Data Extraction & Engineering!
 - [Model Building with scikit-learn and AutoGluon](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/mlwithoci/index.html) - Illustrates the whole AI process once we have data available
