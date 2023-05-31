@@ -52,7 +52,7 @@ The more you repeat this process, the more data your dataset will have. If you w
     λ <copy>python src/sqlite_league.py</copy>
     ```  
 
-    ![player list result](images/result-player-list.png)
+    ![player list result](images/result-player-list.PNG)
     > **Note**: note that in this case, since my dataset is already big enough, most players I extract are already in my database. It's recommended to run this every few months to get newer players, but variability above Masters elo is low.
 
     This execution option will iteratively look for League of Legends leaderboards in every region in the world, and insert these players' information into our database. If the user has already been inserted, it will prevent re-insertion.
@@ -63,7 +63,7 @@ The more you repeat this process, the more data your dataset will have. If you w
     λ <copy>python src/sqlite_league.py --mode="match_list"</copy>
     ```
 
-    ![match list result](images/result-match-list.png)
+    ![match list result](images/result-match-list.PNG)
 
     This command finds matches played by every player in our database, in every region. This allows us to obtain more matches per player, in case the player travels abroad from their original region, e.g. to compete internationally.
 
