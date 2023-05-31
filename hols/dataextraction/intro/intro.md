@@ -14,7 +14,7 @@ In this lab, we'll leverage the power of AI with League of Legends in a unique a
 ![Bought Items](images/bought_items.jpg)
 > **Note**: this image represents the functionality in 2022. You only got a winning chance probability.
 
-![New Model in action](images/new_livelabs_functionality.png)
+![New Model in action](images/new_livelabs_functionality.PNG)
 > **Note**: this image represents the **new** functionality (2023). You get detailed insights about specific parts of your performance, such as your death ratio, your kill+assist ratio and your xp per minute. This allows you to get more information about what you could be doing right or wrong. Notice that in this screenshot, after getting a kill, my winning probabilities increase notably, and my kill + assist ratio, which was terrible until that moment, becomes "not so good". Last year's model had a lot of difficulties in detecting changes like these.
 
 

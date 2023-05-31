@@ -142,7 +142,7 @@ After training is done, we need to check whether the training we did was actuall
 
 For example, in a binary classification problem (where we're trying to predict if something is either 0 or 1), I typically use **accuracy, precision, recall and f1-score** as standard evaluation metrics:
 
-![classification metrics](./images/classification_metrics.PNG)
+![classification metrics](./images/classification_metrics.png)
 > **Note**: an example on how each one of these 4 metrics are calculated just by looking at the Confusion Matrix.
 
 However, as we're dealing with a regression problem, the most popular metrics are: the MSE, MAE, RMSE, R-Squared and variants of these coefficients.

@@ -110,7 +110,7 @@ When problems like these arise, we need to work around these incosistencies and 
 
 Now that we have a harmonized dataset, we're ready to calculate a player's performance. But how do we begin? For that, I like to use an AutoML tool called [mljar-supervised](https://github.com/mljar/mljar-supervised), that allows me to easily perform some automatic analysis for the dataset to predict the `win` variable (already provided by the API and present in our dataset). I can launch an experiment like this:
 
-![mljar output](./images/mljar-output.png)
+![mljar output](./images/mljar-output.PNG)
 > **Note**: Check out more information about the parameters I've used [here.](https://supervised.mljar.com/)
 
 This generated a lot of visualizations for me, that gave me an idea of what's necessary to accurately predict the `win` (and `calculated_player_performance`) variable:
