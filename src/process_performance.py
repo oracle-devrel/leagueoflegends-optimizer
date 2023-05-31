@@ -11,6 +11,7 @@ import multiprocessing.pool as mpool
 import sys
 import random
 import yaml
+from rich import print
 
 # if reading from a csv file, we RANDOMLY SHUFFLE the dataset
 #df = df.sample(frac=1)
@@ -351,7 +352,7 @@ for i in range(1, len(df), 19): # step 3 since our batch size = 3.
     pool.apply_async(func=run_process_player_performance, args=(sync_17,))
     pool.apply_async(func=run_process_player_performance, args=(sync_18,))
     try:
-        pool.apply_async(func=run_process_player_performance, args=(sync_19,)).get() # we make sure we at least wait for one synchronous thread
+        pool.apply_async(func=run_process_player_performance, args=(sync_19,))#.get() # we make sure we at least wait for one synchronous thread
     except sqlite3.OperationalError:
         print('[LOCK]')
         continue
@@ -377,6 +378,7 @@ for i in range(1, len(df), 19): # step 3 since our batch size = 3.
     iter += 1
     '''
     #print('{}%'.format((iter / len(df))*100))
+    time.sleep(21)
 
 
 #pool.join()
