@@ -1,8 +1,9 @@
-# Lab 1: Understand and Sign Up for League of Legends 
+# Lab 1: Understand and Sign Up for League of Legends
 
 Estimated Time: 5-10 minutes
 
 ## Overview
+
 League of Legends is a team-based strategy game in which two teams of five powerful champions face off to destroy the other’s base. As a player, you can choose from over 140 champions to make epic plays, secure kills, and take down towers as you battle your way to victory. To win, you'll need to destroy the enemy’s Nexus—the heart of each team's base.
 
 Access and mobility play an important role in LoL. Your team needs to clear at least one lane to access the enemy Nexus. Blocking your path are defense structures called turrets and inhibitors. Each lane has three turrets and one inhibitor, and each Nexus is guarded by two turrets. In between the lanes is the jungle, where neutral monsters and jungle plants reside. The two most important monsters are Baron Nashor and the Drakes. Killing these units grants unique buffs for your team and can also turn the tide of the game.
@@ -30,17 +31,15 @@ In this Hands-On Lab (HOL), we'll start with the assumption that users know abou
 4. [Article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions
 5. [Article 5](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article5.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions II
 
-
 ### Prerequisites
 
 * An [Oracle Free Tier, Paid or LiveLabs Cloud Account](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_introduction&intcmp=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_introduction)
 * Active Oracle Cloud Account with available credits to use for Data Science service.
-* Creating a League of Legends account and completing the in-game tutorial, as we'll need an account to get an API key and perform in-game tests. Also, you'll need to [download the game and register](https://www.leagueoflegends.com/en-gb/). 
-
+* Creating a League of Legends account and completing the in-game tutorial, as we'll need an account to get an API key and perform in-game tests. Also, you'll need to [download the game and register](https://www.leagueoflegends.com/en-gb/).
 
 ## Task 1: Get Started
 
-This instructional video explains what needs to be done to get an API key necessary to what we will explain in the next lab. 
+This instructional video explains what needs to be done to get an API key necessary to what we will explain in the next lab.
 
 [Watch the video](youtube:HUJgYfrHhYI)
 
@@ -57,9 +56,8 @@ Then make sure to sign out of your newly created account, at the top right corne
 
 ![log out](images/logout.jpg)
 
-And login back again. 
+And login back again.
 > **Note**: if you still get the error message "waiting for email confirmation" wait a couple of minutes and try again.
-
 
 You may now [proceed to the next lab](#next).
 
@@ -68,4 +66,4 @@ You may now [proceed to the next lab](#next).
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Editor** - Erin Dawson, DevRel Communications Manager
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - May 17th, 2023
+* **Last Updated By/Date** - June 1st, 2023
