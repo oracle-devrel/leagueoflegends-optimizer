@@ -31,7 +31,7 @@ When we join a League of Legends game, the League process opens port 2999. We'll
 
 In order to make requests properly, we need to access localhost as the calling endpoint. However, we may not want to access data on a local computer where we are playing (as computer resources should be used to get maximum game performance). For that, I have created an architecture which uses **message queues** and would allow us to make requests from any machine in the Internet.
 
-For this architecture proposal, I've created two files, which you can find in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer) under the src/ section: live_client_producer.py and live_client_receiver.py.
+For this architecture proposal, I've created two files, which you can find in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer) under the _`src/live_client`_ section: live_client_producer.py and live_client_receiver.py.
 
 ### Producer
 

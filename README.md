@@ -1,6 +1,10 @@
 # League of Legends Optimizer
 
-[![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_leagueoflegends-optimizer)](https://sonarcloud.io/dashboard?id=oracle-devrel_leagueoflegends-optimizer)
+Try these Hands-On Labs yourself! Choose the topic you like the most.
+
+- [Data Extraction](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/dataextraction/index.html) - About Data Extraction & Engineering!
+- [Model Building with scikit-learn and AutoGluon](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/mlwithoci/index.html) - Illustrates the whole AI process once we have data available
+- [Introduction to Neural Networks](https://oracle-devrel.github.io/leagueoflegends-optimizer/hols/workshops/nn/index.html) - A very basic introduction to all Neural Network concepts, like learning rate, backpropagation... etc.
 
 ![presentation - slide 0](./images/0.PNG)
 ![presentation - slide 1](./images/1.PNG)
@@ -22,7 +26,6 @@
 ![presentation - slide 17](./images/17.PNG)
 ![presentation - slide 18](./images/18.PNG)
 
-
 ## Introduction
 
 League of Legends optimizer is a project created for educational purposes that uses Riot Games' API to make real-time predictions in game. The project is able to extract data from professional players, store this information in an Oracle Autonomous JSON Database, and use this data to train ML models to accurately predict the winning probability of a player.
@@ -39,15 +42,14 @@ From the initial set of tools to extract data (provided by Riot Games), there ar
 
     The information provided by the game can be complemented with external data, like tier lists of champions: this is beneficial to leverage the compositions depending on specific champions in a patch.
 
-
 2. Extract live data using the [Live Client Data API](https://developer.riotgames.com/docs/lol#game-client-api_live-client-data-api) and see what we can do. We use the Live Client Data API in [article 5.](./articles/article5.md)
 
 The following methods are permitted right now:
 
 ```python
 parser.add_argument('-m', '--mode', help='Mode to execute',
-	choices=['player_list', 'match_list', 'match_download_standard', 'match_download_detail', 'process_predictor', 'process_predictor_liveclient']
-	required=False)
+    choices=['player_list', 'match_list', 'match_download_standard', 'match_download_detail', 'process_predictor', 'process_predictor_liveclient']
+    required=False)
 ```
 
 It's not required to specify an option. In case no option is specified, all commands will run sequentially.
@@ -79,10 +81,8 @@ If we get one of these players, we check that their information is correct:
 
 ![challenger player](./images/micao.png?raw=true)
 
-
 ```bash
 python league.py --mode="match_list" # for all users obtained in the previous step, obtain their last 990 matches (if available)
-
 
 
 python league.py --mode="match_download_standard" # for each match ID obtained in the previous step, extract match information.
@@ -104,7 +104,7 @@ python league.py --mode="process_predictor_liveclient" # builds an affine struct
 
 ### Prerequisites
 
-Requirements file can be found in [this file](./requirements.txt).
+Requirements file can be found in [this file](deps/requirements_readme.txt).
 
 You will need to have installed Oracle Instant Client or other means of connectivity to the Oracle Autonomous JSON Database. [This is the official download site](https://www.oracle.com/database/technologies/instant-client/linux-x86-64-downloads.html) for Instant Client, there you also have configuration instructions on how to set this up on your local machine.
 
@@ -113,11 +113,10 @@ All sensitive information from the project, including Riot Games' API key is sto
 ```yaml
 riot_api_key: RGAPI-xxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxx
 db:
-	username: xxxxxx
-	password: xxxxxx
-	dsn: xxxx
+    username: xxxxxx
+    password: xxxxxx
+    dsn: xxxx
 ```
-
 
 ### Running the code
 
@@ -125,6 +124,7 @@ Run:
 `python league.py` for the full process. You can modify your code to run all components or just the ones you need in the data_mine() function.
 
 If we want to create our own model from scratch, we will need to:
+
 1. Extract data
 2. Process data (already done by [league.py](./src/league.py))
 2. Train the model (done separately [in a notebook](./notebooks/league_classifier_liveclient.ipynb))
@@ -146,11 +146,11 @@ python league.py --mode="process_predictor_liveclient"
 
 The Live Client Data API provides a method for gathering data during an active game. It includes general information about the game as well player data.
 
-It has a number of endpoints that return a subset of the data returned by the /allgamedata endpoint. This endpoint is great for testing the Live Client Data API, but unless you actually need all the data from this endpoint, we suggest one of the endpoints listed below that return a subset of the response. 
+It has a number of endpoints that return a subset of the data returned by the /allgamedata endpoint. This endpoint is great for testing the Live Client Data API, but unless you actually need all the data from this endpoint, we suggest one of the endpoints listed below that return a subset of the response.
 
 To extract live game information, we need to access the Live Client Data API from Riot Games. The API involves a set of protocols that CEF (Chromium Embedded Framework) uses to communicate between the League of Legends process and a C++ library.
 
-![](https://static.developer.riotgames.com/img/docs/lol/lcu_architecture.png?raw=true)
+![LCU Architecture](https://static.developer.riotgames.com/img/docs/lol/lcu_architecture.png?raw=true)
 
 Communications between the CEF and this C++ library happen locally, that's why we're obligated to use localhost as our connection endpoint. You can find additional information about this communication [here.](https://developer.riotgames.com/docs/lol)
 
@@ -168,9 +168,9 @@ When we join a League of Legends game, the League process opens port 2999. We'll
 
 ## Architecture
 
-In order to make requests properly, we need to access localhost as the calling endpoint. However, we may not want to access data in a local computer where we are playing (as computer resources should be used to get maximum game performance). For that, I have created an architecture which uses **message queues** and would allow us to make requests from any machine in the Internet.
+In order to make requests properly, we need to access localhost as the calling endpoint. However, we may not want to access data in a local computer where we are playing (as computer resources should be used to get maximum game performance). For that, I have created an architecture which uses __message queues__ and would allow us to make requests from any machine in the Internet.
 
-For this architecture proposal, I've created two files, which you can find in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer): [live_client_producer.py](./src/live_client_producer.py) and [live_client_receiver.py](./src/live_client_receiver.py).
+For this architecture proposal, I've created two files, which you can find in the [official repository for this article series](https://github.com/oracle-devrel/leagueoflegends-optimizer): [live_client_producer.py](src/live_client/live_client_producer.py) and [live_client_receiver.py](src/live_client/live_client_receiver.py).
 
 ### Producer
 
@@ -198,9 +198,10 @@ while True:
 We need to consider that, if we're not inside a game, we'll get a ConnectionError exception. To avoid this hardware interrupt, we catch the exception and keep making requests to the endpoint until something useful comes in.
 
 I've chosen **RabbitMQ message queues** a very simple and efficient solution to store our results into a queue. This ensures the following:
+
 - Accessing and consuming the data present in the queues from any IP address, not only localhost
 - Message order is guaranteed, should we ever need to make a time series visualization of our predictions.
-Therefore, we declare our message queues. 
+Therefore, we declare our message queues.
 
 ```python
 _MQ_NAME = 'live_client'
@@ -246,7 +247,7 @@ def send_message(queue_name, message):
     print('{} | MQ {} OK'.format(datetime.datetime.now(), message))
 ```
 
-As we've built our message queue producer, if we run this while in a game, our ever-growing message queue will store messages even if noone decides to "consume" them and make predictions. Now, we need to do exactly this through a **consumer**.
+As we've built our message queue producer, if we run this while in a game, our ever-growing message queue will store messages even if noone decides to "consume" them and make predictions. Now, we need to do exactly this through a __consumer__.
 
 ### Consumer
 
@@ -352,7 +353,7 @@ python live_client_producer.py --ip="RABBITMQ_IP_ADDRESS"
 python live_client_receiver.py --ip="RABBITMQ_IP_ADDRESS" -p="MODEL_PATH" 
 ```
 
-## The Game!
+## The Game
 
 Since I'm using a lightweight model to make predictions, and training data is only 50000 rows, I'm expecting results to be roughly inaccurate. Therefore, to make things obvious and demonstrate the functionality, I've chosen to play a League match in the practice tool against an AI bot. This will allow me to level up quickly and buy items with lent out gold from the practice tool, something that would take me about 30 to 35 minutes in a real match. 
 
@@ -360,15 +361,15 @@ I chose to play Ezreal and bought a standard hybrid AD-AP build, which is especi
 
 From the producer's POV, we're making requests every 30 seconds and expecting a prediction. This is the kind of data we're storing in, and then consuming from our message queue:
 
-![](./images/producerdebug.JPG?raw=true)
+![producer debug](./images/producerdebug.JPG?raw=true)
 
 As we start the game, we get a very average 60/40% winrate probability. This is due to the fact that Ezreal is usually superior in early game compared to Miss Fortune if we keep our distance. As training data comes from real Masters+ players, usually games are very quiet at the beginning and players perform very safely until mid game. Therefore, it makes sense that Ezreal starts with a bigger win percentage probability.
 
-![](./images/started_game.JPG?raw=true)
+![started the game](./images/started_game.JPG?raw=true)
 
 After starting the game, since we're in the practice tool, I chose to go full-build and buy all items from the shop (the standard AD-AP build).
 
-![](./images/game1.JPG?raw=true)
+![in game](./images/game1.JPG?raw=true)
 
 Immediately after the next request, the HTTP request fed the model my current stats, which were severely overpowered for the beginning of the game. If we review the statistics that are taken into account by our model, they are:
 
@@ -383,15 +384,14 @@ Therefore, any statistic that's considered an outlier from the interquartile ran
 
 Consequently, the predicted winrate spiked to about 70% and stayed that way during the rest of the match:
 
-![](./images/bought_items.JPG?raw=true)
-
+![19](./images/bought_items.JPG?raw=true)
 
 As I'm only considering player statistics, killing my AI opponent didn't give me any additional win probability, as kills, assists, deaths, vision score... aren't considered in this model. Also note that the model that's making the predictions was trained with only 50.000 rows, instead of the millions of rows we had in our __bigger__ model. Surely predictions would yield better results if we used the bigger model; we just didn't do that since prediction times would increase significantly.
 
-![](./images/20.JPG?raw=true)
-
+![20](./images/20.JPG?raw=true)
 
 Currently, the information which can be extracted from the Live Client Data API contains:
+
 - Current player statistics, abilities and their levels, gold and player level at any given time in the game. This can be considered a good approach to calculating the snowball effect, should we ever need to include this metric in our model.
 - Equipped runes
 - List of champions in the game and their stats (scores, skins, spells, position they are playing in, whether they're dead or alive, and current items of players).
@@ -400,21 +400,24 @@ Currently, the information which can be extracted from the Live Client Data API 
 - List of events that have happened since the beginning of the game (such as game start). [This list includes all events that we can find](https://static.developer.riotgames.com/docs/lol/liveclientdata_events.json).
 - Basic data about the game (map, game time, type of queue in which the match is being played in, and map terrain information).
 
-
 ### Available endpoints
+
 There are many available endpoints for the Live Client Data API, but the one that encapsulates the information from all sources is the following:
 
 #### Get All Game Data
 
 The Live Client Data API has a number of endpoints that return a subset of the data returned by the /allgamedata endpoint. This endpoint is great for testing the Live Client Data API, but unless you actually need all the data from this endpoint, it is suggested to use one of the endpoints listed below, which return a subset of the response.
 
-GET https://127.0.0.1:2999/liveclientdata/allgamedata
+GET <https://127.0.0.1:2999/liveclientdata/allgamedata>
 
+[![License: UPL](https://img.shields.io/badge/license-UPL-green)](https://img.shields.io/badge/license-UPL-green) [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=oracle-devrel_leagueoflegends-optimizer)](https://sonarcloud.io/dashboard?id=oracle-devrel_leagueoflegends-optimizer)
 
 ## URLs
+
 [Riot Games API](https://developer.riotgames.com/)
 
 ## Contributing
+
 This project is open source. Please submit your contributions by forking this repository and submitting a pull request!  Oracle appreciates any contributions that are made by the open source community.
 
 ## License

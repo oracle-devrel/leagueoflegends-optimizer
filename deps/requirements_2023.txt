@@ -1,0 +1,5 @@
+autogluon
+bokeh
+matplotlib
+scikit-learn
+ipykernel

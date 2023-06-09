@@ -1,5 +1,14 @@
 # Copyright (c) 2022 Oracle and/or its affiliates.
 
+'''
+@author jasperan
+This file connects to an Oracle Autonomous Database and checks all connectivities:
+- Riot Games API -> makes a request against the API key to check if we are authorized
+- DB Connectivity -> creates a connection to see if the wallet and database are properly configured
+
+Requires a wallet ZIP file and credentials to use it.
+
+'''
 import os
 import requests
 import oracledb

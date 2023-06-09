@@ -1,6 +1,7 @@
 # Getting Started
 
 ## Introduction
+
 To extract live game information, we need to access the Live Client Data API from Riot Games.
 
 Estimated Time: 15 minutes
@@ -20,23 +21,22 @@ The API features a set of protocols that CEF (Chromium Embedded Framework) uses 
 
 ![Live Client API Architecture](./images/lcu_architecture.png)
 
-Communication between the CEF and C++ libraries **happens automatically when we run the program**. Since we're running the League client in our computer, the IP being used is localhost (127.0.0.1). If you're interested in seeing how this communication works in more detail, check out [this//developer.riotgames.com/docs/lol).
+Communication between the CEF and C++ libraries **happens automatically when we run the program**. Since we're running the League client in our computer, the IP being used is localhost `(127.0.0.1)`. If you're interested in seeing how this communication works in more detail, check out [this link](https://developer.riotgames.com/docs/lol).
 
 > (Optional) You can also refer to [article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.md), where we dive into the most interesting endpoints in the Live Client Data API.
-
 
 ## Task 2: Test the Live Client API
 
 Check out this video where we explain how to connect to the Live Client API:
 
 [![Watch the video](./images/hqdefault.jpg)](https://www.youtube.com/watch?v=SlG0q4oWGsk)
+> **Note**: you can now run [this file](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs/src/live_client/run_new_live_model.py) instead, which will allow you to perform inference on the models you have created.
 
+When we join a League of Legends game, the League process automatically opens port `2999`. We'll use this to our advantage and we'll make recurring requests to `localhost:2999` to extract live match data.
 
-When we join a League of Legends game, the League process automatically opens port 2999. We'll use this to our advantage and we'll make recurring requests to localhost:2999 to extract live match information.
+The most complete HTTP endpoint you can find in the Live Client API is the following `/allgamedata` endpoint:
 
-The HTTP endpoint being used to get data while we're in a League of Legends match is the following:
-
-```
+```bash
 <copy>
 # GET https://127.0.0.1:2999/liveclientdata/allgamedata
 </copy>
@@ -52,64 +52,45 @@ The HTTP endpoint being used to get data while we're in a League of Legends matc
     ![creating match 2](images/lab1-league3.png)
 4. Now, we are inside the game after loading.
     ![in game](images/lab1-league4.png)
-5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc. [To make the requests automatically, you can use this code](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/livelabs/making_requests.py).
+5. After joining the game, we can start making HTTP requests to check our live champion statistics, score, cooldowns, etc.
 
-    > **Note**: you should run this code (`making_requests.py`) in your local machine, as we need to make HTTP requests through **localhost**. This means that, in the computer where you're playing, you must have a Python environment configured and be able to run the abovementioned code.<br>
-    > If you'd rather just see an example of the data returned, [check the contents of this file](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json). You can observe the kind of information we can access from a player. Attached is a sample JSON returned by the game [in this file](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/aux_files/example_live_client.txt).
+You can use two Python scripts, depending on what you want to do (testing / production):
 
-    ```json
-    <copy>
-    {
-        "magicResist": 32,
-        "healthRegenRate": 0,
-        "spellVamp": 0,
-        "timestamp": 0,
-        "bonusArmorPenetrationPercent": 0,
-        "bonusMagicPenetrationPercent": 0,
-        "maxHealth": 540,
-        "moveSpeed": 335,
-        "attackDamage": 25,
-        "armorPenetrationPercent": 0,
-        "lifesteal": 0,
-        "abilityPower": 0,
-        "cooldownReduction": 0,
-        "resourceValue": 350,
-        "magicPenetrationFlat": 0,
-        "attackSpeed": 100,
-        "currentHealth": 540,
-        "armor": 35,
-        "magicPenetrationPercent": 0,
-        "armorPenetrationFlat": 0,
-        "resourceMax": 350,
-        "resourceRegenRate": 0
-    }
-    </copy>
-    ```
+* [Making requests without using your ML model](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/live_client/making_requests.py)
+* [Using your ML model (recommended)](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/livelabs/src/live_client/run_new_live_model.py)
 
-    > We'll use all of this champion information as input in our ML model. To that end, we need to harmonize column names and amount of variables in our pre-trained models, with the information we have available in real-time so that the ML model can make predictions with everything that we have available. This is achieved thanks to the __`process_predictor_liveclient`__ function.
+Remember to run the code you choose in your local machine, as we need to make HTTP requests through **localhost**. This means that, in the computer where you're playing, you must have a Python environment configured and being able to run the abovementioned code.
 
+If you'd rather just see an example of the data returned, [check the contents of this file](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json). You can observe the kind of information we can access from a player.
+
+In [this file](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/aux_files/example_live_client.txt), you can find a a sample JSON returned by the game.
+
+If you're using your own ML model after training it, and you have successfully joined a game, you should see some stats and recommendations from the ML model start to appear when you run the file:
+
+![ML model recommendations](./images/model_output.png)
+> **Note**: at the beginning of the match, and until you have at least one kill and one death, it will just tell you that you're missing some data to start calculating your current performance (as 0 divided by any natural number is 0, and I didn't want to depress you telling you that you have a terrible amount of kills at the beginning.)
+
+Also note it's recommended to run `run_new_live_model.py` with a Python version equal to the one that you used during the **Model Building** phase. Otherwise you will run into warnings, or even errors if the Python versions are too different.
 
 ## Conclusions
 
-Congratulations, you have completed the Workshop! 
+Congratulations, you have completed the Workshop!
 
 A recap of what we've learned:
 
-- &check; How to provision resources in OCI for Data Science purposes
-- &check; How to create a datastore architecture for our problems
-- &check; How to data mine League of Legends through an API
-- &check; How to build and structure the data
-- &check; How to load data, preprocess it, visualize the dataset
-- &check; How to create a model
-- &check; How to deploy this model, and make real-time predictions with it from new data
-- &check; How to connect to the Live Client API
-- &cross; How to have a **robust** model with higher baseline accuracy -> to be done in the next workshop.
-
-In the next workshop, we'll learn how to extend and improve the model we've created __significantly__. At the end, we'll improve the accuracy of the model from a mere 51% accuracy to about 83% accuracy after finalizing the whole process.
-
+* How to provision resources in OCI for Data Science purposes
+* How to create a datastore architecture for our problems
+* How to data mine League of Legends through an API
+* How to build and structure the data
+* How to load data, preprocess it, visualize the dataset
+* How to create a model
+* How to deploy this model, and make real-time predictions with it from new data
+* How to connect to the Live Client API
+* How to have a **robust** model with higher baseline accuracy -> to be done in the next workshop.
+* How to use this model in real-time to get some feedback on how well you're playing
 
 ## Acknowledgements
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - April 20th, 2023
+* **Last Updated By/Date** - May 28th, 2023

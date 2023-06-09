@@ -259,7 +259,7 @@ We will store this information inside a new collection called *matchups*. It wil
 
 ## Statistics
 
-Using an auxiliary file called [find_counts.py](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/main/src/find_counts.py) we can find the number of elements we have in each one of our collections. In my case, having executed the data extraction code for several iterations, and processing matchups, I find myself with the following data:
+Using an auxiliary file called [find_counts.py](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/main/src/old/find_counts.py) we can find the number of elements we have in each one of our collections. In my case, having executed the data extraction code for several iterations, and processing matchups, I find myself with the following data:
 
 ```
 Collection match has 1193746 documents

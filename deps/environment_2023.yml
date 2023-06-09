@@ -1,0 +1,16 @@
+name: base
+channels:
+  - defaults
+dependencies:
+  - pip:
+    - python==3.9
+    - autogluon==0.7.0
+    - autogluon-common==0.7.0
+    - autogluon-core==0.7.0
+    - autogluon-features==0.7.0
+    - autogluon-multimodal==0.7.0
+    - autogluon-tabular==0.7.0
+    - autogluon-timeseries==0.7.0
+    - numpy==1.22.4
+    - pip==23.1.2
+    - bokeh

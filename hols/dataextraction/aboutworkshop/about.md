@@ -10,7 +10,11 @@ Are you interested in learning machine learning (ML)? How about doing this in th
 
 Here's a short 3-minute introductory video into League of Legends:
 
-[Watch the video](youtube:OfYU4gbk13w)
+[League of Legends Introduction](youtube:OfYU4gbk13w)
+
+And here's a video to get you hyped about League and understand advanced strategies from one of the best teams in the world:
+
+[LCS Finals - 2023](youtube:0b0TXaJMUMU)
 
 ## About Product/Technology
 
@@ -26,16 +30,11 @@ The Data Science Service:
 
 In this lab, you will complete the following steps:
 
-&check; Data Collection - Download datasets
-
-&check; Data Preparation - Preparing datasets
-
-&check; Data Load - Searching for patterns in datasets
-
-&check; Implement ML Models - Develop, different ML models, evaluate best model and tune
-
-&check; Data Integration - Connecting to real-time data sources
-
+- Data Collection - Download datasets
+- Data Preparation - Preparing datasets
+- Data Load - Searching for patterns in datasets
+- Implement ML Models - Develop, different ML models, evaluate best model and tune
+- Data Integration - Connecting to real-time data sources
 
 ## OCI Elements
 
@@ -48,9 +47,16 @@ This solution is designed to work with several OCI services, allowing you to qui
 
 ## Data Sets
 
-We'll access datasets uploaded to OCI Object Storage. You don't need to download any datasets by yourself, everything will be **automated**.
+We'll access datasets uploaded to OCI Object Storage. You will get detailed instructions on how to download the full dataset in the Infrastructure lab.
 
-They are optionally also uploaded to [this Kaggle repository](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results). This repository contains several files, make sure you check all available datasets if you're interested and give a thumbs up if you find them useful.
+You don't need to download any datasets by yourself, everything will be **automated**.
+
+I have also published my datasets into Kaggle, should you be interested to look at them in more detail, or even use them yourself:
+
+- [Old Dataset](https://www.kaggle.com/jasperan/league-of-legends-1v1-matchups-results)
+- [New Dataset](https://www.kaggle.com/datasets/jasperan/league-of-legends-optimizer-dataset)
+
+Make sure to give them a thumbs up if you're enjoying the content and find them interesting.
 
 ## Useful Sources
 
@@ -58,10 +64,9 @@ They are optionally also uploaded to [this Kaggle repository](https://www.kaggle
 
 You may now [proceed to the next lab](#next).
 
-
 ## Acknowledgements
 
-* **Author** - Nacho Martinez, Data Science Advocate @ DevRel
-* **Editor** - Erin Dawson, DevRel Communications Manager
-* **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - April 20th, 2023
+- **Author** - Nacho Martinez, Data Science Advocate @ DevRel
+- **Editor** - Erin Dawson, DevRel Communications Manager
+- **Contributors** -  Victor Martin, Product Strategy Director
+- **Last Updated By/Date** - May 29th, 2023

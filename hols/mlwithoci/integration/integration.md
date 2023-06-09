@@ -15,7 +15,7 @@ We will use a producer-consumer architecture, combining this architecture with *
 ![producer consumer architecture](./images/producer_consumer_architecture.jpg)
 
 This code will use two components:
-- Producer: the producer will obtain real-time data from the League Live Client API, and send it to the consumer. This code needs to be executed on the same machine as the one where we play League. Find the code [in this file.](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/ws_producer.py)
+- Producer: the producer will obtain real-time data from the League Live Client API, and send it to the consumer. This code needs to be executed on the same machine as the one where we play League. Find the code [in this file.](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/src/live_client/ws_producer.py)
 - Consumer: the consumer will make requests to the producer for real-time data, feed it to our previously-trained ML model, and return prediction results. Find the code [in this file.](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/src/ws_consumer.py)
 
 ### Objectives
@@ -84,7 +84,7 @@ The final result in real-time is this:
 
 ## Task 3 (Optional): Try this Hands-On
 
-You need to set up a Python environment and install the dependencies found in [this file.](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/requirements_autogluon.txt)
+You need to set up a Python environment and install the dependencies found in [this file.](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/deps/requirements_lab2_integration.txt)
 
 Afterward, you need to run two components: the producer and the consumer **at the same time**.
 

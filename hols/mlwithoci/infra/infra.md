@@ -219,7 +219,7 @@ We now need to load our notebooks into our environment.
 
     ```
     <copy>
-    pip install -r leagueoflegends-optimizer/r2.txt
+    pip install -r leagueoflegends-optimizer/deps/requirements_lab2_infra.txt
     </copy>
     ```
 
