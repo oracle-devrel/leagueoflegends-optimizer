@@ -189,3 +189,6 @@ override.tf.json
 .terraform.lock.hcl
 .terraformrc
 terraform.rc
+
+# Ignore the huge sqlite database file 'example.db'
+src/example.db
