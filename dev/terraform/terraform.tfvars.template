@@ -1,6 +1,6 @@
 config_file_profile    = "DEFAULT"
-region                 = "XXXXX"
-tenancy_ocid           = "XXXXX"
-compartment_ocid       = "XXXXX"
-ssh_public_key         = "XXXXX"
-riotgames_api_key      = "XXXXX" # https://developer.riotgames.com/
+region                 = "REGION_NAME"
+tenancy_ocid           = "TENANCY_OCID"
+compartment_ocid       = "COMPARTMENT_OCID"
+ssh_public_key         = "SSH_PUBLIC_KEY"
+riotgames_api_key      = "RIOT_GAMES_API_KEY" # https://developer.riotgames.com/
