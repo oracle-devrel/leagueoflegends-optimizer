@@ -50,7 +50,7 @@ export async function createRSAKeyPair(outputPath = ".") {
 
 export async function createSSHKeyPair(sshPathParam) {
   const defaultSSHPath = path.join(os.homedir(), ".ssh", "id_rsa");
-  const sshPath = sshPathsshPathParam || defaultSSHPath;
+  const sshPath = sshPathParam || defaultSSHPath;
   try {
     await $`ssh-keygen -t rsa -b 4096 -f ${sshPath} -q -N ""`;
     return await $`cat ${sshPath + ".pub"}`.stdout.trim();
