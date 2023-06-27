@@ -55,141 +55,70 @@ First, we need to download the official repository to get access to all the code
 
     ```bash
     <copy>
-    cd leagueoflegends-optimizer/dev
-    </copy>
-    ```
-
-5. Terraform uses a file called `tfvars` that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to copy a template we provide to use your own values. Run on Cloud Shell the following command:
-
-    ```bash
-    <copy>
-    cp terraform/terraform.tfvars.template terraform/terraform.tfvars
+    cd leagueoflegends-optimizer
     </copy>
     ```
 
 ## Task 2: Deploy with Terraform and Ansible
 
-1. Click on **Code Editor**. Next to the Cloud Shell one.
-    ![Cloud Code Editor](images/cloud-code-editor.png)
-
-    > **Note**: for **Safari** users:<br>
-    > First, it isn't the recommended browser for OCI. Firefox or Chrome are fully tested and are recommended.<br>
-    > With Safari, if you get a message _Cannot Start Code Editor_, go to _**Settings** > **Privacy**_ and disable _**Prevent cross-site tracking**_.<br>
-    > Then open Code Editor again.
-
-2. On the **Code Editor**, go to _**File** > **Open**_.
-    ![Open menu](images/code-editor-open-menu.png)
-
-3. On the pop-up, edit the path by clicking the pencil icon:
-    ![Open Pop Up](images/code-editor-open-popup.png)
-
-4. Append, at the end, the path to the `terraform.tfvars`
-    ![Path to tfvars](images/code-editor-path.png)
-
-    ```bash
-    <copy>/leagueoflegends-optimizer/dev/terraform/terraform.tfvars</copy>
-    ```
-
-5. Type _[ENTER]_ to select, click on the `terraform.tfvars` file and click Open.
-
-    ![TFVars Open](images/code-editor-open-tfvars.png)
-
-6. The file will open and you can copy values you will get from running commands on Cloud Shell and paste it on the Code Editor.
-
-7. Copy the output of the following command as the region:
-
-    ```bash
-    <copy>echo $OCI_REGION</copy>
-    ```
-
-    ![Paste Region](images/paste-region.png)
-
-8. Copy the output of the following command as the tenancy OCID:
-
-    ```bash
-    <copy>echo $OCI_TENANCY</copy>
-    ```
-
-    ![Paste Tenancy OCID](images/paste-tenancy-ocid.png)
-
-9. Copy the output of the same command as the compartment OCID:
-
-    ```bash
-    <copy>echo $OCI_TENANCY</copy>
-    ```
-
-    ![Paste Compartment OCID](images/paste-compartment-ocid.png)
-
-    > **Note**: for experienced Oracle Cloud users:<br>
-    > Do you want to deploy the infrastructure on a specific compartment?<br>
-    > You can get the Compartment OCID in different ways.<br>
-    > The coolest one is with OCI CLI from the Cloud Shell.<br>
-    > You have to change _`COMPARTMENT_NAME`_ for the compartment name you are looking for and run the following command:
+1. You are going to create a file `.env.json` that contains variables for terraform. Including the Riot Games API Key. Run on Cloud Shell the following command:
 
     ```bash
     <copy>
-    oci iam compartment list --all --compartment-id-in-subtree true --query "data[].id" --name COMPARTMENT_NAME
+    npx zx scripts/setenv.mjs
     </copy>
     ```
 
-10. Generate a SSH key pair, by default it will create a private key on _`~/.ssh/id_rsa`_ and a public key _`~/.ssh/id_rsa.pub`_.
-    It will ask to enter the path, a passphrase and confirm again the passphrase; type _[ENTER]_ to continue all three times.
+2. It will run a dependency check and right after ask for a compartment name. If you are in a trial, or brand new to Oracle Cloud, just leave it empty and type _ENTER_.
+    > NOTE: If you want to deploy on a specific compartment, type the name (not the OCI ID) and the compartment will be used.
+
+3. Then, the script will ask for the `Riot Games API Key`. Paste the API Key from the developer's Riot Games website.
+
+4. The script will finished.
+    ![Cloud Shell setenv](./images/cloud-shell-setenv.png)
+
+5. Terraform uses a file called `terraform.tfvars` that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to use a script that will ask you for information to create the `terraform.tfvars` file for you. Run on Cloud Shell the following command:
 
     ```bash
-    <copy>ssh-keygen -t rsa</copy>
+    <copy>
+    npx zx scripts/tfvars.mjs
+    </copy>
     ```
 
-    > **Note**: If there isn't a public key already created, run the following command to create one:
-    > ```
-    > <copy>ssh-keygen</copy>
-    > ```
-    > And select all defaults. Then, try running the command again.
-
-11. We need the public key in our notes, so keep the result of the content of the following command in your notes.
-
-    ```bash
-    <copy>cat ~/.ssh/id_rsa.pub</copy>
-    ```
-
-    ![Paste Public SSH Key](images/paste-public-ssh-key.png)
-
-12. From the previous lab, you should have the Riot Developer API Key.
-
-  ![Riot API Key](images/riot_api_key_gen.png)
-
-  Paste the Riot API Key on the `riotgames_api_key` entry of the file.
-  
-  ![Paste Riot API Key](images/paste-riot-api-key.png)
-
-13. Save the file.
-
-    ![Code Editor Save](images/code-editor-save.png)
+6. The script will create the `terraform.tfvars` file.
+    ![Cloud Shell tfvars](./images/cloud-shell-tfvars.png)
 
 ## Task 3: Start Deployment
 
-1. Run the `start.sh` script
+1. Change directory to `dev`
+
+    ```bash
+    <copy>cd dev</copy>
+    ```
+
+2. Run the `start.sh` script
 
     ```bash
     <copy>./start.sh</copy>
     ```
 
-2. The script will run and it looks like this.
+3. The script will run and it looks like this.
 
     ![Start SH beginning](images/start-sh-beginning.png)
 
-3. Terraform will create resources for you, and during the process it will look like this.
+4. Terraform will create resources for you, and during the process it will look like this.
 
     ![Start SH terraform](images/start-sh-terraform.png)
 
-4. Ansible will continue the work as part of the `start.sh` script. It looks like this.
+5. Ansible will continue the work as part of the `start.sh` script. It looks like this.
 
     ![Start SH ansible](images/start-sh-ansible.png)
 
-5. The final part of the script is to print the output of all the work done.
+6. The final part of the script is to print the output of all the work done.
 
     ![Start SH output](images/start-sh-output.png)
 
-6. Copy the ssh command from the output variable `compute`.
+7. Copy the ssh command from the output variable `compute`.
 
     ![Start SH output](images/start-sh-ssh.png)
 
