@@ -56,7 +56,7 @@ Estimated Time: 45 minutes
 
     ```bash
     <copy>
-    git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
+    git clone https://github.com/oracle-devrel/leagueoflegends-optimizer.git
     </copy>
     ```
 
