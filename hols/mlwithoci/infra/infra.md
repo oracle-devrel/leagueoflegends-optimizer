@@ -33,7 +33,7 @@ Estimated Time: 15 minutes
 
 2. As soon as the Cloud Shell is loaded, you can download the assets to run this lab.
     ```
-    <copy>git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git</copy>
+    <copy>git clone https://github.com/oracle-devrel/leagueoflegends-optimizer.git</copy>
     ```
 
 3. The result will look like this:
@@ -185,7 +185,7 @@ We now need to load our notebooks into our environment.
 
     ```
     <copy>
-    git clone --branch livelabs https://github.com/oracle-devrel/leagueoflegends-optimizer.git
+    git clone https://github.com/oracle-devrel/leagueoflegends-optimizer.git
     </copy>
     ```
 
