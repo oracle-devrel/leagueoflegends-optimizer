@@ -178,6 +178,12 @@ And, to finalize, the flow of our problem shall be something like this:
 
 ![final diagram](./images/diagram.png)
 
+Here's the diagram broken down into two steps:
+
+![final diagram - part 1](./images/diagram_1.png)
+
+![final diagram - part 1](./images/diagram_2.png)
+
 And **now**, it's time to keep extracting data periodically, to improve the quality of our dataset, and start building the model.
 
 You may now [proceed to the next lab](#next).
@@ -186,4 +192,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - May 24th, 2023
+* **Last Updated By/Date** - July 13th, 2023
