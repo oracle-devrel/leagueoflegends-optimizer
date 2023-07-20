@@ -471,12 +471,18 @@ def match_list(db):
         # Insert them into our match collection
          #print(', '.join([f'{key} REAL' for key in x.keys()]))
     
-        pd_all_matches = pd.DataFrame(db.execute(query).fetchall()).set_axis(['match_id'], axis=1)#.reset_index(drop=True)
-        df = pd.DataFrame(z_match_ids)
-        diff = df[~df.apply(tuple,1).isin(pd_all_matches.apply(tuple,1))] # FIND DF1 - DF2
+        try:
+            pd_all_matches = pd.DataFrame(db.execute(query).fetchall()).set_axis(['match_id'], axis=1)#.reset_index(drop=True)
+            df = pd.DataFrame(z_match_ids)
+            diff = df[~df.apply(tuple,1).isin(pd_all_matches.apply(tuple,1))] # FIND DF1 - DF2
 
-        if len(df) != len(diff): # this means there are some duplicates inside the db. avoid them.
-            print('[{}][FIX]'.format(time.strftime("%Y-%m-%d %H:%M")))
+            if len(df) != len(diff): # this means there are some duplicates inside the db. avoid them.
+                print('[{}][FIX]'.format(time.strftime("%Y-%m-%d %H:%M")))
+        except ValueError: # no data in the database so far
+            # then we will just insert all of them.
+            df = pd.DataFrame(z_match_ids)
+            diff = df
+        
 
 
         if not diff.empty:
