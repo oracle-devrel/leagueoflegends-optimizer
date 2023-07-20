@@ -5,3 +5,5 @@ requests==2.28.*
 attrs==21.4.*
 pandas==1.4.*
 ujson==5.4.*
+rich
+pyyaml
