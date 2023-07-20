@@ -6,7 +6,7 @@ Estimated Time: 30 minutes
 
 If we want to build an AI/ML model, we need data. Lots and lots of data.
 
-For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [sqlite_league.py](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/sqlite_league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode.
+For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [cloudshell_league.py](https://github.com/oracle-devrel/leagueoflegends-optimizer/src/cloudshell_league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode.
 
 All tools mentioned in this lab are designed to allow parallel and continuous execution, meaning that, if you don't stop execution of the optimizer, it will keep collecting data **indefinitely**. You're free to explore with how much data you want to extract using the optimizer.
 
@@ -49,7 +49,7 @@ The more you repeat this process, the more data your dataset will have. If you w
 1. To extract player data, we can run:
 
     ```bash
-    λ <copy>python src/sqlite_league.py</copy>
+    λ <copy>python src/cloudshell_league.py</copy>
     ```  
 
     ![player list result](images/result-player-list.PNG)
@@ -60,7 +60,7 @@ The more you repeat this process, the more data your dataset will have. If you w
 2. To extract previously played matches' IDs from our pool of players in the database, we can do this:
 
     ```bash
-    λ <copy>python src/sqlite_league.py --mode="match_list"</copy>
+    λ <copy>python src/cloudshell_league.py --mode="match_list"</copy>
     ```
 
     ![match list result](images/result-match-list.PNG)
@@ -102,4 +102,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - May 28th, 2023
+* **Last Updated By/Date** - July 20th, 2023

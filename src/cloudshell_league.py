@@ -12,20 +12,19 @@ import argparse
 import ujson as json
 import time
 import sqlite3
-from rich import print
 import random
-import yaml
 from init_db import run_init_db
+from dotenv import load_dotenv
+
 
 # Create a connection to the SQLite database
 conn = sqlite3.connect('example.db')
 
+load_dotenv()
+
 run_init_db()
 
-with open('../config.yaml', 'r') as f:
-    config = yaml.safe_load(f)
-
-riot_api_key = config['API_TOKEN']
+riot_api_key = os.getenv("RIOT_API_KEY")
 
 
 home = str(Path.home())
