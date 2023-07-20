@@ -72,7 +72,7 @@ The more you repeat this process, the more data your dataset will have. If you w
 ## Task 2: Process Player Performance
 
 ```bash
-<copy>python src/process_player_performance.py</copy>
+<copy>python src/cloudshell_process_performance.py</copy>
 
 # it will then start extracting individual player matches' info and processing their performance.
 ```
