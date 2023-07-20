@@ -15,7 +15,7 @@ conn = sqlite3.connect('example.db')
 df = pd.read_sql_query('SELECT * FROM performance_table', conn)
 print(df.tail())
 pd.set_option('display.max_columns', None)
-print(df.iloc[-1]['summonerId'])
+#print(df.iloc[-1]['summonerId'])
 print(len(df))
 
 df.to_csv('performance_report.csv', index=True)
