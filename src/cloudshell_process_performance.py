@@ -2,12 +2,13 @@
 import pandas as pd
 import numpy as np
 import requests
+from dotenv import load_dotenv
 import time
+import os
 import sqlite3
 import multiprocessing.pool as mpool
 import sys
 import random
-import yaml
 from rich import print
 
 # if reading from a csv file, we RANDOMLY SHUFFLE the dataset
@@ -35,10 +36,9 @@ currently_limited = 0
 print(df.tail(3))
 print('Dataframe length: {}'.format(len(df)))
 
-with open('../config.yaml', 'r') as f:
-    config = yaml.safe_load(f)
+load_dotenv()
 
-riot_api_key = config['API_TOKEN']
+riot_api_key = os.getenv("RIOT_API_KEY")
 
 headers = {
     "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
