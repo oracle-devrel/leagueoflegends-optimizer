@@ -1,7 +1,5 @@
 # Infrastructure
 
-Estimated Time: 15-20 minutes
-
 ## Introduction
 
 In this lab, we will build the infrastructure that we will use to run the rest of the workshop.
@@ -12,6 +10,8 @@ The main four elements that we will be creating are:
 - **Autonomous JSON Database** where we'll allocate the JSON documents.
 - **Data Science** session and notebook, to experiment with the newly-generated data using notebooks.
 
+Estimated Time: 15-20 minutes
+
 ![Infrastructure](images/lol_infra.png)
 
 We will use Cloud Shell to execute `start.sh` script, which will call Terraform and Ansible to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform or Ansible, don't worry, there is no need.
@@ -21,11 +21,6 @@ We will use Cloud Shell to execute `start.sh` script, which will call Terraform 
 
 Do you want to learn more? Feel free to check the code for terraform and ansible after the workshop [in our official repository.](https://github.com/oracle-devrel/leagueoflegends-optimizer/)
 
-### Prerequisites
-
-- An Oracle Free Tier, Paid or LiveLabs Cloud Account
-- Active Oracle Cloud Account with available credits to use for Data Science service.
-
 ### Objectives
 
 In this lab, you will learn how to:
@@ -34,6 +29,11 @@ In this lab, you will learn how to:
 - Deploy resources using Terraform and Ansible
 - Learn about federation, and what's necessary to authenticate a Terraform request
 - Download the datasets we will use
+
+### Prerequisites
+
+- An Oracle Free Tier, Paid or LiveLabs Cloud Account
+- Active Oracle Cloud Account with available credits to use for Data Science service.
 
 ## Task 1: Cloud Shell
 
@@ -201,29 +201,28 @@ Once we execute any notebook in this Data Science environment, remember that we'
 
 ## Task 6: Downloading DataSets
 
-We now need to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
+1. We now need to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
+    ![open terminal](./images/open_terminal.png)
 
-![open terminal](./images/open_terminal.png)
+2. Then, we execute the following command, which will download all necessary datasets:
 
-Then, we execute the following command, which will download all necessary datasets:
+    ```bash
+    <copy>
+    wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/FcwFW-_ycli9z8O_3Jf8gHbc1Fr8HkG9-vnL4I7A07mENI60L8WIMGtG5cc8Qmuu/n/axywji1aljc2/b/league-hol-ocw-datasets/o/league_ocw_2023.zip && unzip league_ocw_2023.zip -d /home/datascience/.
+    </copy>
+    ```
 
-```bash
-<copy>
-wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/FcwFW-_ycli9z8O_3Jf8gHbc1Fr8HkG9-vnL4I7A07mENI60L8WIMGtG5cc8Qmuu/n/axywji1aljc2/b/league-hol-ocw-datasets/o/league_ocw_2023.zip && unzip league_ocw_2023.zip -d /home/datascience/.
-</copy>
-```
-
-![unzip result](./images/unzip_result.png)
+    ![unzip result](./images/unzip_result.png)
 
 ## Task 7: Accessing our Notebooks
 
-We should now see the repository / files in our file explorer:
+1. We should now see the repository / files in our file explorer:
 
-![file explorer - 1](./images/file_explorer.png)
+    ![file explorer - 1](./images/file_explorer.png)
 
-We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`models_2023.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/models_2023.ipynb) is the one we will review during this workshop.
+2. We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`models_2023.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/models_2023.ipynb) is the one we will review during this workshop.
 
-![file explorer - 2](./images/file_explorer_2.png)
+    ![file explorer - 2](./images/file_explorer_2.png)
 
 Let's open it. You may now [proceed to the next lab](#next).
 
@@ -231,4 +230,4 @@ Let's open it. You may now [proceed to the next lab](#next).
 
 - **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 - **Contributors** - Victor Martin, Product Strategy Director
-- **Last Updated By/Date** - May 31st, 2023
+- **Last Updated By/Date** - July 24th, 2023

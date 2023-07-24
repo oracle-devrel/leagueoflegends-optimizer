@@ -6,6 +6,10 @@ In this lab, we'll be creating all Machine Learning Models. This model will atte
 
 Estimated Time: 45 minutes
 
+### Objectives
+
+In this lab, you will learn how to create Machine Learning models with the data we have.
+
 ### Prerequisites
 
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account

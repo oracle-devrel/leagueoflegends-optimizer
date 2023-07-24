@@ -1,17 +1,12 @@
 # How to think like a Machine for Data Science
 
-Estimated Time: 30 minutes
-
 ## Introduction
 
 In this chapter, I'm going to explain how the thought process of a Data Scientist (me) tried to architect the Machine Learning portion of this workshop before getting into developing code, focusing on ideating the problem and analyzing available variables and insights.
 
 I recommend you pay special attention to this lab if you are often afraid of starting to solve a problem, or are unsure of how to begin.
 
-### Prerequisites
-
-* An [Oracle Free Tier](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer&intcmp=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer), Paid, or LiveLabs Cloud Account
-* Active Oracle Cloud Account with available credits to use for Data Science service.
+Estimated Time: 30 minutes
 
 ### Objectives
 
@@ -22,6 +17,11 @@ In this lab, you will learn how to:
 * Find target variables
 * Explore the dataset with AutoML tools
 * Get our code ready to create some ML pipelines that can be reused in the future for other types of problems
+
+### Prerequisites
+
+* An [Oracle Free Tier](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer&intcmp=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer), Paid, or LiveLabs Cloud Account
+* Active Oracle Cloud Account with available credits to use for Data Science service.
 
 ## Task 1: What Data can I get and how?
 

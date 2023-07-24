@@ -1,8 +1,6 @@
-# Lab 1: Understand and Sign Up for League of Legends
+# Understand and Sign Up for League of Legends
 
-Estimated Time: 5-10 minutes
-
-## Overview
+## Introduction
 
 League of Legends is a team-based strategy game in which two teams of five powerful champions face off to destroy the other’s base. As a player, you can choose from over 140 champions to make epic plays, secure kills, and take down towers as you battle your way to victory. To win, you'll need to destroy the enemy’s Nexus—the heart of each team's base.
 
@@ -12,12 +10,13 @@ Team composition depends on five positions. Each lane lends itself to certain ki
 
 In this lab, we'll leverage the power of AI with League of Legends in a unique and innovative way. We'll dive deep into extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
 
+Estimated Time: 5-10 minutes
+
 ![Bought Items](images/bought_items.jpg)
 > **Note**: this image represents the functionality in 2022. You only got a winning chance probability.
 
 ![New Model in action](images/new_livelabs_functionality.PNG)
 > **Note**: this image represents the **new** functionality (2023). You get detailed insights about specific parts of your performance, such as your death ratio, your kill+assist ratio and your xp per minute. This allows you to get more information about what you could be doing right or wrong. Notice that in this screenshot, after getting a kill, my winning probabilities increase notably, and my kill + assist ratio, which was terrible until that moment, becomes "not so good". Last year's model had a lot of difficulties in detecting changes like these.
-
 
 By the end of this workshop series, you will be able to use our already-trained ML model to make real-time predictions about our in-game performances. You will also get the chance to train your own model (with your own tuning hyperparameters) and use it while you play League.
 
@@ -30,6 +29,10 @@ In this Hands-On Lab (HOL), we'll start with the assumption that users know abou
 3. [Article 3](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article3.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Building an Adversarial League of Legends AI Model
 4. [Article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions
 5. [Article 5](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article5.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions II
+
+### Objectives
+
+In this lab, you will learn about the main concepts of League of Legends, and have an overview of the infrastructure we will deploy (and why we need to deploy it).
 
 ### Prerequisites
 
@@ -66,4 +69,4 @@ You may now [proceed to the next lab](#next).
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Editor** - Erin Dawson, DevRel Communications Manager
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - June 1st, 2023
+* **Last Updated By/Date** - July 24th, 2023
