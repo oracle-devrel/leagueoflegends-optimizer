@@ -12,7 +12,7 @@ This means that there's no "end" to the optimizer, it will keep running until yo
 
 We recommend going through each task and running each task for **5 minutes** or so if you're getting started; you're free to execute any command at any point afterwards, it won't interfere with already existing data.
 
-Estimated Time: 25 minutes
+Estimated Time: 15 minutes
 
 ### Objectives
 

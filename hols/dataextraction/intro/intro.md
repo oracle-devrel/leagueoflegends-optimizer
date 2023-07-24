@@ -10,7 +10,7 @@ Team composition depends on five positions. Each lane lends itself to certain ki
 
 In this lab, we'll leverage the power of AI with League of Legends in a unique and innovative way. We'll dive deep into extractable data (accessible through the game's API), how to structure this data, and how to use it to train our own Machine Learning model to generate real-time predictions about any match.
 
-Estimated Time: 5-10 minutes
+Estimated Time: 5 minutes
 
 ![Bought Items](images/bought_items.jpg)
 > **Note**: this image represents the functionality in 2022. You only got a winning chance probability.

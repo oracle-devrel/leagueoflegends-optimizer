@@ -6,7 +6,7 @@ In this chapter, I'm going to explain how the thought process of a Data Scientis
 
 I recommend you pay special attention to this lab if you are often afraid of starting to solve a problem, or are unsure of how to begin.
 
-Estimated Time: 30 minutes
+Estimated Time: 20 minutes
 
 ### Objectives
 

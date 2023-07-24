@@ -10,7 +10,7 @@ The main four elements that we will be creating are:
 - **Autonomous JSON Database** where we'll allocate the JSON documents.
 - **Data Science** session and notebook, to experiment with the newly-generated data using notebooks.
 
-Estimated Time: 15-20 minutes
+Estimated Time: 15 minutes
 
 ![Infrastructure](images/lol_infra.png)
 
