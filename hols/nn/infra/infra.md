@@ -233,7 +233,7 @@ Then, we execute the following command, which will download all necessary datase
 
 ```bash
 <copy>
-wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/wPITlcIlqhE3VuDjIxeXyqwWTUa8o96q5jy-6gBXSNhO4OKha1A1JetWozNFZIAZ/n/axywji1aljc2/b/league-hol-ocw-datasets/o/ocw_datasets.zip && unzip ocw_datasets.zip -d /home/datascience/.
+wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/sYCvWWmtrBNF3UH-t3sf8WjqDKFxLLj262i9JjSsqUP0f63FpYfUtga7-JFMlxVX/n/axywji1aljc2/b/league-hol-ocw-datasets/o/ocw_datasets.zip && unzip ocw_datasets.zip -d /home/datascience/.
 
 </copy>
 ```
