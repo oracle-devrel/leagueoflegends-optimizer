@@ -4,7 +4,11 @@
 
 In this lab, we'll be creating all Machine Learning Models. This model will attempt to use as many variables as possible, whilst taking advantage of the power of AutoML (remember, work smart, not hard!). It'll be useful to us as it introduces the most basic and fundamental ML concepts.
 
-Estimated Time: 45 minutes
+Estimated Time: 30 minutes
+
+### Objectives
+
+In this lab, you will learn how to create Machine Learning models with the data we have.
 
 ### Prerequisites
 
@@ -247,4 +251,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - May 28th, 2023
+* **Last Updated By/Date** - July 24th, 2023

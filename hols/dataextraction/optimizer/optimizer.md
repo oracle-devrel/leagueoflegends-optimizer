@@ -1,7 +1,5 @@
 # Interacting with leagueoflegends-optimizer
 
-Estimated Time: 30 minutes
-
 ## Introduction
 
 If we want to build an AI/ML model, we need data. Lots and lots of data.
@@ -14,10 +12,7 @@ This means that there's no "end" to the optimizer, it will keep running until yo
 
 We recommend going through each task and running each task for **5 minutes** or so if you're getting started; you're free to execute any command at any point afterwards, it won't interfere with already existing data.
 
-### Prerequisites
-
-* An [Oracle Free Tier](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer&intcmp=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer), Paid, or LiveLabs Cloud Account
-* Active Oracle Cloud Account with available credits to use for Data Science service.
+Estimated Time: 15 minutes
 
 ### Objectives
 
@@ -28,6 +23,11 @@ In this lab, you will learn how to:
 * Manipulate the data to make it ML-ready
 * Use this data to generate CSV datasets to later process
   
+### Prerequisites
+
+* An [Oracle Free Tier](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer&intcmp=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_optimizer), Paid, or LiveLabs Cloud Account
+* Active Oracle Cloud Account with available credits to use for Data Science service.
+
 ## Task 1: Extract Data / Generate Dataset
 
 There are some things to consider. In League of Legends, and since there are several endpoints, in order to extract data, we will need to:
@@ -102,4 +102,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - July 20th, 2023
+* **Last Updated By/Date** - July 24th, 2023

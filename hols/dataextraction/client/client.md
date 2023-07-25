@@ -6,6 +6,10 @@ To extract live game information, we need to access the Live Client Data API fro
 
 Estimated Time: 15 minutes
 
+### Objectives
+
+In this lab, you will learn how to use the Live Client API to extract real-time data whilst you play League of Legends. Also, you will learn how to connect this inflow data stream to the optimizer, so you can get real-time feedback about your in-game performance and statistics.
+
 ### Prerequisites
 
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account
@@ -93,4 +97,4 @@ A recap of what we've learned:
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - May 28th, 2023
+* **Last Updated By/Date** - July 24th, 2023
