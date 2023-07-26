@@ -38,13 +38,13 @@
       "type": "dbcs"
     },
     {
-      "title": "Lab 4: Create a Model",
+      "title": "Lab 5: Create a Model",
       "description": "Creat Model",
       "filename": "../../dataextraction/creatingmodel/creatingmodel.md",
       "type": "dbcs"
     },
     {
-      "title": "Lab 5: Client",
+      "title": "Lab 6: Client",
       "description": "Client API.",
       "filename": "../../dataextraction/client/client.md",
       "type": "dbcs"

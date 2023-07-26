@@ -40,13 +40,13 @@ There are some things to consider. In League of Legends, and since there are sev
 
 The more you repeat this process, the more data your dataset will have. If you want to use my dataset, [check out this Kaggle dataset](https://www.kaggle.com/datasets/jasperan/league-of-legends-optimizer-dataset?select=sqlite_report_performance.csv) or refer to the Infrastructure lab to download it (step 6) if you haven't already.
 
-0. Before executing anything, we need to create a local sqlite3 database by running:
+1. Before executing anything, we need to create a local sqlite3 database by running:
 
     ```bash
     λ <copy>python src/init_db.py</copy>
     ```  
 
-1. To extract player data, we can run:
+2. To extract player data, we can run:
 
     ```bash
     λ <copy>python src/cloudshell_league.py</copy>
@@ -57,7 +57,7 @@ The more you repeat this process, the more data your dataset will have. If you w
 
     This execution option will iteratively look for League of Legends leaderboards in every region in the world, and insert these players' information into our database. If the user has already been inserted, it will prevent re-insertion.
 
-2. To extract previously played matches' IDs from our pool of players in the database, we can do this:
+3. To extract previously played matches' IDs from our pool of players in the database, we can do this:
 
     ```bash
     λ <copy>python src/cloudshell_league.py --mode="match_list"</copy>
@@ -71,28 +71,30 @@ The more you repeat this process, the more data your dataset will have. If you w
 
 ## Task 2: Process Player Performance
 
-```bash
-<copy>python src/cloudshell_process_performance.py</copy>
+1. Let's process each player's performance:
 
-# it will then start extracting individual player matches' info and processing their performance.
-```
+    ```bash
+    <copy>python src/cloudshell_process_performance.py</copy>
+
+    # it will then start extracting individual player matches' info and processing their performance.
+    ```
 
 ![process player performance result](images/output_player_performance.gif)
 
 ## Task 3: Creating Final Dataset
 
-Now that we have loads of players' performances calculated, we just have to pass this to a `csv` format.
+1. Now that we have loads of players' performances calculated, we just have to pass this to a `csv` format.
 
-```bash
-<copy>python src/read_data.py</copy>
+    ```bash
+    <copy>python src/read_data.py</copy>
 
 
-# this script will generate 3 csv files:
+    # this script will generate 3 csv files:
 
-#   - performance_report.csv, with the processed data ready for ML
-#   - player_report.csv, with various player information (Masters+)
-#   - match_report.csv, with every player's extracted matches.
-```
+    #   - performance_report.csv, with the processed data ready for ML
+    #   - player_report.csv, with various player information (Masters+)
+    #   - match_report.csv, with every player's extracted matches.
+    ```
 
 From `performance_report.csv`, we'll be able to create our Machine Learning pipeline in the next chapter.
 
@@ -102,4 +104,4 @@ You may now [proceed to the next lab](#next).
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - July 24th, 2023
+* **Last Updated By/Date** - July 26th, 2023
