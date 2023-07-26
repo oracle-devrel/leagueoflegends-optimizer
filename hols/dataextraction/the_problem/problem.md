@@ -108,59 +108,60 @@ When problems like these arise, we need to work around these incosistencies and 
 
 ## Task 3: Calculating Player's Performance
 
-Now that we have a harmonized dataset, we're ready to calculate a player's performance. But how do we begin? For that, I like to use an AutoML tool called [mljar-supervised](https://github.com/mljar/mljar-supervised), that allows me to easily perform some automatic analysis for the dataset to predict the `win` variable (already provided by the API and present in our dataset). I can launch an experiment like this:
+1. Now that we have a harmonized dataset, we're ready to calculate a player's performance. But how do we begin? For that, I like to use an AutoML tool called [mljar-supervised](https://github.com/mljar/mljar-supervised), that allows me to easily perform some automatic analysis for the dataset to predict the `win` variable (already provided by the API and present in our dataset). I can launch an experiment like this:
 
-![mljar output](./images/mljar-output.PNG)
-> **Note**: Check out more information about the parameters I've used [here.](https://supervised.mljar.com/)
+    ![mljar output](./images/mljar-output.PNG)
 
-This generated a lot of visualizations for me, that gave me an idea of what's necessary to accurately predict the `win` (and `calculated_player_performance`) variable:
+    > **Note**: Check out more information about the parameters I've used [here.](https://supervised.mljar.com/)
 
-* For example, in my generated FastAI Neural Network Model (one of the models with the highest accuracy), I got to see the most important variables:
+    This generated a lot of visualizations for me, that gave me an idea of what's necessary to accurately predict the `win` (and `calculated_player_performance`) variable:
 
-![mljar output](./images/nn_importance.png)
+    * For example, in my generated FastAI Neural Network Model (one of the models with the highest accuracy), I got to see the most important variables:
 
-* It's also important, if taking decisions to see whether this model's performance is good or not. In our case, 
+    ![mljar output](./images/nn_importance.png)
 
-![learning curves from nn_model](./images/learning_curves.png)
+    * It's also important, if taking decisions to see whether this model's performance is good or not. In our case,
 
-We can see that the loss of our ML model is low enough for our model to have taken the correct approach to predict the target variable. We can confirm that the model is telling us the most important variables by checking other models' predictions as well.
+    ![learning curves from nn_model](./images/learning_curves.png)
 
-As we can see, the model is able to deduce whether we're going to win or not by just looking at four or five weighted variables. By comparing these stats to what we already have in the Live Client API, we'll determine which variables we can use from that data structure to arrive at the conclusion.
+    We can see that the loss of our ML model is low enough for our model to have taken the correct approach to predict the target variable. We can confirm that the model is telling us the most important variables by checking other models' predictions as well.
 
-Considering that we're working with time-dependent data, from the variables mentioned above, we can extract the same statistics (deaths, kills)... per minute. This will introduce the time dimension into our dataset:
+    As we can see, the model is able to deduce whether we're going to win or not by just looking at four or five weighted variables. By comparing these stats to what we already have in the Live Client API, we'll determine which variables we can use from that data structure to arrive at the conclusion.
 
-* deaths/min
-* champLevel/min
-* assists/min
-* kills/min
-* duration (which is inferred into the above 4 variables already by adding it in the denominator as a factor of the variables).
+    Considering that we're working with time-dependent data, from the variables mentioned above, we can extract the same statistics (deaths, kills)... per minute. This will introduce the time dimension into our dataset:
 
-From these variables, and for each one of our matches, our Data Extraction pipeline is robust enough so that, any time you download a new match using our repository, all these additional variables will be calculated for us. More specifically, if you look at the dataset, you will see some variables called `f1...f5` which represent:
+    * deaths/min
+    * champLevel/min
+    * assists/min
+    * kills/min
+    * duration (which is inferred into the above 4 variables already by adding it in the denominator as a factor of the variables).
 
-* f1: `deaths_per_min` (deaths/min),
-* f2: `k_a_per_min` (kills+assists/min),
-* f3: `level_per_min` (xp/min),
-* f4: `total_damage_per_min` (**NOT** present in Live Client API yet -> not used),
-* f5: `gold_per_min` (**NOT** present in Live Client API yet -> not used),
+    From these variables, and for each one of our matches, our Data Extraction pipeline is robust enough so that, any time you download a new match using our repository, all these additional variables will be calculated for us. More specifically, if you look at the dataset, you will see some variables called `f1...f5` which represent:
 
-According to [this Medium post](https://maddcog.medium.com/measure-league-of-legends-performance-with-this-game-grade-778c2fe832cb), the optimal game grade / player performance is calculated with this formula:
+    * f1: `deaths_per_min` (deaths/min),
+    * f2: `k_a_per_min` (kills+assists/min),
+    * f3: `level_per_min` (xp/min),
+    * f4: `total_damage_per_min` (**NOT** present in Live Client API yet -> not used),
+    * f5: `gold_per_min` (**NOT** present in Live Client API yet -> not used),
 
-```bash
-<copy>
-Game Grade = 0.336 — (1.437 x Deaths per min) + (0.000117 x gold per min) + (0.443 x K_A per min) + (0.264 x Level per min) + (0.000013 x TD per min)
-</copy>
-```
+    According to [this Medium post](https://maddcog.medium.com/measure-league-of-legends-performance-with-this-game-grade-778c2fe832cb), the optimal game grade / player performance is calculated with this formula:
 
-> **Note**: a game grade closer to 1 means the player had a ‘winning’ performance, while a grade closer to 0 equated to a ‘losing performance’.
+    ```bash
+    <copy>
+    Game Grade = 0.336 — (1.437 x Deaths per min) + (0.000117 x gold per min) + (0.443 x K_A per min) + (0.264 x Level per min) + (0.000013 x TD per min)
+    </copy>
+    ```
 
-This can also be updated with our models, by taking the standardized coefficients for each one of these variables' importances, and create our formula.
+    > **Note**: a game grade closer to 1 means the player had a ‘winning’ performance, while a grade closer to 0 equated to a ‘losing performance’.
 
-Adding creep score per minute didn't offer them any improvement to the model so I chose to ignore it as well. However, only using Diamond matches in their training dataset increased the accuracy by 3% in the end. This is good for us as we've only considered Masters+ games in our training dataset with the hopes of reducing variability in our data.
+    This can also be updated with our models, by taking the standardized coefficients for each one of these variables' importances, and create our formula.
 
-As a conclusion, there is no noticeable improvement by adding variables (eg. creep score) or making the model more specific. Therefore, the simpler, generic model is what we'll aim for. So, we'll take the abovementioned variables (only three out of the five are present in the Live Client API) and build a new model from it:
+    Adding creep score per minute didn't offer them any improvement to the model so I chose to ignore it as well. However, only using Diamond matches in their training dataset increased the accuracy by 3% in the end. This is good for us as we've only considered Masters+ games in our training dataset with the hopes of reducing variability in our data.
 
-* Input variables: deaths/min, kills+assists/min, xp/min.
-* Output variables: model 1 will predict the `win` variable and model 2 will predict `calculated_player_performance` for any given player.
+    As a conclusion, there is no noticeable improvement by adding variables (eg. creep score) or making the model more specific. Therefore, the simpler, generic model is what we'll aim for. So, we'll take the abovementioned variables (only three out of the five are present in the Live Client API) and build a new model from it:
+
+    * Input variables: deaths/min, kills+assists/min, xp/min.
+    * Output variables: model 1 will predict the `win` variable and model 2 will predict `calculated_player_performance` for any given player.
 
 ## Task 4: Conclusion
 
@@ -170,7 +171,7 @@ Now that we have things clear:
 * Inputs / outputs of each model
 * Expected RMSE, accuracy for each one of the models
 
-And the fact that we have some additional model explainability thanks to `mljar-supervised`, **NOW** we're ready to begin building our models / a pipeline in OCI Data Science. 
+And the fact that we have some additional model explainability thanks to `mljar-supervised`, **NOW** we're ready to begin building our models / a pipeline in OCI Data Science.
 
 In order to build these models, we will also use AutoML, but a different tool. The tool you choose, in the end, must be parametrizable enough so that, if I'm unhappy with what's provided by default (like default hyperparameters) I still have enough control over the implementation of the AutoML library to be able to modify them to my convenience.
 

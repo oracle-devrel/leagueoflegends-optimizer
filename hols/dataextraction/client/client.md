@@ -65,16 +65,16 @@ You can use two Python scripts, depending on what you want to do (testing / prod
 
 Remember to run the code you choose in your local machine, as we need to make HTTP requests through **localhost**. This means that, in the computer where you're playing, you must have a Python environment configured and being able to run the abovementioned code.
 
-If you'd rather just see an example of the data returned, [check the contents of this file](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json). You can observe the kind of information we can access from a player.
+1. If you'd rather just see an example of the data returned, [check the contents of this file](https://static.developer.riotgames.com/docs/lol/liveclientdata_sample.json). You can observe the kind of information we can access from a player.
 
-In [this file](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/aux_files/example_live_client.txt), you can find a a sample JSON returned by the game.
+2. In [this file](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/src/aux_files/example_live_client.txt), you can find a a sample JSON returned by the game.
 
-If you're using your own ML model after training it, and you have successfully joined a game, you should see some stats and recommendations from the ML model start to appear when you run the file:
+3. If you're using your own ML model after training it, and you have successfully joined a game, you should see some stats and recommendations from the ML model start to appear when you run the file:
 
-![ML model recommendations](./images/model_output.png)
-> **Note**: at the beginning of the match, and until you have at least one kill and one death, it will just tell you that you're missing some data to start calculating your current performance (as 0 divided by any natural number is 0, and I didn't want to depress you telling you that you have a terrible amount of kills at the beginning.)
+    ![ML model recommendations](./images/model_output.png)
+    > **Note**: at the beginning of the match, and until you have at least one kill and one death, it will just tell you that you're missing some data to start calculating your current performance (as 0 divided by any natural number is 0, and I didn't want to depress you telling you that you have a terrible amount of kills at the beginning.)
 
-Also note it's recommended to run `run_new_live_model.py` with a Python version equal to the one that you used during the **Model Building** phase. Otherwise you will run into warnings, or even errors if the Python versions are too different.
+    Also note it's recommended to run `run_new_live_model.py` with a Python version equal to the one that you used during the **Model Building** phase. Otherwise you will run into warnings, or even errors if the Python versions are too different.
 
 ## Conclusions
 
@@ -97,4 +97,4 @@ A recap of what we've learned:
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** - Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - July 24th, 2023
+* **Last Updated By/Date** - July 26th, 2023
