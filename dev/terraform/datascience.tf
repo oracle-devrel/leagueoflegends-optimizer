@@ -36,7 +36,7 @@ data "oci_datascience_notebook_session_shapes" "ds_shapes" {
   compartment_id = var.compartment_ocid
   filter {
     name   = "core_count"
-    values = [1]
+    values = [var.desired_number_cpus]
   }
 }
 

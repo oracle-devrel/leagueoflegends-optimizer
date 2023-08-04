@@ -43,6 +43,11 @@ variable "riotgames_api_key" {
   type = string
 }
 
+variable "desired_number_cpus" {
+  type    = string
+  default = 4
+}
+
 variable "create_iam_policy" {
   type    = bool
   default = true

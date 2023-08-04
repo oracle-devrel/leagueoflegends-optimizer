@@ -55,6 +55,14 @@ const compartmentId = await searchCompartmentIdByName(
 properties = { ...properties, compartmentId };
 await writeEnvJson(properties);
 
+const desiredNumberCPUs = await setVariableFromEnvOrPrompt(
+  "LOL_NUMBER_CPU",
+  "Data Science CPU number"
+);
+
+properties = { ...properties, desiredNumberCPUs: desiredNumberCPUs || 4 };
+await writeEnvJson(properties);
+
 const defaultSSHPublicKeyPath = path.join(os.homedir(), ".ssh", "id_rsa.pub");
 const publicSSHKeyExists = await fs.pathExists(defaultSSHPublicKeyPath);
 
