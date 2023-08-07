@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[Lab 4](videohub:1_xu8wuo2h)
+
 In this chapter, I'm going to explain how the thought process of a Data Scientist (me) tried to architect the Machine Learning portion of this workshop before getting into developing code, focusing on ideating the problem and analyzing available variables and insights.
 
 I recommend you pay special attention to this lab if you are often afraid of starting to solve a problem, or are unsure of how to begin.

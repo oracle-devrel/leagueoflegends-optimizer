@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[Lab 2](videohub:1_ki0l5tk1)
+
 In this lab, we will build the infrastructure that we will use to run the rest of the workshop.
 
 The main four elements that we will be creating are:

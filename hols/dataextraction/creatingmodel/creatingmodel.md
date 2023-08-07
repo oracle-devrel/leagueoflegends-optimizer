@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[Lab 5](videohub:1_1tneyy0c)
+
 In this lab, we'll be creating all Machine Learning Models. This model will attempt to use as many variables as possible, whilst taking advantage of the power of AutoML (remember, work smart, not hard!). It'll be useful to us as it introduces the most basic and fundamental ML concepts.
 
 Estimated Time: 30 minutes
