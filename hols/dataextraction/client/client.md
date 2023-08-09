@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[Lab 6](videohub:1_0bckjz1h)
+
 To extract live game information, we need to access the Live Client Data API from Riot Games.
 
 Estimated Time: 15 minutes

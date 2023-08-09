@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[Lab 3](videohub:1_p1klyjxa)
+
 If we want to build an AI/ML model, we need data. Lots and lots of data.
 
 For that, Riot Games has provided us with several HTTPs endpoints to make requests and obtain this data. Through the [cloudshell_league.py](https://github.com/oracle-devrel/leagueoflegends-optimizer/src/cloudshell_league.py) file, we'll be able to make all the kinds of requests we want. This Python file has been programmed to allow input parameters and determine the execution mode.
