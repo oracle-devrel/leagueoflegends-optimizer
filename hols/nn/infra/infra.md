@@ -6,6 +6,8 @@ In this lab we will build the infrastructure that we will use to run the rest of
 
 The main element that we will be creating is a **Data Science** session and notebook, to experiment with the newly-generated data using notebooks.
 
+Estimated Time: 15 minutes
+
 ![Infrastructure](images/lol_infra.png)
 
 We will use Cloud Shell to execute _`start.sh`_ script that will call Terraform to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform, don't worry, there is no need. Also, there are no installation requirements: we will use Cloud Shell (which has Terraform installed by default) to deploy our infrastructure. 
@@ -16,12 +18,19 @@ Terraform is an Open Source tool to deploy resources in the cloud with code. You
 
 Do you want to learn more? Feel free to check [Terraform's code in this repository](https://github.com/oracle-devrel/leagueoflegends-optimizer/tree/main/dev/terraform) after the workshop.
 
-Estimated Time: 15 minutes
+### Objectives
+
+In this lab, you will learn how to:
+
+- Use Oracle Cloud Infrastructure for your Compute needs
+- Deploy resources using Terraform and Ansible
+- Learn about federation, and what's necessary to authenticate a Terraform request
+- Download the datasets we will use
 
 ### Prerequisites
 
-* An Oracle Free Tier, Paid or LiveLabs Cloud Account
-* Active Oracle Cloud Account with available credits to use for Data Science service.
+- An Oracle Free Tier, Paid or LiveLabs Cloud Account
+- Active Oracle Cloud Account with available credits to use for Data Science service.
 
 ## Task 1: Cloud Shell
 
@@ -145,13 +154,13 @@ Estimated Time: 15 minutes
 
 Having just created our OCI Data Science environment, we need to install the necessary Python dependencies to execute our code. For that, we'll access our environment.
 
-* The easiest way is to access into the notebook **through the URL** that we previously copied from Terraform's output.
+1. The easiest way is to access into the notebook **through the URL** that we previously copied from Terraform's output.
 
     ![terraform output](images/start-sh-ssh.png)
 
     If you have done it this way, make sure to **skip through to the next task**.
 
-* (Optionally) We can also access to the notebook via the OCI console, on the top left burger menu:
+2. (Optionally) We can also access to the notebook via the OCI console, on the top left burger menu:
 
     ![select data science](./images/select_data_science.png)
 
@@ -225,30 +234,30 @@ After these commands, all requirements will be fulfilled and we're ready to exec
 
 ## Task 6: Downloading DataSets
 
-We now need to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
+1. We now need to load our datasets into our environment. For that, we reuse the terminal we created in the previous step:
 
-![open terminal](./images/open_terminal.png)
+    ![open terminal](./images/open_terminal.png)
 
-Then, we execute the following command, which will download all necessary datasets:
+2. Then, we execute the following command, which will download all necessary datasets:
 
-```bash
-<copy>
-wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/sYCvWWmtrBNF3UH-t3sf8WjqDKFxLLj262i9JjSsqUP0f63FpYfUtga7-JFMlxVX/n/axywji1aljc2/b/league-hol-ocw-datasets/o/ocw_datasets.zip && unzip ocw_datasets.zip -d /home/datascience/.
+    ```bash
+    <copy>
+    wget https://objectstorage.eu-frankfurt-1.oraclecloud.com/p/sYCvWWmtrBNF3UH-t3sf8WjqDKFxLLj262i9JjSsqUP0f63FpYfUtga7-JFMlxVX/n/axywji1aljc2/b/league-hol-ocw-datasets/o/ocw_datasets.zip && unzip ocw_datasets.zip -d /home/datascience/.
 
-</copy>
-```
+    </copy>
+    ```
 
-![unzip result](./images/unzip_result.png)
+    ![unzip result](./images/unzip_result.png)
 
 ## Task 7: Accessing our Notebooks
 
-We should now see the repository / files in our file explorer:
+1. We should now see the repository / files in our file explorer:
 
-![file explorer - 1](./images/file_explorer.png)
+    ![file explorer - 1](./images/file_explorer.png)
 
-![file explorer - 2](./images/file_explorer_2.png)
+    ![file explorer - 2](./images/file_explorer_2.png)
 
-We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`neural_networks_lol.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/neural_networks_lol.ipynb) is the one we will review during this workshop.
+2. We navigate to the _`leagueoflegends-optimizer/notebooks/`_ directory and the notebook [_`neural_networks_lol.ipynb`_](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/notebooks/neural_networks_lol.ipynb) is the one we will review during this workshop.
 
 Let's open both of them and get to work.
 
@@ -256,6 +265,6 @@ You may now [proceed to the next lab](#next).
 
 ## Acknowledgements
 
-* **Author** - Nacho Martinez, Data Science Advocate @ DevRel
-* **Contributors** - Victor Martin - Product Strategy Director
-* **Last Updated By/Date** - May 29th, 2023
+- **Author** - Nacho Martinez, Data Science Advocate @ DevRel
+- **Contributors** - Victor Martin - Product Strategy Director
+- **Last Updated By/Date** - August 30th, 2023
