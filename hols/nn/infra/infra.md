@@ -10,7 +10,7 @@ Estimated Time: 15 minutes
 
 ![Infrastructure](images/lol_infra.png)
 
-We will use Cloud Shell to execute _`start.sh`_ script that will call Terraform to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform, don't worry, there is no need. Also, there are no installation requirements: we will use Cloud Shell (which has Terraform installed by default) to deploy our infrastructure. 
+We will use Cloud Shell to execute _`start.sh`_ script that will call Terraform to deploy all the infrastructure required and setup the configuration. If you don't know about Terraform, don't worry, there is no need. Also, there are no installation requirements: we will use Cloud Shell (which has Terraform installed by default) to deploy our infrastructure.
 
 Terraform is an Open Source tool to deploy resources in the cloud with code. You declare what you want in Oracle Cloud and Terraform make sure you get the resources created.
 
@@ -267,4 +267,4 @@ You may now [proceed to the next lab](#next).
 
 - **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 - **Contributors** - Victor Martin - Product Strategy Director
-- **Last Updated By/Date** - August 30th, 2023
+- **Last Updated By/Date** - October 9th, 2023
