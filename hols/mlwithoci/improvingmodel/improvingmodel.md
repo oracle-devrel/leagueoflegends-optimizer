@@ -4,25 +4,23 @@
 
 In the past workshop, we created [a very simple model](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/hols/dataextraction/creatingmodel/creatingmodel.md) with an accuracy of 51%. There are several ways in which we could improve the accuracy of the model: by adding more variables to our model, changing the approach to the model, hyper-parametrization... However, having such a low accuracy from the start makes hyper-parametrization not an option at this point, it's usually used when the baseline accuracy of a model is usually higher (generally speaking).
 
+Estimated Time: 30 minutes
+
 ### Objectives
 
 We're going to create a model that considers all variables in our **matchup** data structure, and reduce the complexity of our ML code by using AutoML open-source tools for data exploration and model training.
 
-Downloading data from professional games, we built the dataset contained within `matchups.json`. 
-    
+Downloading data from professional games, we built the dataset contained within `matchups.json`.
+
 For each match, we have 5 matchups (5 players play against each other in different roles and different places on the map), just like this one:
-    
+  
 ![example offline data](./images/matchups.png)
-
-
-Estimated Time: 30 minutes
 
 ### Prerequisites
 
 * An Oracle Free Tier, Paid or LiveLabs Cloud Account
 * Active Oracle Cloud Account with available credits to use for Data Science service.
 * (Optional) Having completed [the first workshop](../../workshops/dataextraction/index.html)
-
 
 ## Task 1: Offline DataSet Analysis
 
@@ -31,7 +29,6 @@ Estimated Time: 30 minutes
 By importing and using _`pandas_profiling`_, we get detailed, graphical insights into our dataset:
 
 ![Loading Matchups](./images/1_loading_matchups.png)
-
 
 We then generate an HTML report for Exploratory Data Analysis:
 
@@ -61,7 +58,6 @@ Additionally, we display some basic statistics _only from numerical columns_ wit
 Finally, we take a very quick look into one data point from the dataset and what each variable contains:
 
 ![iloc](./images/6_iloc.png)
-
 
 ### Choose the Right Variables
 
@@ -103,8 +99,9 @@ We determine which label is that we want to predict, and then create a TabularPr
 
 After having our fitted model, we can make predictions for incoming data.
 We do this in two steps:
-- Load the model
-- Make test predictions (in our case, we'll make predictions for each row in the testing dataset):
+
+* Load the model
+* Make test predictions (in our case, we'll make predictions for each row in the testing dataset):
 
 ![inference](./images/11_inference.png)
 
@@ -120,7 +117,7 @@ And now, we can evaluate prediction performances by displaying a list of the bes
 
 ![leaderboard](./images/13_leaderboard.png)
 
-> **Note**: apart from the usual accuracy (found in the _`score_test`_ column), we need to consider some other data found here. Whenever I'm thinking of reusing my models in the future, I take long consideration on trying to find a model that has a consistent metric that I like to call **prediction efficiency**, which measures the ratio between *accuracy* and *prediction time*. Meaning that, I want a good model with high accuracy, but I wouldn't want to wait 10 minutes for the next prediction; so I also look at the _`pred_time_test_` and _`pred_time_val`_ columns when deciding which of all these models I'm going to use. In this case, the best-performing model is also the most time-efficient one, so the decision wasn't hard.
+> **Note**: apart from the usual accuracy (found in the _`score_test`_ column), we need to consider some other data found here. Whenever I'm thinking of reusing my models in the future, I take long consideration on trying to find a model that has a consistent metric that I like to call **prediction efficiency**, which measures the ratio between _accuracy_ and _prediction time_. Meaning that, I want a good model with high accuracy, but I wouldn't want to wait 10 minutes for the next prediction; so I also look at the _`pred_time_test_` and _`pred_time_val`_ columns when deciding which of all these models I'm going to use. In this case, the best-performing model is also the most time-efficient one, so the decision wasn't hard.
 
 We extract the feature importances and see which variables are considered more important from our model's perspective, and which ones are more useless:
 
@@ -133,6 +130,7 @@ It's also convenient to look at the prediction probabilities returned for each c
 > **Note**: in classification tasks, some _`sklearn`_ or _`sklearn-based`_ estimators also implement the predict_proba method, which returns the class probabilities for each data point. In our case, since we only have two options, we'll only have two probabilities, one for each class.
 
 ### Some Observations
+
 As we can see, including more variables in the model greatly improved the accuracy and reduced the MAE and MSE of our model. We can also see that the model can predict the outcome of the game in the test data given the features in our data structure. This proves that a simple model is not always the best solution. We can achieve better results by using more advanced models, in this case about 83% accuracy, which is pretty good for a real-world problem.
 
 Also, we don't care how the models are trained on the inside as long as they make good predictions, and the corresponding metrics like *precision, recall, f1-score, and residual analysis_... are all in order. Of course, it's important to know the basics of ML to see how data is structured, but the most important lesson to take away is that the hardest part about data science and data engineering is not coding the ML model, but **understanding the data and the problem**, and **structuring** the data accordingly to satisfy our needs.
@@ -189,7 +187,7 @@ We observe which variables will be useful to us with _`pandas_profiling`_:
 
 > **Note**: we take out of our dataset all *identifying* variables like before, and **constant** values. Constant values don't add any value to the ML model as they will always be the same; these variables will only add noise in the long run or make the training time of a model be higher, and will never contribute positively towards any of our goals.
 
-In this case, we have the columns _`BONUSARMORPENETRATIONPERCENT`_, _`BONUSMAGICPENETRATIONPERCENT`_ ,_`COOLDOWNREDUCTION`_ and _`ARMORPENETRATIONFLAT`_ as *constants*, and _`IDENTIFIER_` as an *identifier*: we will remove all these variables without further analysis.
+In this case, we have the columns _`BONUSARMORPENETRATIONPERCENT`_, _`BONUSMAGICPENETRATIONPERCENT`_ ,_`COOLDOWNREDUCTION`_ and _`ARMORPENETRATIONFLAT`_ as _constants_, and _`IDENTIFIER_` as an _identifier_: we will remove all these variables without further analysis.
 
 ![dropping unnecessary columns](./images/7_drop_columns_online.png)
 
@@ -229,10 +227,8 @@ And now, we can evaluate prediction performances by displaying a list of the bes
 | 7 |       KNeighborsUnif |    0.531445 |   0.535000 |     4558.441928 |     177.424999 |    0.414970 |              4558.441928 |              177.424999 |           0.414970 |            1 |       True |          1 |
 | 8 |       KNeighborsDist |    0.531130 |   0.536250 |     4378.428705 |     174.572771 |    0.410502 |              4378.428705 |              174.572771 |           0.410502 |            1 |       True |          2 |
 
-> **Note**: apart from the usual accuracy (found in the _`score_test`_ column), we need to consider some other data found here. Whenever I'm thinking of reusing my models in the future, I take long consideration on trying to find a model that has a consistent metric that I like to call **prediction efficiency**, which measures the ratio between *accuracy* and *prediction time*. Meaning that, I want a good model with high accuracy, but I wouldn't want to wait 10 minutes for the next prediction; so I also look at the  and _`pred_time_val`_ column when deciding which of all these models I'm going to use. In this case, the best-performing model is also the most time-efficient one, so the decision wasn't hard.
-
-> **Note**: also note that each model has only been trained for **120 seconds**, and with a dataset of 1.2M rows. It's not a crazy idea to improve the model's accuracy even further (>65%) with a bigger dataset, or other techniques like trying Deep Learning. We will talk about Neural Networks and improving this model in the next workshop, where we'll build a custom Neural Network to get people introduced into Neural Networks as a whole. 
-
+> **Note**: apart from the usual accuracy (found in the _`score_test`_ column), we need to consider some other data found here. Whenever I'm thinking of reusing my models in the future, I take long consideration on trying to find a model that has a consistent metric that I like to call **prediction efficiency**, which measures the ratio between _accuracy_ and _prediction time_. Meaning that, I want a good model with high accuracy, but I wouldn't want to wait 10 minutes for the next prediction; so I also look at the  and _`pred_time_val`_ column when deciding which of all these models I'm going to use. In this case, the best-performing model is also the most time-efficient one, so the decision wasn't hard.
+> **Note**: also note that each model has only been trained for **120 seconds**, and with a dataset of 1.2M rows. It's not a crazy idea to improve the model's accuracy even further (>65%) with a bigger dataset, or other techniques like trying Deep Learning. We will talk about Neural Networks and improving this model in the next workshop, where we'll build a custom Neural Network to get people introduced into Neural Networks as a whole.
 
 ## Task 3: What Now?
 
@@ -246,4 +242,4 @@ While the model is pretty good, it doesn't have a practical side that we can use
 
 * **Author** - Nacho Martinez, Data Science Advocate @ DevRel
 * **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - April 20th, 2023
+* **Last Updated By/Date** - October 11th, 2023
