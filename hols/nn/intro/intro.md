@@ -24,16 +24,25 @@ Team composition depends on five positions. Each lane lends itself to certain ki
 
 ![Bought Items](images/bought_items.jpg)
 
-This image represents the final functionality of one of the two models we'll explore in this workshop, where we use our already-trained ML model to make __real-time__ predictions about our in-game performances. 
+This image represents the final functionality of one of the two models we'll explore in this workshop, where we use our already-trained ML model to make **real-time** predictions about our in-game performances.
 
 Here's a short 3-minute introductory video to League of Legends:
 
 [Watch the video](youtube:OfYU4gbk13w)
 
+### Objectives
+
+In this lab, you will learn about:
+
+- What kind of infrastructure we will use
+- The final ML models we will have after completing the workshop
+- The final functionality, embedded in a Python script, that will let us use the ML models we create
+- How OCI Data Science helps us accelerate our development
+
 ### Prerequisites
 
-* An [Oracle Free Tier, Paid or LiveLabs Cloud Account](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_introduction&intcmp=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_introduction)
-* Active Oracle Cloud Account with available credits to use for Data Science service.
+- An [Oracle Free Tier, Paid or LiveLabs Cloud Account](https://signup.cloud.oracle.com/?language=en&sourceType=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_introduction&intcmp=:ow:de:ce::::RC_WWMK220210P00063:LoL_handsonLab_introduction)
+- Active Oracle Cloud Account with available credits to use for Data Science service.
 
 ## About Product/Technology
 
@@ -57,7 +66,6 @@ In this lab, you will complete the following steps:
 
 &check; Integrating ML Models with Data Pipelines
 
-
 ## OCI Elements
 
 This solution is designed to work with several OCI services, allowing you to quickly be up and running. You can read more about the services used in the lab here:
@@ -67,10 +75,10 @@ This solution is designed to work with several OCI services, allowing you to qui
 - [OCI Compute](https://www.oracle.com/cloud/compute/)
 - [OCI Autonomous JSON Database](https://www.oracle.com/autonomous-database/autonomous-json-database/)
 
-
 You may now [proceed to the next lab](#next).
 
 ## Annex - Additional Resources
+
 If you have extra time after this workshop and want to get to know more about League of Legends, we recommend reading these lists of articles to get a feel of everything that can be done in the ML + Gaming space:
 
 1. [Article 1](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article1.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Data Extraction & Processing
@@ -79,9 +87,8 @@ If you have extra time after this workshop and want to get to know more about Le
 4. [Article 4](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article4.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions
 5. [Article 5](https://github.com/oracle-devrel/leagueoflegends-optimizer/blob/livelabs/articles/article5.md): League of Legends Optimizer using Oracle Cloud Infrastructure: Real-Time predictions II
 
-
 ## Acknowledgements
 
-* **Author** - Nacho Martinez, Data Science Advocate @ DevRel
-* **Contributors** -  Victor Martin, Product Strategy Director
-* **Last Updated By/Date** - April 20th, 2023
+- **Author** - Nacho Martinez, Data Science Advocate @ DevRel
+- **Contributors** -  Victor Martin, Product Strategy Director
+- **Last Updated By/Date** - October 9th, 2023
