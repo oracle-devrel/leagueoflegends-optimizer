@@ -2,8 +2,7 @@
 
 import { exitWithError, readEnvJson } from "./lib/utils.mjs";
 
-const shell = process.env.SHELL | "/bin/zsh";
-$.shell = shell;
+process.env.SHELL = "/bin/bash";
 $.verbose = false;
 
 const {
