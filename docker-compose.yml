@@ -1,0 +1,67 @@
+version: '3'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=league
+      - RABBITMQ_DEFAULT_PASS=league
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  visualizer:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - RIOT_API_KEY=${RIOT_API_KEY}
+      - DB_TYPE=sqlite
+      - MQ_HOST=rabbitmq
+      - MODEL_SAVE_PATH=/app/models/trained
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    depends_on:
+      - rabbitmq
+    command: visualizer --host 0.0.0.0 --port 5000
+
+  producer:
+    build: .
+    environment:
+      - RIOT_API_KEY=${RIOT_API_KEY}
+      - DB_TYPE=sqlite
+      - MQ_HOST=rabbitmq
+      - MODEL_SAVE_PATH=/app/models/trained
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    depends_on:
+      - rabbitmq
+    command: live-client-producer --ip rabbitmq
+    # Note: This service needs to run on the same machine as the League of Legends client
+    # It's included here for completeness, but in practice you would run this separately
+
+  consumer:
+    build: .
+    environment:
+      - RIOT_API_KEY=${RIOT_API_KEY}
+      - DB_TYPE=sqlite
+      - MQ_HOST=rabbitmq
+      - MODEL_SAVE_PATH=/app/models/trained
+    volumes:
+      - ./models:/app/models
+      - ./logs:/app/logs
+    depends_on:
+      - rabbitmq
+    command: live-client-consumer --ip rabbitmq -p /app/models/trained
+
+volumes:
+  rabbitmq_data: 
