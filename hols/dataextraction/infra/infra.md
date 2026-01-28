@@ -63,7 +63,33 @@ First, we need to download the official repository to get access to all the code
 
 ## Task 2: Deploy with Terraform and Ansible
 
-1. You are going to create a file `.env.json` that contains variables for terraform. Including the Riot Games API Key. Run on Cloud Shell the following command:
+1. First, verify your Node.js version. The scripts require **Node.js 16 or later**:
+
+    ```bash
+    <copy>
+    node --version
+    </copy>
+    ```
+
+    If your version is below 16, upgrade Node.js using nvm:
+
+    ```bash
+    <copy>
+    nvm install 18 && nvm use 18
+    </copy>
+    ```
+
+    > NOTE: If nvm is not available, you can install it with: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash` and then restart your shell.
+
+2. Install the script dependencies:
+
+    ```bash
+    <copy>
+    cd scripts && npm install && cd ..
+    </copy>
+    ```
+
+3. You are going to create a file `.env.json` that contains variables for terraform. Including the Riot Games API Key. Run on Cloud Shell the following command:
 
     ```bash
     <copy>
@@ -71,17 +97,17 @@ First, we need to download the official repository to get access to all the code
     </copy>
     ```
 
-2. It will run a dependency check and right after ask for a compartment name. If you are in a trial, or brand new to Oracle Cloud, just leave it empty and type _ENTER_.
+4. It will run a dependency check and right after ask for a compartment name. If you are in a trial, or brand new to Oracle Cloud, just leave it empty and type _ENTER_.
     > NOTE: If you want to deploy on a specific compartment, type the name (not the OCI ID) and the compartment will be used.
 
-3. Then, the script will ask for the `Riot Games API Key`. Paste the API Key from the developer's Riot Games website.
+5. Then, the script will ask for the `Riot Games API Key`. Paste the API Key from the developer's Riot Games website.
 
-4. Finally, the script will ask for the `Data Science CPU number`. type _ENTER_ and 4 OCPUs will be selected by default. Based on your resources availability you can use other values.
+6. Finally, the script will ask for the `Data Science CPU number`. type _ENTER_ and 4 OCPUs will be selected by default. Based on your resources availability you can use other values.
 
-5. The script will finished.
+7. The script will finish.
     ![Cloud Shell setenv](./images/cloud-shell-setenv.png)
 
-6. Terraform uses a file called `terraform.tfvars` that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to use a script that will ask you for information to create the `terraform.tfvars` file for you. Run on Cloud Shell the following command:
+8. Terraform uses a file called `terraform.tfvars` that contains the variables Terraform uses to talk to Oracle Cloud and set up your deployment the way you want it. You are going to use a script that will ask you for information to create the `terraform.tfvars` file for you. Run on Cloud Shell the following command:
 
     ```bash
     <copy>
@@ -89,7 +115,7 @@ First, we need to download the official repository to get access to all the code
     </copy>
     ```
 
-7. The script will create the `terraform.tfvars` file.
+9. The script will create the `terraform.tfvars` file.
     ![Cloud Shell tfvars](./images/cloud-shell-tfvars.png)
 
 ## Task 3: Start Deployment

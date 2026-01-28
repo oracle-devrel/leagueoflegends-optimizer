@@ -1,0 +1,16 @@
+{
+  "name": "leagueoflegends-optimizer-scripts",
+  "version": "1.0.0",
+  "description": "Setup scripts for League of Legends Optimizer",
+  "type": "module",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "zx": "^7.2.3"
+  },
+  "scripts": {
+    "setenv": "zx setenv.mjs",
+    "tfvars": "zx tfvars.mjs"
+  }
+}
