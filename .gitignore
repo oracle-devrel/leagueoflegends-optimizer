@@ -192,3 +192,4 @@ terraform.rc
 
 # Ignore the huge sqlite database file 'example.db'
 src/example.db
+CLAUDE.md

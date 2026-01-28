@@ -47,36 +47,94 @@ headers = {
 # AK89OMWJzaal2SSLDtQszoKUZ220Akz0JppfTK6pF97VYve_KQEHcA9RdEx88ghXl_SbW6Nfpj2xyg
 
 
-def get_puuid(request_ref, summoner_name, region, db):
-    request_url = 'https://{}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{}/{}'.format(
-        request_ref, summoner_name, region)  # europe, JASPERAN, EUW
+def get_puuid_by_summoner_id(summoner_id, request_region, db=None):
+    """
+    Get PUUID using encrypted summoner ID.
+    Uses: GET /lol/summoner/v4/summoners/{encryptedSummonerId}
+
+    Args:
+        summoner_id: Encrypted summoner ID from league API
+        request_region: Platform region (e.g., 'na1', 'euw1')
+        db: Database connection (optional, for cleanup on 404)
+
+    Returns:
+        PUUID string or None
+    """
+    assert request_region in request_regions
+
+    request_url = 'https://{}.api.riotgames.com/lol/summoner/v4/summoners/{}'.format(
+        request_region, summoner_id)
 
     response = requests.get(request_url, headers=headers)
     time.sleep(1)
     if response.status_code == 200:
-        #print('{} Printing response for user {} - region {}: -----\n{}'.format(time.strftime("%Y-%m-%d %H:%M"), summoner_name, region, response.json()))
-        pass
+        puuid = response.json().get('puuid')
+        return puuid
     elif response.status_code == 404:
-        print('{} PUUID not found for summoner {}'.format(time.strftime("%Y-%m-%d %H:%M"), summoner_name))
-        db.delete('summoner', 'summonerName', summoner_name)
+        print('{} Summoner not found for ID {}'.format(time.strftime("%Y-%m-%d %H:%M"), summoner_id))
+        if db:
+            db.delete('summoner', 'summonerId', summoner_id)
+        return None
     else:
-        print('{} Request error (@get_puuid). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
-        return
-    puuid = response.json().get('puuid')
-    return puuid
+        print('{} Request error (@get_puuid_by_summoner_id). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
+        return None
 
 
-# encrypted summoner ID: y8zda_vuZ5AkVYk8yXJrHa_ppKjIblOGKPCwzYcX9ywo4G0
-# will return the PUUID but can be changed to return anything.
-def get_summoner_information(summoner_name, request_region):
-    assert request_region in request_regions
+def get_puuid_by_riot_id(game_name, tag_line, request_region):
+    """
+    Get PUUID from Riot ID (name#tag).
+    Uses: GET /riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}
 
-    request_url = 'https://{}.api.riotgames.com/lol/summoner/v4/summoners/by-name/{}'.format(
-        request_region, summoner_name)
+    Args:
+        game_name: Summoner name (left of #)
+        tag_line: Riot tag (right of #, e.g., 'NA1', 'EUW')
+        request_region: Regional endpoint (europe, americas, asia)
+
+    Returns:
+        PUUID string or None
+    """
+    available_regions = ['europe', 'americas', 'asia']
+    assert request_region in available_regions
+
+    request_url = 'https://{}.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{}/{}'.format(
+        request_region, game_name, tag_line)
 
     response = requests.get(request_url, headers=headers)
+    time.sleep(1)
+    if response.status_code == 200:
+        puuid = response.json().get('puuid')
+        return puuid
+    elif response.status_code == 404:
+        print('{} PUUID not found for Riot ID {}#{}'.format(time.strftime("%Y-%m-%d %H:%M"), game_name, tag_line))
+        return None
+    else:
+        print('{} Request error (@get_puuid_by_riot_id). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
+        return None
+
+
+# Get summoner PUUID using encrypted summoner ID
+# The old by-name endpoint no longer exists - use summoner ID instead
+def get_summoner_information_by_id(summoner_id, request_region):
+    """
+    Get summoner information including PUUID using encrypted summoner ID.
+    Uses: GET /lol/summoner/v4/summoners/{encryptedSummonerId}
+
+    Args:
+        summoner_id: Encrypted summoner ID
+        request_region: Platform region (e.g., 'na1', 'euw1')
+
+    Returns:
+        PUUID string or None
+    """
+    assert request_region in request_regions
+
+    request_url = 'https://{}.api.riotgames.com/lol/summoner/v4/summoners/{}'.format(
+        request_region, summoner_id)
+
+    response = requests.get(request_url, headers=headers)
+    time.sleep(1)
     if response.status_code != 200:
-        print('{} Request error (@get_summoner_information). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
+        print('{} Request error (@get_summoner_information_by_id). HTTP code {}'.format(time.strftime("%Y-%m-%d %H:%M"), response.status_code))
         return None
     return response.json().get('puuid')
 
@@ -322,19 +380,21 @@ def get_top_players(region, queue, db):
         try:
             qbe = {'summonerId': x['summonerId']}
             if len(collection_summoner.find().filter(qbe).getDocuments()) == 0:
-                # In case they don't exist in the DB, we get their PUUIDs, in case they change their name.
-                overall_region, tagline = determine_overall_region(region)
-                x['puuid'] = get_puuid(
-                    overall_region, x['summonerName'], tagline, db)
+                # Get PUUID using summoner ID (summoner names are no longer reliable)
+                x['puuid'] = get_puuid_by_summoner_id(x['summonerId'], region, db)
+                if x['puuid'] is None:
+                    print('{} Skipping summoner {} - could not get PUUID'.format(
+                        time.strftime("%Y-%m-%d %H:%M"), x.get('summonerName', 'unknown')))
+                    continue
                 db.insert('summoner', x)
                 print('{} Inserted new summoner: {} in region {}, queue {}'.format(
                     time.strftime("%Y-%m-%d %H:%M"),
-                    x['summonerName'], region, queue))
+                    x.get('summonerName', x['summonerId']), region, queue))
             else:
-                print('{} Summoner {} already inserted'.format(time.strftime("%Y-%m-%d %H:%M"), x['summonerName']))
+                print('{} Summoner {} already inserted'.format(time.strftime("%Y-%m-%d %H:%M"), x.get('summonerName', x['summonerId'])))
                 continue
         except exceptions.IntegrityError:
-            print('{} Summoner {} already inserted'.format(time.strftime("%Y-%m-%d %H:%M"), x['summonerName']))
+            print('{} Summoner {} already inserted'.format(time.strftime("%Y-%m-%d %H:%M"), x.get('summonerName', x['summonerId'])))
             continue
 
 
@@ -449,9 +509,15 @@ def match_list(db):
 
     for x in all_summoners:
         current_summoner = x.getContent()
-        current_summoner_puuid = get_summoner_information(
-            current_summoner['summonerName'], current_summoner['request_region'])
+        # Use stored PUUID if available, otherwise fetch it using summoner ID
+        current_summoner_puuid = current_summoner.get('puuid')
         if current_summoner_puuid is None:
+            # Fallback: fetch PUUID using summoner ID
+            current_summoner_puuid = get_summoner_information_by_id(
+                current_summoner['summonerId'], current_summoner['request_region'])
+        if current_summoner_puuid is None:
+            print('{} Skipping summoner {} - no PUUID available'.format(
+                time.strftime("%Y-%m-%d %H:%M"), current_summoner.get('summonerName', 'unknown')))
             continue
         for y in ['europe', 'americas', 'asia']:
             for z in ['ranked', 'tourney']:
@@ -467,7 +533,7 @@ def match_list(db):
                     print('{} Inserted new match with ID {} from summoner {} in region {}, queue {}'.format(
                         time.strftime("%Y-%m-%d %H:%M"),
                         i['match_id'],
-                        current_summoner['summonerName'], y, z))
+                        current_summoner.get('summonerName', current_summoner['summonerId']), y, z))
 
 
 def match_download_standard(db):
