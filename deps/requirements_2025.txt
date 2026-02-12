@@ -1,0 +1,43 @@
+# Requirements for 2025 notebooks
+# Python 3.10+ recommended
+
+# Core ML
+autogluon>=1.0.0
+xgboost>=2.0.0
+lightgbm>=4.0.0
+catboost>=1.2.0
+scikit-learn>=1.3.0
+
+# Deep Learning (optional)
+# torch>=2.0.0
+# fastai>=2.7.0
+
+# Explainability
+shap>=0.43.0
+
+# Hyperparameter Tuning
+optuna>=3.4.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.13.0
+plotly>=5.18.0
+
+# Jupyter
+ipykernel>=6.25.0
+ipywidgets>=8.1.0
+
+# Deployment
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+joblib>=1.3.0
+
+# ONNX (optional, for cross-platform deployment)
+# onnx>=1.14.0
+# onnxruntime>=1.16.0
+# onnxmltools>=1.11.0

@@ -193,3 +193,18 @@ terraform.rc
 # Ignore the huge sqlite database file 'example.db'
 src/example.db
 CLAUDE.md
+.serena/.gitignore
+.gitignore
+notebooks/data/match_report.csv
+.gitignore
+.gitignore
+notebooks/data/league_ocw_2023.zip
+notebooks/data/player_report.csv
+notebooks/data/performance_report.csv
+notebooks/data/league_ocw_2023.zip
+
+# Planning files (local only)
+docs/plans/
+task_plan.md
+findings.md
+progress.md
